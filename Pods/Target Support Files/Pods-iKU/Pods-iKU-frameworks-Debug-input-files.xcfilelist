@@ -1,0 +1,4 @@
+${PODS_ROOT}/Target Support Files/Pods-iKU/Pods-iKU-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
+${BUILT_PRODUCTS_DIR}/Kanna/Kanna.framework
+${BUILT_PRODUCTS_DIR}/SwiftSoup/SwiftSoup.framework
