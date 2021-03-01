@@ -10,10 +10,11 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var department: String?
-    var double_major: String?
-    var sub_major: String?
-    var grade: String?
+    //var department: String? = "105101"
+    //var double_major: String? = "126780"
+    //var sub_major: String? = "B04047"
+    //var grade: String? = "1"
+    var selected_lec: String?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

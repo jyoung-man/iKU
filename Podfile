@@ -7,6 +7,7 @@ target 'iKU' do
   pod 'SwiftSoup'
   pod 'Kanna', '~> 5.2.2'
   pod 'Alamofire', '~> 5.2'
+  pod 'DropDown'
   # Pods for iKU
 
   target 'iKUTests' do

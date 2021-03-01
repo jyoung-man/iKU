@@ -11,7 +11,7 @@ import SQLite3
 class DBHelper {
         
     var db : OpaquePointer?
-    var path : String = "iku.sqlite"
+    var path : String = "ikuV1.sqlite"
     init() {
         self.db = copyDatabaseIfNeeded()
     }
@@ -72,16 +72,28 @@ class DBHelper {
         return depts
     }
     
-    func asklecture(dept: String, type: String) -> [Lecture] {
+    func askLecture(dept: String, type: String) -> [Lecture] {
         //강의 조회하는 함수
         var lectures = [Lecture]()
-        var query = "select * from lecture where d_code = \(dept);"
-        if dept.contains("N") {
-            let dabu = dept.components(separatedBy: "N")
-            query = "select * from lecture where d_code = \(dabu[0]) or d_code = \(dabu[1]);"
+        var query = "select * from lecture where d_code = '\(dept)';"
+        if dept.contains("&") {
+            let dabu = dept.components(separatedBy: "&")
+            query = "select * from lecture where d_code = '\(dabu[0])' or d_code = '\(dabu[1])';"
         }
-        if type.isEmpty == false {
-            query.append(" and type = \(type)")
+        if type.isEmpty == false { //교양과목 조회하는 경우
+            if type.contains("&") {
+                let sec = type.components(separatedBy: "&")
+
+                if sec.count > 2 {
+                    query = "select * from lecture where section = '\(sec[0])' or section = '\(sec[1])' or section = '\(sec[2])' ;"                }
+                else {
+                    query = "select * from lecture where section = '\(sec[0])' or section = '\(sec[1])' ;"
+                }
+                
+            }
+            else {
+                query = "select * from lecture where section = '\(type)' ;"
+            }
         }
         
         //db 구조: 테이블 2개(dept, lecture)
@@ -97,8 +109,7 @@ class DBHelper {
                 let d_code = String(cString: sqlite3_column_text(statement, 3))
                 let prof = String(cString: sqlite3_column_text(statement, 4))
                 let section = String(cString: sqlite3_column_text(statement, 5))
-                lectures.append(Lecture(type: type, number: l_number, title: l_name, credit: credit, dept: d_code, time: time, prof: prof, untact: untact, note: note, section: ""))
-                //전공 강의는 영역 몰라도 됨
+                lectures.append(Lecture(type: type, number: l_number, title: l_name, dept: d_code, prof: prof, section: section))
                 //print("readData result : \(name) \(code)")//
             }
         }
@@ -110,7 +121,88 @@ class DBHelper {
         return lectures     //배열 반환하기: func functionName() -> Lecture {}
     }
     
-    func askLecInfo(d_code: String) -> [Lecture] {
+    func askLecInfo(l_number: String) -> [String] {
+        let query = "select * from lecture natural join lec_info where l_number = '\(l_number)';"
+        var statement : OpaquePointer? = nil
+        var lecInfo = [String]()
+        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
+            while sqlite3_step(statement) == SQLITE_ROW {
+                let type = String(cString: sqlite3_column_text(statement, 0))
+                let l_number = String(cString: sqlite3_column_text(statement, 1))
+                let l_name = String(cString: sqlite3_column_text(statement, 2))
+                let section = String(cString: sqlite3_column_text(statement, 5))
+                let credit = sqlite3_column_int(statement, 6)
+                let time = String(cString: sqlite3_column_text(statement, 7))
+                let classroom = String(cString: sqlite3_column_text(statement, 8))
+                let untact = String(cString: sqlite3_column_text(statement, 9))
+                let isuntact = isUntact(untact: untact)
+                let note = String(cString: sqlite3_column_text(statement, 10))
+                //순서: 이름 번호 이수구분 학점/ 장소 대면비대면 시간/ 담당교수 메일 연구실
+                
+                lecInfo.append(l_name)
+                lecInfo.append(l_number)
+                lecInfo.append("\(type) \(section)")
+                lecInfo.append(String(credit)+"학점")
+                lecInfo.append(time)
+                lecInfo.append(classroom)
+                lecInfo.append(isuntact)
+                lecInfo.append(note)
+                break
+            }
+        }
+        else {
+            let errorMessage = String(cString: sqlite3_errmsg(db))
+            print("\n read Data prepare fail! : \(errorMessage)")
+        }
+        sqlite3_finalize(statement)
+        return lecInfo
+    }
+    
+    func askProf(l_number: String) -> [String] {
+        let query = "select * from professor where prof in (select prof from lecture where l_number = '\(l_number)' );"
+        var statement : OpaquePointer? = nil
+        var prof_contact = [String]()
         
+        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
+            while sqlite3_step(statement) == SQLITE_ROW {
+                let prof = String(cString: sqlite3_column_text(statement, 0))
+                let lab = String(cString: sqlite3_column_text(statement, 1))
+                let contact = String(cString: sqlite3_column_text(statement, 2))
+                prof_contact.append(prof)
+                prof_contact.append(contact)
+                prof_contact.append(lab)
+                break
+            }
+        }
+        else {
+            let errorMessage = String(cString: sqlite3_errmsg(db))
+            print("\n read Data prepare fail! : \(errorMessage)")
+        }
+        sqlite3_finalize(statement)
+        
+        return prof_contact
+    }
+    
+    func isUntact(untact: String) -> String {
+        var rate: [String?]
+        let info = ["녹화: ", "실시간: ", "대면: "]
+        var result: String = ""
+        var i: Int = 0
+        if untact.contains(":") {
+            rate = untact.components(separatedBy: ":")
+            for r in rate {
+                if r == "0" {
+                    continue
+                }
+                else {
+                    result.append("\(info[i])\(r!) ")
+                }
+                i+=1
+            }
+            return result
+        }
+        else {
+            return untact
+        }
     }
 }

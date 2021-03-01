@@ -15,19 +15,19 @@ class ViewController: UIViewController {
     @IBOutlet weak var text_grade: UITextField!
     @IBOutlet weak var button: UIButton!
     
+    let ud = UserDefaults.standard
+
     var depts = [Department]()
+    var mymajor: [Department] = [Department(d_name: "원전공", d_code: "onemajor")]
+    var doublemajor: [Department] = [Department(d_name: "다/부전공 1", d_code: "dabu1"), Department(d_name: "없음", d_code: "nothing"), Department(d_name: "교직", d_code: "B04047")]
+    var submajor: [Department] = [Department(d_name: "다/부전공 2", d_code: "dabu1"), Department(d_name: "없음", d_code: "nothing"), Department(d_name: "교직", d_code: "B04047")]
+    
     let ad = UIApplication.shared.delegate as? AppDelegate
     @IBAction func inputGrade(_ sender: UITextField) {
         if sender.text == "1" || sender.text == "2" || sender.text == "3" || sender.text == "4" {
             self.button.isEnabled = true
         }
-        else if sender.text == "5"{
-                print("대충 5학년이 어딨냐는 내용")
-            self.button.isEnabled = false
-
-        }
         else {
-            print("닷 내용")
             self.button.isEnabled = false
 
         }
@@ -36,32 +36,47 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         depts = DBHelper().askDept()
+        mymajor += depts
+        doublemajor += depts
+        submajor += depts
+        
         picker_major.dataSource = self
         picker_major.delegate = self
-        
         picker_da.dataSource = self
         picker_da.delegate = self
             
         picker_bu.dataSource = self
         picker_bu.delegate = self
         self.button.isEnabled = false
+        let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
     }
+    
+    @objc func hideKeyboard() {
+        view.endEditing(true)
+        print("Tap is working")
+    }
+    
+    
     @IBAction func sender(_ sender: UIButton) {
-        ad?.department = depts[self.picker_major.selectedRow(inComponent: 0)].getCode()
-        ad?.double_major = depts[self.picker_da.selectedRow(inComponent: 0)].getCode()
-        ad?.sub_major = depts[self.picker_bu.selectedRow(inComponent: 0)].getCode()
-        ad?.grade = text_grade.text
+        //ad?.department = mymajor[self.picker_major.selectedRow(inComponent: 0)].getCode()
+        //ad?.double_major = doublemajor[self.picker_da.selectedRow(inComponent: 0)].getCode()
+        //ad?.sub_major = submajor[self.picker_bu.selectedRow(inComponent: 0)].getCode()
+        //ad?.grade = text_grade.text
 
-        let dept: String? = ad?.department
-        let double: String? = ad?.double_major
-        let sub: String? = ad?.sub_major
-        let grade: String? = ad?.grade
+        
+        ud.set(self.mymajor[self.picker_major.selectedRow(inComponent: 0)].getCode(), forKey: "department")
+        ud.set(self.doublemajor[self.picker_da.selectedRow(inComponent: 0)].getCode(), forKey: "double_major")
+        ud.set(self.submajor[self.picker_bu.selectedRow(inComponent: 0)].getCode(), forKey: "sub_major")
+        ud.set(self.text_grade.text, forKey: "grade")
 
-
-        print(dept!)
-        print(double!)
-        print(sub!)
-        print(grade!)
+        let alert = UIAlertController(title: "알림", message: "설정이 저장되었습니다.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .default, handler: { _ in
+            NSLog("The \"OK\" alert occured.")
+        }))
+        self.present(alert, animated: true, completion: nil)
+        
     }
 }
 
@@ -71,16 +86,36 @@ extension ViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return depts.count
+        if pickerView == picker_major {
+            return mymajor.count
+        }
+        else if pickerView == picker_da {
+            return doublemajor.count
+        }
+        else if pickerView == picker_bu {
+            return submajor.count
+        }
+        else {
+            return depts.count
+        }
     }
-    
-    
 }
 
 extension ViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if pickerView == picker_major {
+            return mymajor[row].d_name
+        }
+        else if pickerView == picker_da {
+            return doublemajor[row].d_name
+        }
+        else if pickerView == picker_bu {
+            return submajor[row].d_name
+        }
+        else {
+            return depts[row].d_name
+        }
         
-        return depts[row].d_name
     }
     
 }
