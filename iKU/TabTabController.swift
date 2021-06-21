@@ -18,5 +18,14 @@ class TabTabController: UITabBarController {
             NSLog("The \"OK\" alert occured.")
         }))
         self.present(alert, animated: true, completion: nil)
+//        let alert = UIAlertController(title: "요청 취소", message: "요청을 취소하면 촬영하신 이미지가 전부 삭제됩니다. 계속 진행하시겠습니까?", preferredStyle: .alert)
+//            let action = UIAlertAction(title: "계속 진행", style: .destructive) { (action) in
+//                self.navigationController?.setNavigationBarHidden(false, animated: true)
+//                self.navigationController?.popViewController(animated: true)
+//            }
+//            let cancel = UIAlertAction(title: "돌아가기", style: .cancel, handler: nil)
+//            alert.addAction(action)
+//            alert.addAction(cancel)
+//            present(alert, animated: true, completion: nil)
     }
 }

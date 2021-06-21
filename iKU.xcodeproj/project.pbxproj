@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4E0BEA3625E95C5500B16043 /* ikuV1.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 4E0BEA3525E95C5500B16043 /* ikuV1.sqlite */; };
+		4E0F385C25F9AB4000A3E579 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0F385B25F9AB4000A3E579 /* APIService.swift */; };
 		4E0FCA4525DC14190047B4FC /* SubMajorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0FCA4425DC14190047B4FC /* SubMajorViewController.swift */; };
 		4E0FCA4A25DC1D800047B4FC /* CulturalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0FCA4925DC1D800047B4FC /* CulturalViewController.swift */; };
 		4E11A23325CBC8C200E7363F /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E11A23225CBC8C200E7363F /* DBHelper.swift */; };
@@ -23,9 +24,14 @@
 		4E2B59B925CA4467003BC87A /* Lecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B59B825CA4467003BC87A /* Lecture.swift */; };
 		4E2B59C125CA4C58003BC87A /* MajorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B59C025CA4C58003BC87A /* MajorViewController.swift */; };
 		4E5A9E0B25E77C3C00BA9FEF /* AllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5A9E0A25E77C3C00BA9FEF /* AllViewController.swift */; };
+		4E5EA4652612F613004CF693 /* LectureSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5EA4642612F613004CF693 /* LectureSection.swift */; };
+		4E64135326133C9D00A47FEC /* LectureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E64135226133C9D00A47FEC /* LectureModel.swift */; };
+		4E6413582613469000A47FEC /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6413572613469000A47FEC /* LectureListViewModel.swift */; };
+		4E7C3F2E2600496500DED511 /* LectureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7C3F2D2600496500DED511 /* LectureCell.swift */; };
 		4EAD9EC125D15B72002966E9 /* Department.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD9EC025D15B72002966E9 /* Department.swift */; };
 		4EB78B0825D79D8D007B1F2C /* LectureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB78B0725D79D8D007B1F2C /* LectureDetailView.swift */; };
 		4EB78B0D25D79F27007B1F2C /* LectureDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB78B0C25D79F27007B1F2C /* LectureDetailCell.swift */; };
+		4EBE5C4E25F9FF39003FD06B /* LectureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBE5C4D25F9FF39003FD06B /* LectureViewModel.swift */; };
 		4EEEA56225D5028700E98C9B /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEEA56125D5028700E98C9B /* SettingViewController.swift */; };
 		4EFF55E925DA6F2A00C34E3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4EFF55E825DA6F2A00C34E3B /* Assets.xcassets */; };
 		AF22B86B0DB587CEB2CECFA9 /* Pods_iKUTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE290E07A02D95E038241D2 /* Pods_iKUTests.framework */; };
@@ -53,9 +59,10 @@
 /* Begin PBXFileReference section */
 		40CF237EAD4F777F77AAEA76 /* Pods-iKUTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iKUTests.release.xcconfig"; path = "Target Support Files/Pods-iKUTests/Pods-iKUTests.release.xcconfig"; sourceTree = "<group>"; };
 		4E0BEA3525E95C5500B16043 /* ikuV1.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = ikuV1.sqlite; sourceTree = "<group>"; };
+		4E0F385B25F9AB4000A3E579 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		4E0FCA4425DC14190047B4FC /* SubMajorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubMajorViewController.swift; sourceTree = "<group>"; };
 		4E0FCA4925DC1D800047B4FC /* CulturalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CulturalViewController.swift; sourceTree = "<group>"; };
-		4E11A23225CBC8C200E7363F /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DBHelper.swift; path = Helper/DBHelper.swift; sourceTree = "<group>"; };
+		4E11A23225CBC8C200E7363F /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		4E2B596B25CA35FE003BC87A /* iKU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iKU.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E2B596E25CA35FE003BC87A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4E2B597025CA35FE003BC87A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -74,9 +81,14 @@
 		4E2B59B825CA4467003BC87A /* Lecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lecture.swift; sourceTree = "<group>"; };
 		4E2B59C025CA4C58003BC87A /* MajorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MajorViewController.swift; sourceTree = "<group>"; };
 		4E5A9E0A25E77C3C00BA9FEF /* AllViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllViewController.swift; sourceTree = "<group>"; };
+		4E5EA4642612F613004CF693 /* LectureSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureSection.swift; sourceTree = "<group>"; };
+		4E64135226133C9D00A47FEC /* LectureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureModel.swift; sourceTree = "<group>"; };
+		4E6413572613469000A47FEC /* LectureListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListViewModel.swift; sourceTree = "<group>"; };
+		4E7C3F2D2600496500DED511 /* LectureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureCell.swift; sourceTree = "<group>"; };
 		4EAD9EC025D15B72002966E9 /* Department.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Department.swift; sourceTree = "<group>"; };
 		4EB78B0725D79D8D007B1F2C /* LectureDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureDetailView.swift; sourceTree = "<group>"; };
 		4EB78B0C25D79F27007B1F2C /* LectureDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureDetailCell.swift; sourceTree = "<group>"; };
+		4EBE5C4D25F9FF39003FD06B /* LectureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureViewModel.swift; sourceTree = "<group>"; };
 		4EEEA56125D5028700E98C9B /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		4EFF55E825DA6F2A00C34E3B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5CE290E07A02D95E038241D2 /* Pods_iKUTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iKUTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,6 +139,33 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4E0F385825F9A84A00A3E579 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4E0FCA4925DC1D800047B4FC /* CulturalViewController.swift */,
+				4E7C3F2D2600496500DED511 /* LectureCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4E0F385925F9A88C00A3E579 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4EBE5C4D25F9FF39003FD06B /* LectureViewModel.swift */,
+				4E6413572613469000A47FEC /* LectureListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		4E0F385A25F9AB2800A3E579 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				4E0F385B25F9AB4000A3E579 /* APIService.swift */,
+				4E11A23225CBC8C200E7363F /* DBHelper.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
 		4E2B596225CA35FE003BC87A = {
 			isa = PBXGroup;
 			children = (
@@ -152,24 +191,25 @@
 		4E2B596D25CA35FE003BC87A /* iKU */ = {
 			isa = PBXGroup;
 			children = (
+				4E0F385A25F9AB2800A3E579 /* Repository */,
+				4E0F385825F9A84A00A3E579 /* View */,
+				4E0F385925F9A88C00A3E579 /* ViewModel */,
+				4E5EA4632612F5E7004CF693 /* Model */,
 				4E0BEA3525E95C5500B16043 /* ikuV1.sqlite */,
 				4E2B596E25CA35FE003BC87A /* AppDelegate.swift */,
 				4E2B597025CA35FE003BC87A /* SceneDelegate.swift */,
 				4E2B597225CA35FE003BC87A /* ViewController.swift */,
 				4E2B597425CA35FE003BC87A /* Main.storyboard */,
 				4E2B59B325CA3BEA003BC87A /* TabTabController.swift */,
-				4E2B59B825CA4467003BC87A /* Lecture.swift */,
 				4E5A9E0A25E77C3C00BA9FEF /* AllViewController.swift */,
 				4E2B59C025CA4C58003BC87A /* MajorViewController.swift */,
 				4E2B59A925CA3AEC003BC87A /* LectureTableViewCell.swift */,
 				4EEEA56125D5028700E98C9B /* SettingViewController.swift */,
-				4E11A23225CBC8C200E7363F /* DBHelper.swift */,
 				4EAD9EC025D15B72002966E9 /* Department.swift */,
 				4E2B597925CA35FF003BC87A /* LaunchScreen.storyboard */,
 				4EB78B0725D79D8D007B1F2C /* LectureDetailView.swift */,
 				4EB78B0C25D79F27007B1F2C /* LectureDetailCell.swift */,
 				4E0FCA4425DC14190047B4FC /* SubMajorViewController.swift */,
-				4E0FCA4925DC1D800047B4FC /* CulturalViewController.swift */,
 				4E2B597C25CA35FF003BC87A /* Info.plist */,
 				4EFF55E825DA6F2A00C34E3B /* Assets.xcassets */,
 			);
@@ -192,6 +232,16 @@
 				4E2B599225CA35FF003BC87A /* Info.plist */,
 			);
 			path = iKUUITests;
+			sourceTree = "<group>";
+		};
+		4E5EA4632612F5E7004CF693 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4E5EA4642612F613004CF693 /* LectureSection.swift */,
+				4E2B59B825CA4467003BC87A /* Lecture.swift */,
+				4E64135226133C9D00A47FEC /* LectureModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		F98926CA4925055EBC1C4AD7 /* Pods */ = {
@@ -446,18 +496,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E7C3F2E2600496500DED511 /* LectureCell.swift in Sources */,
 				4E0FCA4A25DC1D800047B4FC /* CulturalViewController.swift in Sources */,
+				4E64135326133C9D00A47FEC /* LectureModel.swift in Sources */,
 				4E2B59C125CA4C58003BC87A /* MajorViewController.swift in Sources */,
 				4EB78B0D25D79F27007B1F2C /* LectureDetailCell.swift in Sources */,
 				4E2B59AA25CA3AEC003BC87A /* LectureTableViewCell.swift in Sources */,
 				4EAD9EC125D15B72002966E9 /* Department.swift in Sources */,
 				4E2B597325CA35FE003BC87A /* ViewController.swift in Sources */,
+				4E0F385C25F9AB4000A3E579 /* APIService.swift in Sources */,
 				4E5A9E0B25E77C3C00BA9FEF /* AllViewController.swift in Sources */,
 				4E2B596F25CA35FE003BC87A /* AppDelegate.swift in Sources */,
+				4E6413582613469000A47FEC /* LectureListViewModel.swift in Sources */,
 				4EEEA56225D5028700E98C9B /* SettingViewController.swift in Sources */,
 				4E2B59B925CA4467003BC87A /* Lecture.swift in Sources */,
 				4E2B597125CA35FE003BC87A /* SceneDelegate.swift in Sources */,
 				4EB78B0825D79D8D007B1F2C /* LectureDetailView.swift in Sources */,
+				4EBE5C4E25F9FF39003FD06B /* LectureViewModel.swift in Sources */,
+				4E5EA4652612F613004CF693 /* LectureSection.swift in Sources */,
 				4E0FCA4525DC14190047B4FC /* SubMajorViewController.swift in Sources */,
 				4E2B59B425CA3BEA003BC87A /* TabTabController.swift in Sources */,
 				4E11A23325CBC8C200E7363F /* DBHelper.swift in Sources */,

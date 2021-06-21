@@ -267,6 +267,13 @@ extension MajorViewController: UITableViewDataSource, UITableViewDelegate {
         return filteredLec.count
     }
     
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+                let headerView = view as! UITableViewHeaderFooterView
+                headerView.contentView.backgroundColor = UIColor.lightGray
+                headerView.contentView.layer.cornerRadius = 20
+                headerView.contentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = majorTableView.dequeueReusableCell(withIdentifier: "LecCell") as! LectureTableViewCell
         

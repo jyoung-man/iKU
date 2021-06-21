@@ -9,7 +9,7 @@ import Foundation
 import SQLite3
 
 class DBHelper {
-        
+    
     var db : OpaquePointer?
     var path : String = "ikuV1.sqlite"
     init() {
@@ -181,6 +181,26 @@ class DBHelper {
         sqlite3_finalize(statement)
         
         return prof_contact
+    }
+    
+    func askType(dept: String) -> [String] {
+        let query = "select type from lecture where dept = '\(dept)';"
+        var statement : OpaquePointer? = nil
+        var types = [String]()
+        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
+            while sqlite3_step(statement) == SQLITE_ROW {
+                let type = String(cString: sqlite3_column_text(statement, 0))
+                types.append(type)
+                
+                break
+            }
+        }
+        else {
+            let errorMessage = String(cString: sqlite3_errmsg(db))
+            print("\n read Data prepare fail! : \(errorMessage)")
+        }
+        sqlite3_finalize(statement)
+        return types
     }
     
     func isUntact(untact: String) -> String {

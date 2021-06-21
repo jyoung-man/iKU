@@ -5,9 +5,12 @@ target 'iKU' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
   pod 'SwiftSoup'
-  pod 'Kanna', '~> 5.2.2'
   pod 'Alamofire', '~> 5.2'
   pod 'DropDown'
+  pod 'Siren'
+  pod 'RxSwift'
+  pod 'RxCocoa'
+  pod 'RxDataSources'
   # Pods for iKU
 
   target 'iKUTests' do

@@ -6,18 +6,17 @@
 //
 
 import UIKit
+import Siren
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    //var department: String? = "105101"
-    //var double_major: String? = "126780"
-    //var sub_major: String? = "B04047"
-    //var grade: String? = "1"
+    var window: UIWindow?
     var selected_lec: String?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        window?.makeKeyAndVisible()
+        defaultExampleUsingCompletionHandler()
         return true
     }
 
@@ -34,7 +33,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
-
-
+    
+    func defaultExampleUsingCompletionHandler() {
+        let siren = Siren.shared
+        siren.rulesManager = RulesManager(majorUpdateRules: Rules(promptFrequency: .immediately, forAlertType: .force), minorUpdateRules: Rules(promptFrequency: .immediately, forAlertType: .option), patchUpdateRules: .critical, revisionUpdateRules: Rules(promptFrequency: .daily, forAlertType: .force))
+        
+        siren.apiManager = APIManager(country: .korea)
+        siren.presentationManager = PresentationManager(forceLanguageLocalization: .korean)
+        siren.wail(performCheck: .onDemand) { results in
+            switch results {
+            case .success(let updateResults):
+                print("AlertAction ", updateResults.alertAction)
+                print("Localization ", updateResults.localization)
+                print("Model ", updateResults.model)
+                print("UpdateType ", updateResults.updateType)
+            
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
 
