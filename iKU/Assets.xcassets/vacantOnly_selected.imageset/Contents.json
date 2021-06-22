@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "grade_selected.png",
+      "filename" : "vacantOnly_selected.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "grade_selected@2x.png",
+      "filename" : "vacantOnly_selected@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "grade_selected@3x.png",
+      "filename" : "vacantOnly_selected@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

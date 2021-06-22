@@ -50,11 +50,51 @@ class APIService {
             }
         }
     }
+    func returnTypeName(type: String) -> String {
+        switch type {
+        case "지교":
+            return "지정교양"
+        case "지필":
+            return "지정필수"
+        case "전필":
+            return "전공필수"
+        case "전선":
+            return "전공선택"
+        case "교직":
+            return "교직이수"
+        case "일선":
+            return "일반선택"
+        default:
+            return ""
+        }
+    }
     
-    func mutableLectures(dept: String, type: String) -> BehaviorRelay<[LectureSection]> {
+    func findSection(dept: String, classes: String) -> [LectureSection] {
+        let types = DBHelper().askTypeOrSection(dept: dept, target: classes)
+        var lectureSections: [LectureSection] = []
+        var lectures: [Lecture]
+        for type in types {
+            lectures = DBHelper().askLecture(dept: dept, type: type)
+            print(types)
+            if !lectures.isEmpty {
+                lectureSections.append(LectureSection(lecType: type, items: lectures))
+            }
+        }
+
+        return lectureSections
+    }
+
+    
+    func findLecInOneSec(dept: String, type: String) -> [LectureSection] {
+        var lectureSections: [LectureSection] = []
+        let lectures = DBHelper().askLecture(dept: dept, type: type)
+        lectureSections.append(LectureSection(lecType: type, items: lectures))
+        
+        return lectureSections
+    }
+    
+    func mutableLectures(depts: [LectureSection]) -> BehaviorRelay<[LectureSection]> {
         let subject: BehaviorRelay<[LectureSection]> = BehaviorRelay(value: [])
-        let data = DBHelper().askLecture(dept: dept, type: type)
-        let depts = [LectureSection(lecType: "나중에 수정해주세요", items: data)]
         subject.accept(depts)
         
         return subject

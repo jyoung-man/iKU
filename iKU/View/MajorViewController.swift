@@ -8,17 +8,22 @@
 import UIKit
 import SwiftSoup
 import Alamofire
+import RxSwift
+import RxCocoa
+import RxDataSources
 
 class MajorViewController: UIViewController, UISearchBarDelegate {
     let ad = UIApplication.shared.delegate as? AppDelegate
     let ud = UserDefaults.standard
-
+    let cellID = "lCell"
+    private var viewModel: LectureListViewModel!
+    var datasource: RxTableViewSectionedReloadDataSource<LectureSection>!
+    var disposeBag = DisposeBag()
+    
     @IBOutlet weak var majorTableView: UITableView!
     @IBOutlet weak var lecSearchBar: UISearchBar!
-    @IBOutlet weak var vacantSwitch: UISwitch!
-    @IBOutlet weak var isVacant: UILabel!
-    @IBOutlet weak var mjSegment: UISegmentedControl!
     
+   
     var filteredLec: [Lecture]!
     var lectures: [Lecture]!
     var vacantLec: [Lecture]!
@@ -32,11 +37,6 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        vacantSwitch.isOn = false
-        vacantSwitch.isEnabled = false
-        vacantSwitch.onTintColor = .systemTeal
-        vacantSwitch.thumbTintColor = .lightGray
-        isVacant.text = "전체 강의"
         myDept = ud.string(forKey: "department") ?? "126914"
         grade = ud.string(forKey: "grade") ?? "1"
         majorTableView.delegate = self
@@ -63,70 +63,13 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
             lectures = DBHelper().askLecture(dept: myDept!, type: "")
             filteredLec = lectures
             searchedLec = lectures
-            vacantSwitch.isOn = false
-            vacantSwitch.isEnabled = false
-            mjSegment.selectedSegmentIndex = 0
-            isVacant.text = "전체 강의"
+
             lecSearchBar.text = ""
             majorTableView.reloadData()
         }
     }
     
-    @IBAction func segmentChanged(_ sender: UISegmentedControl) {
-        let switchOn: Bool = vacantSwitch.isOn
-
-        if sender.selectedSegmentIndex == 1 {
-            vacantSwitch.isEnabled = false
-            seatsForAll(lecs: searchedLec)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                if switchOn {
-                    self.filterByLeft(lecs: self.searchedLec)
-                    self.filteredLec = self.vacantLec
-                }
-                else {
-                    self.filteredLec = self.searchedLec
-                }
-                self.majorTableView.reloadData()
-                self.vacantSwitch.isEnabled = true
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                self.majorTableView.reloadData()
-                print("작동중")
-            }
-        }
-        
-        else if sender.selectedSegmentIndex == 2 {
-            vacantSwitch.isEnabled = false
-            seatsForSenior(lecs: searchedLec)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                if switchOn {
-                    self.filterByLeft(lecs: self.searchedLec)
-                    self.filteredLec = self.vacantLec
-                }
-                else {
-                    self.filteredLec = self.searchedLec
-                }
-                self.majorTableView.reloadData()
-                self.vacantSwitch.isEnabled = true
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5.0) {
-                self.majorTableView.reloadData()
-                print("작동중")
-            }
-        }
-        else {
-            vacantSwitch.isEnabled = false
-            vacantSwitch.isOn = false
-            self.isVacant.text = "전체 강의"
-            
-            for l in searchedLec {
-                l.setLeft(refreshed: "")
-            }
-            filteredLec = searchedLec
-            self.majorTableView.reloadData()
-        }
-    }
-    
+   
     func seatsForSenior(lecs: [Lecture]) {
         var left: String = " "
         let suguniURL = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01011&promShyr=\(grade ?? "1")&fg=B&sbjtId="
@@ -186,20 +129,6 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         }
     }
     
-    @IBAction func clickSwitch(_ sender: UISwitch) {
-        if sender.isOn {
-            self.isVacant.text = "빈 강의만"
-            filterByLeft(lecs: searchedLec)
-            self.filteredLec = vacantLec
-        }
-        else {
-            self.isVacant.text = "전체 강의"
-            self.filteredLec = searchedLec
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.majorTableView.reloadData()
-        }
-    }
     
     func filterByLeft(lecs: [Lecture]) {
         vacantLec = []
@@ -296,17 +225,17 @@ extension MajorViewController: UITableViewDataSource, UITableViewDelegate {
         ad?.selected_lec = filteredLec[indexPath.row].number
     }
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        filterByKeyword(searchText: searchText)
-
-        if vacantSwitch.isOn {
-            filterByLeft(lecs: searchedLec)
-            filteredLec = vacantLec
-        }
-        else {
-            filteredLec = searchedLec
-        }
-        self.majorTableView.reloadData()
-    }
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        filterByKeyword(searchText: searchText)
+//
+//        if vacantSwitch.isOn {
+//            filterByLeft(lecs: searchedLec)
+//            filteredLec = vacantLec
+//        }
+//        else {
+//            filteredLec = searchedLec
+//        }
+//        self.majorTableView.reloadData()
+//    }
     
 }

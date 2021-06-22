@@ -5,7 +5,6 @@
 //  Created by 박재영 on 2021/02/17.
 //
 
-import DropDown
 import UIKit
 import SwiftSoup
 import Alamofire
@@ -32,31 +31,12 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
     var grade: String?
     
     @IBOutlet weak var segment: UISegmentedControl!
-    @IBOutlet weak var button: UIButton!
-    @IBAction func filter(_ sender: UIButton) {
-        menu.show()
-    }
     
-    let menu: DropDown = {
-        let menu = DropDown()
-        menu.dataSource = [
-            "기교) 외국어, 글쓰기",
-            "기교) SW, 취창업, 사회봉사",
-            "기교) 유학생을 위한 강의",
-            "심교) 사고력증진",
-            "심교) 학문소양 및 인성함양",
-            "심교) 글로벌 인재양성"
-        ]
-        return menu
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewModel = LectureListViewModel()
+        self.viewModel = LectureListViewModel(dept: "B0404P", classes: "section")
         backgroundView.layer.cornerRadius = backgroundView.frame.height / 25
-        menu.anchorView = button
-        menu.selectRow(0)
-        menu.selectionBackgroundColor = .white
         lecSearchBar.barTintColor = culturalTableView.backgroundColor
         lecSearchBar.searchTextField.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
         let dataSource = RxTableViewSectionedReloadDataSource<LectureSection>(
@@ -80,10 +60,6 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
         viewModel.mutableLectureList()
             .bind(to: culturalTableView.rx.items(dataSource: datasource))
             .disposed(by: disposeBag)
-
-        menu.selectionAction = { [self] index, title in
-            viewModel.changeCulturalSection(index: index)
-        }
         grade = ud.string(forKey: "grade") ?? "1"
         lecSearchBar.delegate = self
         print("init_finish")
@@ -175,7 +151,7 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
 extension CulturalViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 90
+        return 80
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -195,7 +171,7 @@ extension CulturalViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 55
+        return 35
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

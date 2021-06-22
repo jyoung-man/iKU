@@ -75,17 +75,18 @@ class DBHelper {
     func askLecture(dept: String, type: String) -> [Lecture] {
         //강의 조회하는 함수
         var lectures = [Lecture]()
-        var query = "select * from lecture where d_code = '\(dept)';"
+        var query = "select * from lecture where d_code = '\(dept)' and type = '\(type)';"
         if dept.contains("&") {
             let dabu = dept.components(separatedBy: "&")
-            query = "select * from lecture where d_code = '\(dabu[0])' or d_code = '\(dabu[1])';"
+            query = "select * from lecture where d_code = '\(dabu[0])' or d_code = '\(dabu[1])' and type = '\(type)';"
         }
-        if type.isEmpty == false { //교양과목 조회하는 경우
+        if dept == "B0404P" { //교양과목 조회하는 경우
             if type.contains("&") {
                 let sec = type.components(separatedBy: "&")
 
                 if sec.count > 2 {
-                    query = "select * from lecture where section = '\(sec[0])' or section = '\(sec[1])' or section = '\(sec[2])' ;"                }
+                    query = "select * from lecture where section = '\(sec[0])' or section = '\(sec[1])' or section = '\(sec[2])' ;"                    
+                }
                 else {
                     query = "select * from lecture where section = '\(sec[0])' or section = '\(sec[1])' ;"
                 }
@@ -183,15 +184,14 @@ class DBHelper {
         return prof_contact
     }
     
-    func askType(dept: String) -> [String] {
-        let query = "select type from lecture where dept = '\(dept)';"
+    func askTypeOrSection(dept: String, target: String) -> [String] {
+        let query = "select \(target) from lecture where d_code = '\(dept)';"
         var statement : OpaquePointer? = nil
-        var types = [String]()
+        var tos = [String]()
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
                 let type = String(cString: sqlite3_column_text(statement, 0))
-                types.append(type)
-                
+                tos.append(type)
                 break
             }
         }
@@ -200,7 +200,7 @@ class DBHelper {
             print("\n read Data prepare fail! : \(errorMessage)")
         }
         sqlite3_finalize(statement)
-        return types
+        return tos
     }
     
     func isUntact(untact: String) -> String {
