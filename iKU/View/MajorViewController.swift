@@ -22,8 +22,12 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     
     @IBOutlet weak var majorTableView: UITableView!
     @IBOutlet weak var lecSearchBar: UISearchBar!
+    @IBOutlet weak var backgroundView: UIView!
     
-   
+    @IBOutlet weak var collegeLabel: UILabel!
+    @IBOutlet weak var departureLabel: UILabel!
+    @IBOutlet weak var inMyGrade: UIButton!
+    
     var filteredLec: [Lecture]!
     var lectures: [Lecture]!
     var vacantLec: [Lecture]!
@@ -31,21 +35,32 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     var myDept: String?
     var grade: String?
     
-    override var prefersStatusBarHidden: Bool {
-            return true
-        }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        myDept = ud.string(forKey: "department") ?? "126914"
-        grade = ud.string(forKey: "grade") ?? "1"
-        majorTableView.delegate = self
-        majorTableView.dataSource = self
-        lectures = DBHelper().askLecture(dept: myDept!, type: "")
-        filteredLec = lectures
-        searchedLec = lectures
-        lecSearchBar.delegate = self
+        loadUserInfo()
+
+        backgroundView.layer.cornerRadius = backgroundView.frame.height / 25
+        lecSearchBar.barTintColor = majorTableView.backgroundColor
+        lecSearchBar.searchTextField.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
         
+        self.viewModel = LectureListViewModel(dept: myDept!, classes: "type")
+        let dSource = RxTableViewSectionedReloadDataSource<LectureSection>(configureCell: { dSource, majorTableView, indexPath, item in
+            let cell = majorTableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath) as! LectureCell
+            cell.titleLabel.text = item.title
+            cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
+            cell.leftLabel.text = item.left
+            cell.lecCellView.layer.cornerRadius = cell.lecCellView.frame.height / 3
+            
+            return cell
+        })
+        self.datasource = dSource
+        
+        majorTableView.rx.setDelegate(self).disposed(by: disposeBag)
+        
+        viewModel.mutableLectureList().bind(to: majorTableView.rx.items(dataSource: datasource)).disposed(by: disposeBag)
+        
+        print("init_finish")
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
@@ -58,17 +73,19 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         if myDept != ud.string(forKey: "department") || grade != ud.string(forKey: "grade") {
-            myDept = ud.string(forKey: "department") ?? "126914"
-            grade = ud.string(forKey: "grade") ?? "1"
-            lectures = DBHelper().askLecture(dept: myDept!, type: "")
-            filteredLec = lectures
-            searchedLec = lectures
-
-            lecSearchBar.text = ""
-            majorTableView.reloadData()
+            loadUserInfo()
         }
     }
     
+    func loadUserInfo() {
+        myDept = ud.string(forKey: "department") ?? "126914"
+        grade = ud.string(forKey: "grade") ?? "1"
+        lecSearchBar.delegate = self
+        
+        let mj_info = ud.string(forKey: "mj_info")?.split(separator: " ")
+        collegeLabel.text = String((mj_info?[0])!)
+        departureLabel.text = String((mj_info?[1])!)
+    }
    
     func seatsForSenior(lecs: [Lecture]) {
         var left: String = " "
@@ -130,43 +147,6 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     }
     
     
-    func filterByLeft(lecs: [Lecture]) {
-        vacantLec = []
-        var temp: [String]
-        var m: Int
-        var v: Int
-        for l in lecs {
-            temp = l.left.components(separatedBy: " / ")
-            if temp.count > 1 {
-                v = Int(temp[0])!
-                m = Int(temp[1])!
-                if v < m {
-                    vacantLec.append(l)
-                }
-            }
-        }
-    }
-    
-    func filterByKeyword(searchText: String) {
-        searchedLec = []
-        
-        if searchText == "" {
-            searchedLec = lectures
-        }
-        else {
-            var keyword = searchText.components(separatedBy: " ")
-            while keyword.count <= 2 {
-                keyword.append(keyword[0])
-            }
-            
-            for lec in lectures {
-                if lec.lecInfo.contains(keyword[0]) && lec.lecInfo.contains(keyword[1]) && lec.lecInfo.contains(keyword[2]) {
-                    searchedLec.append(lec)
-                }
-            }
-        }
-    }
-    
     func howManySeats(left: String) -> String {
         let vacant: Int?
         let temp = left.components(separatedBy: " / ")
@@ -186,43 +166,28 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     }
 }
 
-extension MajorViewController: UITableViewDataSource, UITableViewDelegate {
+extension MajorViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
+        return 80
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredLec.count
+        return viewModel.returnSize()
     }
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
                 let headerView = view as! UITableViewHeaderFooterView
-                headerView.contentView.backgroundColor = UIColor.lightGray
-                headerView.contentView.layer.cornerRadius = 20
-                headerView.contentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        headerView.contentView.backgroundColor = tableView.backgroundColor
+        print(headerView.textLabel)
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = majorTableView.dequeueReusableCell(withIdentifier: "LecCell") as! LectureTableViewCell
-        
-        cell.nameLabel.text = filteredLec[indexPath.row].title
-        cell.profLabel.text = filteredLec[indexPath.row].prof
-        cell.typeImage.image = UIImage(named: filteredLec[indexPath.row].type)
-        cell.numberLabel.text = filteredLec[indexPath.row].number
-        cell.leftLabel.text = howManySeats(left: filteredLec[indexPath.row].left)
-        if cell.leftLabel.text == "인원초과" {
-            cell.leftLabel.textColor = .systemGray3
-        }
-        else {
-            cell.leftLabel.textColor = .green
-        }
-        return cell
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //여기서 선택된 과목의 번호를 전달.
         ad?.selected_lec = filteredLec[indexPath.row].number
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 35
     }
     
 //    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -237,5 +202,7 @@ extension MajorViewController: UITableViewDataSource, UITableViewDelegate {
 //        }
 //        self.majorTableView.reloadData()
 //    }
+    
+    
     
 }

@@ -27,7 +27,6 @@ class LectureListViewModel {
         lectureSections = APIService().findSection(dept: dept, classes: classes)
         allLecs = APIService().mutableLectures(depts: lectureSections)
         filteredLec = lectures
-        //lectureSections = []
     }
     
     func setLectures(lectures: [Lecture]) {

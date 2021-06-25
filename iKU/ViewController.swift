@@ -60,15 +60,12 @@ class ViewController: UIViewController {
     
     
     @IBAction func sender(_ sender: UIButton) {
-        //ad?.department = mymajor[self.picker_major.selectedRow(inComponent: 0)].getCode()
-        //ad?.double_major = doublemajor[self.picker_da.selectedRow(inComponent: 0)].getCode()
-        //ad?.sub_major = submajor[self.picker_bu.selectedRow(inComponent: 0)].getCode()
-        //ad?.grade = text_grade.text
-
-        
         ud.set(self.mymajor[self.picker_major.selectedRow(inComponent: 0)].getCode(), forKey: "department")
+        ud.set(self.mymajor[self.picker_major.selectedRow(inComponent: 0)].getName(), forKey: "mj_info")
         ud.set(self.doublemajor[self.picker_da.selectedRow(inComponent: 0)].getCode(), forKey: "double_major")
+        ud.set(self.doublemajor[self.picker_da.selectedRow(inComponent: 0)].getName(), forKey: "dm_info")
         ud.set(self.submajor[self.picker_bu.selectedRow(inComponent: 0)].getCode(), forKey: "sub_major")
+        ud.set(self.submajor[self.picker_bu.selectedRow(inComponent: 0)].getName(), forKey: "sm_info")
         ud.set(self.text_grade.text, forKey: "grade")
 
         let alert = UIAlertController(title: "알림", message: "설정이 저장되었습니다.", preferredStyle: .alert)

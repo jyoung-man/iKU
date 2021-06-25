@@ -65,7 +65,7 @@ class APIService {
         case "일선":
             return "일반선택"
         default:
-            return ""
+            return type
         }
     }
     
@@ -75,9 +75,9 @@ class APIService {
         var lectures: [Lecture]
         for type in types {
             lectures = DBHelper().askLecture(dept: dept, type: type)
-            print(types)
             if !lectures.isEmpty {
-                lectureSections.append(LectureSection(lecType: type, items: lectures))
+                lectureSections.append(LectureSection(lecType: returnTypeName(type: type), items: lectures))
+                //print(type)
             }
         }
 
@@ -88,8 +88,7 @@ class APIService {
     func findLecInOneSec(dept: String, type: String) -> [LectureSection] {
         var lectureSections: [LectureSection] = []
         let lectures = DBHelper().askLecture(dept: dept, type: type)
-        lectureSections.append(LectureSection(lecType: type, items: lectures))
-        
+        lectureSections.append(LectureSection(lecType: returnTypeName(type: type), items: lectures))
         return lectureSections
     }
     

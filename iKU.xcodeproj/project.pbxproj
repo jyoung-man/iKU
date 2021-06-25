@@ -146,6 +146,7 @@
 				4E0FCA4925DC1D800047B4FC /* CulturalViewController.swift */,
 				4E7C3F2D2600496500DED511 /* LectureCell.swift */,
 				4E89BDE8268176880018A113 /* LectureViewController.swift */,
+				4EB78B0725D79D8D007B1F2C /* LectureDetailView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -205,9 +206,7 @@
 				4E5A9E0A25E77C3C00BA9FEF /* AllViewController.swift */,
 				4E2B59A925CA3AEC003BC87A /* LectureTableViewCell.swift */,
 				4EEEA56125D5028700E98C9B /* SettingViewController.swift */,
-				4EAD9EC025D15B72002966E9 /* Department.swift */,
 				4E2B597925CA35FF003BC87A /* LaunchScreen.storyboard */,
-				4EB78B0725D79D8D007B1F2C /* LectureDetailView.swift */,
 				4EB78B0C25D79F27007B1F2C /* LectureDetailCell.swift */,
 				4E0FCA4425DC14190047B4FC /* SubMajorViewController.swift */,
 				4E2B597C25CA35FF003BC87A /* Info.plist */,
@@ -239,6 +238,7 @@
 			children = (
 				4E5EA4642612F613004CF693 /* LectureSection.swift */,
 				4E2B59B825CA4467003BC87A /* Lecture.swift */,
+				4EAD9EC025D15B72002966E9 /* Department.swift */,
 				4E64135226133C9D00A47FEC /* LectureModel.swift */,
 			);
 			path = Model;

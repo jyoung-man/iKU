@@ -29,12 +29,11 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
     var searchedLec: [Lecture]!
     var myDept: String?
     var grade: String?
-    
-    @IBOutlet weak var segment: UISegmentedControl!
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        grade = ud.string(forKey: "grade") ?? "1"
+        lecSearchBar.delegate = self
         self.viewModel = LectureListViewModel(dept: "B0404P", classes: "section")
         backgroundView.layer.cornerRadius = backgroundView.frame.height / 25
         lecSearchBar.barTintColor = culturalTableView.backgroundColor
@@ -60,8 +59,7 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
         viewModel.mutableLectureList()
             .bind(to: culturalTableView.rx.items(dataSource: datasource))
             .disposed(by: disposeBag)
-        grade = ud.string(forKey: "grade") ?? "1"
-        lecSearchBar.delegate = self
+
         print("init_finish")
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
@@ -146,7 +144,7 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
             }
         }
     }
-
+    //왼쪽 목록 만드는 법: 각 구성요소를 버튼으로 만들어 배치한다. > 색이 다른 버튼도 하나의 뷰로 만들어 배치한다 > 버튼을 파라미터로 받아 색이 다른 버튼을 버튼의 시작 위치에 배치하고 내부 텍스트도 변경하는 함수를 작성한다 > 작성된 함수를 뷰 컨트롤러에 배치된 버튼들의 IBAction으로 설정한다.
 }
 extension CulturalViewController: UITableViewDelegate {
     
@@ -161,8 +159,7 @@ extension CulturalViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
                 let headerView = view as! UITableViewHeaderFooterView
         headerView.contentView.backgroundColor = tableView.backgroundColor
-                headerView.contentView.layer.cornerRadius = 0
-                headerView.contentView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        print(headerView.textLabel)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

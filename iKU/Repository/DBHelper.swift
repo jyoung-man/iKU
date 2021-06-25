@@ -185,14 +185,15 @@ class DBHelper {
     }
     
     func askTypeOrSection(dept: String, target: String) -> [String] {
-        let query = "select \(target) from lecture where d_code = '\(dept)';"
+        let query = "select distinct \(target) from lecture where d_code = '\(dept)';"
+        print(dept)
         var statement : OpaquePointer? = nil
         var tos = [String]()
         if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
             while sqlite3_step(statement) == SQLITE_ROW {
                 let type = String(cString: sqlite3_column_text(statement, 0))
                 tos.append(type)
-                break
+                print(0)
             }
         }
         else {
