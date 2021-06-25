@@ -77,7 +77,7 @@ class APIService {
             lectures = DBHelper().askLecture(dept: dept, type: type)
             if !lectures.isEmpty {
                 lectureSections.append(LectureSection(lecType: returnTypeName(type: type), items: lectures))
-                //print(type)
+                print(type)
             }
         }
 

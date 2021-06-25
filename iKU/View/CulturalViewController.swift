@@ -38,7 +38,7 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
         backgroundView.layer.cornerRadius = backgroundView.frame.height / 25
         lecSearchBar.barTintColor = culturalTableView.backgroundColor
         lecSearchBar.searchTextField.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
-        let dataSource = RxTableViewSectionedReloadDataSource<LectureSection>(
+        let dSource = RxTableViewSectionedReloadDataSource<LectureSection>(
             configureCell: { dataSource, culturalTableView, indexPath, item in
                 let cell = culturalTableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath) as! LectureCell
                 cell.titleLabel.text = item.title
@@ -48,10 +48,10 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
                 
                 return cell
             })
-        dataSource.titleForHeaderInSection = { ds, index in
+        dSource.titleForHeaderInSection = { ds, index in
             return ds.sectionModels[index].lecType
         }
-        self.datasource = dataSource
+        self.datasource = dSource
         
         culturalTableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
@@ -61,6 +61,8 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
             .disposed(by: disposeBag)
 
         print("init_finish")
+        
+        //viewModel.changeCulturalSection(index: 0)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tap.cancelsTouchesInView = false

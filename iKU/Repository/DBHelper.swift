@@ -193,7 +193,6 @@ class DBHelper {
             while sqlite3_step(statement) == SQLITE_ROW {
                 let type = String(cString: sqlite3_column_text(statement, 0))
                 tos.append(type)
-                print(0)
             }
         }
         else {
@@ -201,6 +200,13 @@ class DBHelper {
             print("\n read Data prepare fail! : \(errorMessage)")
         }
         sqlite3_finalize(statement)
+        if dept == "B0404P" {
+            tos.append(contentsOf: askTypeOrSection(dept: "B04054", target: target))
+        }
+        else {
+            tos = tos.sorted(by: >)
+        }
+        
         return tos
     }
     

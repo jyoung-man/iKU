@@ -38,12 +38,13 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadUserInfo()
+        lecSearchBar.delegate = self
+        self.viewModel = LectureListViewModel(dept: myDept!, classes: "type")
 
         backgroundView.layer.cornerRadius = backgroundView.frame.height / 25
         lecSearchBar.barTintColor = majorTableView.backgroundColor
         lecSearchBar.searchTextField.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
         
-        self.viewModel = LectureListViewModel(dept: myDept!, classes: "type")
         let dSource = RxTableViewSectionedReloadDataSource<LectureSection>(configureCell: { dSource, majorTableView, indexPath, item in
             let cell = majorTableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath) as! LectureCell
             cell.titleLabel.text = item.title
@@ -53,11 +54,16 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
             
             return cell
         })
+        dSource.titleForHeaderInSection = {ds, index in
+            return ds.sectionModels[index].lecType}
         self.datasource = dSource
         
-        majorTableView.rx.setDelegate(self).disposed(by: disposeBag)
+        majorTableView.rx.setDelegate(self)
+            .disposed(by: disposeBag)
         
-        viewModel.mutableLectureList().bind(to: majorTableView.rx.items(dataSource: datasource)).disposed(by: disposeBag)
+        viewModel.mutableLectureList()
+            .bind(to: majorTableView.rx.items(dataSource: datasource))
+            .disposed(by: disposeBag)
         
         print("init_finish")
 
@@ -74,13 +80,18 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     override func viewWillAppear(_ animated: Bool) {
         if myDept != ud.string(forKey: "department") || grade != ud.string(forKey: "grade") {
             loadUserInfo()
+            self.viewModel.changeMajor(dept: myDept!)
+            //let numberOfSections = self.tableView.numberOfSections
+            //let numberOfRows = self.tableView.numberOfRows(inSection: numberOfSections-1)
+
+            let indexPath = IndexPath(row: 0 , section: 0)
+            self.majorTableView.scrollToRow(at: indexPath, at: .top, animated: false)
         }
     }
     
     func loadUserInfo() {
         myDept = ud.string(forKey: "department") ?? "126914"
         grade = ud.string(forKey: "grade") ?? "1"
-        lecSearchBar.delegate = self
         
         let mj_info = ud.string(forKey: "mj_info")?.split(separator: " ")
         collegeLabel.text = String((mj_info?[0])!)
@@ -180,7 +191,9 @@ extension MajorViewController: UITableViewDelegate {
                 let headerView = view as! UITableViewHeaderFooterView
         headerView.contentView.backgroundColor = tableView.backgroundColor
         print(headerView.textLabel)
+
     }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //여기서 선택된 과목의 번호를 전달.
         ad?.selected_lec = filteredLec[indexPath.row].number

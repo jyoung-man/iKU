@@ -33,8 +33,8 @@ class LectureListViewModel {
         self.lectures = lectures
     }
     
-    func setAllLecs(depts: [LectureSection]) {
-        self.allLecs = APIService().mutableLectures(depts: depts)
+    func setAllLecs(sections: [LectureSection]) {
+        self.allLecs = APIService().mutableLectures(depts: sections)
     }
     
     func countSeats(lec: Lecture, flag: Int){
@@ -128,6 +128,10 @@ class LectureListViewModel {
         }
     }
     
+    func changeMajor(dept: String) {
+        lectureSections = APIService().findSection(dept: dept, classes: "type")
+        allLecs.accept(lectureSections)
+    }
     func returnNumCode(index: Int) -> String {
         return self.filteredLec[index].number
     }
