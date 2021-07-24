@@ -19,10 +19,10 @@ struct LectureModel {
     }
     
     func setAvailable(flag: Bool) {
-        lecture.available = flag
+        lecture.isAvailable = flag
     }
     
     func getAvailable() -> Bool {
-        return lecture.available
+        return lecture.isAvailable
     }
 }

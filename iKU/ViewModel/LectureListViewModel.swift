@@ -15,9 +15,9 @@ class LectureListViewModel {
     var lectures: [Lecture]!
     var disposeBag = DisposeBag()
 
-    var filteredLec: [Lecture]!
-    var vacantLec: [Lecture]!
-    var searchedLec: [Lecture]!
+    var filteredLec: [LectureSection]!
+    var vacantLec: [LectureSection]!
+    var searchedLec: [LectureSection]!
     var grade: String?
     
     //lazy var findSeatsForAll =
@@ -26,7 +26,7 @@ class LectureListViewModel {
     init(dept: String, classes: String) {
         lectureSections = APIService().findSection(dept: dept, classes: classes)
         allLecs = APIService().mutableLectures(depts: lectureSections)
-        filteredLec = lectures
+        filteredLec = lectureSections
     }
     
     func setLectures(lectures: [Lecture]) {
@@ -70,38 +70,43 @@ class LectureListViewModel {
                 v = Int(temp[0])!
                 m = Int(temp[1])!
                 if v < m {
-                    vacantLec.append(l)
+                    //vacantLec.append(l)
                 }
             }
         }
     }
     
     func filterByKeyword(searchText: String, flag: Bool) {
+        var searched = [Lecture]()
         searchedLec = []
         
         if searchText == "" {
-            searchedLec = lectures
+            searchedLec = lectureSections
         }
         else {
             var keyword = searchText.components(separatedBy: " ")
             while keyword.count <= 2 {
                 keyword.append(keyword[0])
             }
-            
-            for lec in lectures {
-                if lec.lecInfo.contains(keyword[0]) && lec.lecInfo.contains(keyword[1]) && lec.lecInfo.contains(keyword[2]) {
-                    searchedLec.append(lec)
+            for s in lectureSections {
+                searched.removeAll()
+                for lec in s.items {
+                    if lec.lecInfo.contains(keyword[0]) && lec.lecInfo.contains(keyword[1]) && lec.lecInfo.contains(keyword[2]) {
+                        searched.append(lec)
+                    }
+                    searchedLec.append(LectureSection(lecType: s.lecType, items: searched))
                 }
             }
         }
         
         if flag {
-            filterByLeft(lecs: searchedLec)
+            //filterByLeft(lecs: searchedLec)
         }
         else {
             filteredLec = searchedLec
         }
-        allLecs.accept([LectureSection(lecType: "나중에 수정해주세요", items: filteredLec)])
+        
+        allLecs.accept(filteredLec)
     }
     
     func changeCulturalSection(index: Int){
@@ -132,8 +137,12 @@ class LectureListViewModel {
         lectureSections = APIService().findSection(dept: dept, classes: "type")
         allLecs.accept(lectureSections)
     }
-    func returnNumCode(index: Int) -> String {
-        return self.filteredLec[index].number
+    func returnNumCode(section: Int, index: Int) -> String {
+        return self.filteredLec[section].items[index].number
+    }
+    
+    func returnLecture(section: Int, index: Int) -> Lecture {
+        return self.filteredLec[section].items[index]
     }
     
     func returnSize() -> Int {

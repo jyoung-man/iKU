@@ -17,7 +17,8 @@ class Lecture: Decodable, IdentifiableType, Equatable {
     var section: String
     var lecInfo: String
     var left: String
-    var available: Bool
+    var isAvailable: Bool
+    var applicants: [String]
     var identity: String {
         return number
     }
@@ -30,7 +31,8 @@ class Lecture: Decodable, IdentifiableType, Equatable {
         self.prof = prof
         self.section = section
         self.left = ""
-        self.available = false
+        self.isAvailable = false
+        self.applicants = []
         self.lecInfo = "\(type) \(number) \(title) \(prof) \(section)"
     }
     
@@ -42,7 +44,8 @@ class Lecture: Decodable, IdentifiableType, Equatable {
         self.prof = prof
         self.section = section
         self.left = left
-        self.available = false
+        self.isAvailable = false
+        self.applicants = []
         self.lecInfo = "\(type) \(number) \(title) \(prof) \(section)"
     }
     
@@ -55,10 +58,22 @@ class Lecture: Decodable, IdentifiableType, Equatable {
     }
     
     func setAvailable(flag: Bool) {
-        self.available = flag
+        self.isAvailable = flag
     }
     
     func getAvailable() -> Bool {
-        return self.available
+        return self.isAvailable
+    }
+    
+    func addGrade(app: String) {
+        self.applicants.append(app)
+    }
+    
+    func getApplicants(index: Int) -> String {
+        return self.applicants[index]
+    }
+    
+    func clearApp() {
+        self.applicants.removeAll()
     }
 }

@@ -11,6 +11,7 @@ import Alamofire
 import RxSwift
 import RxCocoa
 import RxDataSources
+import BonsaiController
 
 class MajorViewController: UIViewController, UISearchBarDelegate {
     let ad = UIApplication.shared.delegate as? AppDelegate
@@ -28,15 +29,12 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var departureLabel: UILabel!
     @IBOutlet weak var inMyGrade: UIButton!
     
-    var filteredLec: [Lecture]!
-    var lectures: [Lecture]!
-    var vacantLec: [Lecture]!
-    var searchedLec: [Lecture]!
     var myDept: String?
     var grade: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        ad?.modal_height = self.backgroundView.frame.height
         loadUserInfo()
         lecSearchBar.delegate = self
         self.viewModel = LectureListViewModel(dept: myDept!, classes: "type")
@@ -175,7 +173,31 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
             return String(vacant!) + "자리"
         }
     }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        //if segue.destination is HalfSizeViewController {
+            segue.destination.transitioningDelegate = self
+            segue.destination.modalPresentationStyle = .custom
+        //}
+    }
+
 }
+
+extension MajorViewController: BonsaiControllerDelegate {
+    
+    func frameOfPresentedView(in containerViewFrame: CGRect) -> CGRect {
+        
+        return CGRect(origin: CGPoint(x: 0, y: view.frame.size.height - backgroundView.frame.size.height), size: CGSize(width: containerViewFrame.width, height: backgroundView.frame.size.height))
+    }
+    
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    
+        return BonsaiController(fromDirection: .bottom, backgroundColor: UIColor(white: 0, alpha: 0.0), presentedViewController: presented, delegate: self)
+    }
+}
+
+
 
 extension MajorViewController: UITableViewDelegate {
     
@@ -196,25 +218,16 @@ extension MajorViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //여기서 선택된 과목의 번호를 전달.
-        ad?.selected_lec = filteredLec[indexPath.row].number
+        ad?.selected_lecture = viewModel.returnLecture(section: indexPath.section, index: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 35
     }
     
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        filterByKeyword(searchText: searchText)
-//
-//        if vacantSwitch.isOn {
-//            filterByLeft(lecs: searchedLec)
-//            filteredLec = vacantLec
-//        }
-//        else {
-//            filteredLec = searchedLec
-//        }
-//        self.majorTableView.reloadData()
-//    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.filterByKeyword(searchText: searchText, flag: false)
+    }
     
     
     

@@ -234,7 +234,7 @@ class AllViewController: UIViewController, UISearchBarDelegate {
     func removeInfo(lecs: [Lecture]) {
         for lec in lecs {
             lec.left = ""
-            lec.available = true
+            lec.isAvailable = true
         }
     }
     

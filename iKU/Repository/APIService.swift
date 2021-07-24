@@ -10,6 +10,7 @@ import SwiftSoup
 import Alamofire
 import RxSwift
 import RxCocoa
+import RxAlamofire
 
 let ud = UserDefaults.standard
 var grade = ud.string(forKey: "grade") ?? "1"
@@ -50,6 +51,36 @@ class APIService {
             }
         }
     }
+    func findForOneLecture(lec: Lecture) {
+        var applicants: String?
+        for i in 1...4 {
+            let link = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01011&promShyr=\(i)&fg=B&sbjtId=\(lec.number)"
+            guard let url = URL(string: link) else { return }
+            AF.request(url).responseString { (response) in
+                switch response.result {
+                case .success:
+                    do {
+                        let html = response.value!
+                        let doc: Document = try SwiftSoup.parse(html)
+                        let srcs = try doc.select("[align=center]").array()
+                        applicants = try srcs[0].text()
+                        print("index: \(i)")
+                        print("지원자: \(applicants!)")
+                        lec.addGrade(app: applicants ?? "?")
+                        print("들어온 값: \(lec.applicants)")
+                    }
+                    catch Exception.Error(_, let message) {
+                        print(message)
+                    } catch {
+                        print("error")
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+    }
+    
     func returnTypeName(type: String) -> String {
         switch type {
         case "지교":

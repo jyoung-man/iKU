@@ -11,6 +11,9 @@ target 'iKU' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'RxDataSources'
+  pod 'RxAlamofire'
+  pod 'Charts'
+  pod 'BonsaiController'
   # Pods for iKU
 
   target 'iKUTests' do

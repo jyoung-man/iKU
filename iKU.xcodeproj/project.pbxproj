@@ -23,10 +23,12 @@
 		4E2B59B425CA3BEA003BC87A /* TabTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B59B325CA3BEA003BC87A /* TabTabController.swift */; };
 		4E2B59B925CA4467003BC87A /* Lecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B59B825CA4467003BC87A /* Lecture.swift */; };
 		4E2B59C125CA4C58003BC87A /* MajorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B59C025CA4C58003BC87A /* MajorViewController.swift */; };
+		4E554B3A26876105005A40BA /* LectureInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E554B3926876105005A40BA /* LectureInfoViewController.swift */; };
 		4E5A9E0B25E77C3C00BA9FEF /* AllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5A9E0A25E77C3C00BA9FEF /* AllViewController.swift */; };
 		4E5EA4652612F613004CF693 /* LectureSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5EA4642612F613004CF693 /* LectureSection.swift */; };
 		4E64135326133C9D00A47FEC /* LectureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E64135226133C9D00A47FEC /* LectureModel.swift */; };
 		4E6413582613469000A47FEC /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6413572613469000A47FEC /* LectureListViewModel.swift */; };
+		4E6E31E1268D8D3C009A8159 /* LectureInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6E31E0268D8D3C009A8159 /* LectureInfoViewModel.swift */; };
 		4E7C3F2E2600496500DED511 /* LectureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7C3F2D2600496500DED511 /* LectureCell.swift */; };
 		4E89BDE9268176880018A113 /* LectureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E89BDE8268176880018A113 /* LectureViewController.swift */; };
 		4EAD9EC125D15B72002966E9 /* Department.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD9EC025D15B72002966E9 /* Department.swift */; };
@@ -80,10 +82,12 @@
 		4E2B59B325CA3BEA003BC87A /* TabTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTabController.swift; sourceTree = "<group>"; };
 		4E2B59B825CA4467003BC87A /* Lecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lecture.swift; sourceTree = "<group>"; };
 		4E2B59C025CA4C58003BC87A /* MajorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MajorViewController.swift; sourceTree = "<group>"; };
+		4E554B3926876105005A40BA /* LectureInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureInfoViewController.swift; sourceTree = "<group>"; };
 		4E5A9E0A25E77C3C00BA9FEF /* AllViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllViewController.swift; sourceTree = "<group>"; };
 		4E5EA4642612F613004CF693 /* LectureSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureSection.swift; sourceTree = "<group>"; };
 		4E64135226133C9D00A47FEC /* LectureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureModel.swift; sourceTree = "<group>"; };
 		4E6413572613469000A47FEC /* LectureListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListViewModel.swift; sourceTree = "<group>"; };
+		4E6E31E0268D8D3C009A8159 /* LectureInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureInfoViewModel.swift; sourceTree = "<group>"; };
 		4E7C3F2D2600496500DED511 /* LectureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureCell.swift; sourceTree = "<group>"; };
 		4E89BDE8268176880018A113 /* LectureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureViewController.swift; sourceTree = "<group>"; };
 		4EAD9EC025D15B72002966E9 /* Department.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Department.swift; sourceTree = "<group>"; };
@@ -147,6 +151,7 @@
 				4E7C3F2D2600496500DED511 /* LectureCell.swift */,
 				4E89BDE8268176880018A113 /* LectureViewController.swift */,
 				4EB78B0725D79D8D007B1F2C /* LectureDetailView.swift */,
+				4E554B3926876105005A40BA /* LectureInfoViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -155,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				4E6413572613469000A47FEC /* LectureListViewModel.swift */,
+				4E6E31E0268D8D3C009A8159 /* LectureInfoViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -503,6 +509,7 @@
 				4EB78B0D25D79F27007B1F2C /* LectureDetailCell.swift in Sources */,
 				4E89BDE9268176880018A113 /* LectureViewController.swift in Sources */,
 				4E2B59AA25CA3AEC003BC87A /* LectureTableViewCell.swift in Sources */,
+				4E554B3A26876105005A40BA /* LectureInfoViewController.swift in Sources */,
 				4EAD9EC125D15B72002966E9 /* Department.swift in Sources */,
 				4E2B597325CA35FE003BC87A /* ViewController.swift in Sources */,
 				4E0F385C25F9AB4000A3E579 /* APIService.swift in Sources */,
@@ -516,6 +523,7 @@
 				4E5EA4652612F613004CF693 /* LectureSection.swift in Sources */,
 				4E0FCA4525DC14190047B4FC /* SubMajorViewController.swift in Sources */,
 				4E2B59B425CA3BEA003BC87A /* TabTabController.swift in Sources */,
+				4E6E31E1268D8D3C009A8159 /* LectureInfoViewModel.swift in Sources */,
 				4E11A23325CBC8C200E7363F /* DBHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -83,7 +83,7 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
     func removeInfo(lecs: [Lecture]) {
         for lec in lecs {
             lec.left = ""
-            lec.available = true
+            lec.isAvailable = true
         }
     }
     
@@ -166,7 +166,9 @@ extension CulturalViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //여기서 선택된 과목의 번호를 전달.
-        ad?.selected_lec = viewModel.returnNumCode(index: indexPath.row)
+        print(indexPath)
+        ad?.selected_lec = viewModel.returnNumCode(section: indexPath.section, index: indexPath.row)
+        
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -174,6 +176,6 @@ extension CulturalViewController: UITableViewDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.filterByKeyword(searchText: searchText, flag: true)
+        viewModel.filterByKeyword(searchText: searchText, flag: false)
     }
 }
