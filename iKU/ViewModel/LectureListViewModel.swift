@@ -18,8 +18,6 @@ class LectureListViewModel {
     var filteredLec: [LectureSection]!
     var vacantLec: [LectureSection]!
     var searchedLec: [LectureSection]!
-    var grade: String?
-    
     //lazy var findSeatsForAll =
     //lazy var findSeatsForSenior =
     
@@ -28,7 +26,7 @@ class LectureListViewModel {
         allLecs = APIService().mutableLectures(depts: lectureSections)
         filteredLec = lectureSections
     }
-    
+        
     func setLectures(lectures: [Lecture]) {
         self.lectures = lectures
     }
@@ -37,26 +35,8 @@ class LectureListViewModel {
         self.allLecs = APIService().mutableLectures(depts: sections)
     }
     
-    func countSeats(lec: Lecture, flag: Int){
-
-    }
-    
-    func howManySeats(left: String) -> String {
-        let vacant: Int?
-        let temp = left.components(separatedBy: " / ")
-        if temp.count < 2 {
-            return " "
-        }
-        else {
-            let v = temp.map({ (value : String) -> Int in return Int(value)! })
-            vacant = v[1] - v[0]
-        }
-        if vacant! <= 0 {
-            return "인원초과"
-        }
-        else {
-            return String(vacant!) + "자리"
-        }
+    func countSeats(flag: Int, myGrade: String){
+        APIService().findSeatsByRx(lecs: filteredLec, flag: flag, grade: myGrade)
     }
     
     func filterByLeft(lecs: [Lecture]) {

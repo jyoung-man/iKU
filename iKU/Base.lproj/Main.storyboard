@@ -1526,6 +1526,9 @@
                                     <constraint firstAttribute="height" constant="32" id="p7M-Ku-bD7"/>
                                 </constraints>
                                 <state key="normal" image="grade"/>
+                                <connections>
+                                    <action selector="inMyGrade:" destination="9tq-MA-Xgv" eventType="touchUpInside" id="gtF-pO-heL"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="스마트ICT융합공학과" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pYm-Cg-LEF">
                                 <rect key="frame" x="68" y="75.5" width="239" height="34.5"/>
@@ -1542,6 +1545,9 @@
                                     <constraint firstAttribute="height" constant="32" id="urj-TC-2ZB"/>
                                 </constraints>
                                 <state key="normal" image="allGrade"/>
+                                <connections>
+                                    <action selector="inAllGrade:" destination="9tq-MA-Xgv" eventType="touchUpInside" id="GEg-lx-4oa"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="nx8-cl-lgJ"/>
@@ -1567,12 +1573,13 @@
                         <imageReference key="image" image="pencil" catalog="system" symbolScale="large"/>
                     </tabBarItem>
                     <connections>
+                        <outlet property="allGrade" destination="Ksp-TW-95v" id="CE7-kd-EhH"/>
                         <outlet property="backgroundView" destination="7Ut-jO-Mzo" id="m3p-t5-61S"/>
                         <outlet property="collegeLabel" destination="KhZ-DL-nlV" id="XgK-L4-14u"/>
                         <outlet property="departureLabel" destination="pYm-Cg-LEF" id="b4p-s8-0XR"/>
-                        <outlet property="inMyGrade" destination="HWw-ad-epM" id="q4O-VP-Wyd"/>
                         <outlet property="lecSearchBar" destination="veE-02-7W5" id="EWi-xo-q0z"/>
                         <outlet property="majorTableView" destination="Sk3-zU-rco" id="lYi-xE-nyd"/>
+                        <outlet property="myGrade" destination="HWw-ad-epM" id="lWb-IX-dJU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jpt-Fk-IYu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

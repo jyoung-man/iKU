@@ -7,6 +7,7 @@
 
 import UIKit
 import RxDataSources
+import RxSwift
 
 class Lecture: Decodable, IdentifiableType, Equatable {
     var type: String
@@ -17,6 +18,7 @@ class Lecture: Decodable, IdentifiableType, Equatable {
     var section: String
     var lecInfo: String
     var left: String
+    lazy var mvvm: PublishSubject<String> = PublishSubject()
     var isAvailable: Bool
     var applicants: [String]
     var identity: String {

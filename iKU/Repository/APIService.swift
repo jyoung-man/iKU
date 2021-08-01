@@ -12,13 +12,9 @@ import RxSwift
 import RxCocoa
 import RxAlamofire
 
-let ud = UserDefaults.standard
-var grade = ud.string(forKey: "grade") ?? "1"
-let allURL = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01011&sbjtId="
-let seniorURL = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01011&promShyr=\(grade)&fg=B&sbjtId="
-
 class APIService {
-    
+    let disposeBag = DisposeBag()
+
     static func findSeats(lecs: [Lecture], url: String) {
         var left: String = " "
         for lec in lecs {
@@ -79,6 +75,54 @@ class APIService {
                 }
             }
         }
+    }
+    
+    func findSeatsByRx(lecs: [LectureSection], flag: Int, grade: String) {
+        var myUrl: String = ""
+        
+        for s in lecs {
+            for l in s.items {
+                if flag == 0 { //전체
+                    myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01011&sbjtId=\(l.number)"
+                }
+                else if flag == 1 { //학년별
+                    myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01012&promShyr=\(grade)&fg=B&sbjtId=\(l.number)"
+                }
+                
+                RxAlamofire.requestString(.get, URL(string: myUrl)!)
+                    .subscribe(onNext: { (response, str) in
+                        let ret = self.reformatString(article: str)
+                        l.mvvm.onNext(ret)
+                    }).disposed(by: disposeBag)
+                l.mvvm.onNext("조회 중...")
+            }
+        }
+    }
+    
+    func reformatString(article: String) -> String {
+        var ret: String = ""
+        var html = article
+        var lefts = [String]()
+
+        while let range = html.range(of: "\"center\">") {
+            html = String(html[html.index(after: range.lowerBound)...])
+            let value = html[html.startIndex...html.index(html.startIndex, offsetBy: 15)]
+            lefts.append(String(value))
+        }
+        if lefts.count > 1 {
+            var temp = lefts[0].components(separatedBy: ">")
+            let vac = temp[1].components(separatedBy: "<")
+            temp = lefts[1].components(separatedBy: ">")
+            let max = temp[1].components(separatedBy: "<")
+            ret = "\(vac[0])/\(max[0])"
+        }
+        else if lefts.count > 0 {
+            let temp = lefts[0].components(separatedBy: ">")
+            let vac = temp[1].components(separatedBy: "<")
+            ret = "\(vac[0])"
+        }
+        
+        return ret
     }
     
     func returnTypeName(type: String) -> String {

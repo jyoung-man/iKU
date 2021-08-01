@@ -41,9 +41,13 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
         let dSource = RxTableViewSectionedReloadDataSource<LectureSection>(
             configureCell: { dataSource, culturalTableView, indexPath, item in
                 let cell = culturalTableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath) as! LectureCell
+                item.mvvm
+                    .map{ $0 }
+                    .subscribe(onNext: {
+                        cell.leftLabel.text = $0
+                    })
                 cell.titleLabel.text = item.title
                 cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
-                cell.leftLabel.text = item.left
                 cell.lecCellView.layer.cornerRadius = cell.lecCellView.frame.height / 3
                 
                 return cell

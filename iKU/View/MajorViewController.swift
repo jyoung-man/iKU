@@ -27,10 +27,11 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     
     @IBOutlet weak var collegeLabel: UILabel!
     @IBOutlet weak var departureLabel: UILabel!
-    @IBOutlet weak var inMyGrade: UIButton!
+    @IBOutlet weak var allGrade: UIButton!
+    @IBOutlet weak var myGrade: UIButton!
     
     var myDept: String?
-    var grade: String?
+    var gradeValue: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,9 +48,12 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
             let cell = majorTableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath) as! LectureCell
             cell.titleLabel.text = item.title
             cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
-            cell.leftLabel.text = item.left
             cell.lecCellView.layer.cornerRadius = cell.lecCellView.frame.height / 3
-            
+            item.mvvm
+                .map{ $0 }
+                .subscribe(onNext: {
+                    cell.leftLabel.text = $0
+                })
             return cell
         })
         dSource.titleForHeaderInSection = {ds, index in
@@ -76,7 +80,7 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if myDept != ud.string(forKey: "department") || grade != ud.string(forKey: "grade") {
+        if myDept != ud.string(forKey: "department") || gradeValue != ud.string(forKey: "grade") {
             loadUserInfo()
             self.viewModel.changeMajor(dept: myDept!)
             //let numberOfSections = self.tableView.numberOfSections
@@ -89,89 +93,11 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     
     func loadUserInfo() {
         myDept = ud.string(forKey: "department") ?? "126914"
-        grade = ud.string(forKey: "grade") ?? "1"
+        gradeValue = ud.string(forKey: "grade") ?? "1"
         
         let mj_info = ud.string(forKey: "mj_info")?.split(separator: " ")
         collegeLabel.text = String((mj_info?[0])!)
         departureLabel.text = String((mj_info?[1])!)
-    }
-   
-    func seatsForSenior(lecs: [Lecture]) {
-        var left: String = " "
-        let suguniURL = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01011&promShyr=\(grade ?? "1")&fg=B&sbjtId="
-        for lec in lecs {
-            guard let url = URL(string: suguniURL+lec.number) else { return }
-            AF.request(url).responseString { (response) in
-                switch response.result {
-                case .success:
-                    do {
-                        let html = response.value!
-                        let doc: Document = try SwiftSoup.parse(html)
-                        let values = try doc.select("[align=center]").array()
-                        left = try values[0].text()
-                        lec.setLeft(refreshed: left)
-                    }
-                    catch Exception.Error(_, let message) {
-                        print(message)
-                    } catch {
-                        print("error")
-                    }
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        }
-    }
-    
-    func seatsForAll(lecs: [Lecture]) {
-        var left: String = " "
-        let suguniURL = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01011&sbjtId="
-        for lec in lecs {
-            guard let url = URL(string: suguniURL+lec.number) else { return }
-            AF.request(url).responseString { (response) in
-                switch response.result {
-                case .success:
-                    do {
-                        let html = response.value!
-                        let doc: Document = try SwiftSoup.parse(html)
-                        let srcs = try doc.select("[align=center]").array()
-                        let vacant = try srcs[0].text()
-                        let max = try srcs[1].text()
-                        left = "\(vacant) / \(max)"
-                        lec.setLeft(refreshed: left)
-                        if vacant < max {
-                            lec.setAvailable(flag: true)
-                        }
-                    }
-                    catch Exception.Error(_, let message) {
-                        print(message)
-                    } catch {
-                        print("error")
-                    }
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        }
-    }
-    
-    
-    func howManySeats(left: String) -> String {
-        let vacant: Int?
-        let temp = left.components(separatedBy: " / ")
-        if temp.count < 2 {
-            return " "
-        }
-        else {
-            let v = temp.map({ (value : String) -> Int in return Int(value)! })
-            vacant = v[1] - v[0]
-        }
-        if vacant! <= 0 {
-            return "인원초과"
-        }
-        else {
-            return String(vacant!) + "자리"
-        }
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -181,7 +107,13 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
             segue.destination.modalPresentationStyle = .custom
         //}
     }
-
+    @IBAction func inAllGrade(_ sender: Any) {
+        viewModel.countSeats(flag: 0, myGrade: gradeValue!)
+    }
+    @IBAction func inMyGrade(_ sender: Any) {
+        viewModel.countSeats(flag: 1, myGrade: gradeValue!)
+    }
+    
 }
 
 extension MajorViewController: BonsaiControllerDelegate {
