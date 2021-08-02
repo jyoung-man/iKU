@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class LectureCell: UITableViewCell {
     
@@ -13,8 +14,8 @@ class LectureCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var profAndNumberLabel: UILabel!
+    var disposeBag = DisposeBag()
     
-
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -30,4 +31,9 @@ class LectureCell: UITableViewCell {
         }
     }
     
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        leftLabel.text = nil
+    }
 }

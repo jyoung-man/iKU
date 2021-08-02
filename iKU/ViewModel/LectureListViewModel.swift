@@ -74,6 +74,8 @@ class LectureListViewModel {
                     if lec.lecInfo.contains(keyword[0]) && lec.lecInfo.contains(keyword[1]) && lec.lecInfo.contains(keyword[2]) {
                         searched.append(lec)
                     }
+                }
+                if !searched.isEmpty {
                     searchedLec.append(LectureSection(lecType: s.lecType, items: searched))
                 }
             }
@@ -116,6 +118,7 @@ class LectureListViewModel {
     func changeMajor(dept: String) {
         lectureSections = APIService().findSection(dept: dept, classes: "type")
         allLecs.accept(lectureSections)
+        filteredLec = lectureSections
     }
     func returnNumCode(section: Int, index: Int) -> String {
         return self.filteredLec[section].items[index].number

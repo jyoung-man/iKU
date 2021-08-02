@@ -15,38 +15,6 @@ import RxAlamofire
 class APIService {
     let disposeBag = DisposeBag()
 
-    static func findSeats(lecs: [Lecture], url: String) {
-        var left: String = " "
-        for lec in lecs {
-            guard let url = URL(string: url+lec.number) else { return }
-            AF.request(url).responseString { (response) in
-                switch response.result {
-                case .success:
-                    do {
-                        let html = response.value!
-                        let doc: Document = try SwiftSoup.parse(html)
-                        let srcs = try doc.select("[align=center]").array()
-                        if srcs.count > 1 {
-                            let vacant = try srcs[0].text()
-                            let max = try srcs[1].text()
-                            left = "\(vacant) / \(max)"
-                        }
-                        else {
-                            left = try srcs[0].text()
-                        }
-                        lec.setLeft(refreshed: left)
-                    }
-                    catch Exception.Error(_, let message) {
-                        print(message)
-                    } catch {
-                        print("error")
-                    }
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        }
-    }
     func findForOneLecture(lec: Lecture) {
         var applicants: String?
         for i in 1...4 {
@@ -86,13 +54,14 @@ class APIService {
                     myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01011&sbjtId=\(l.number)"
                 }
                 else if flag == 1 { //학년별
-                    myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01012&promShyr=\(grade)&fg=B&sbjtId=\(l.number)"
+                    myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01011&promShyr=\(grade)&fg=B&sbjtId=\(l.number)"
                 }
                 
                 RxAlamofire.requestString(.get, URL(string: myUrl)!)
                     .subscribe(onNext: { (response, str) in
                         let ret = self.reformatString(article: str)
                         l.mvvm.onNext(ret)
+                        l.left = ret
                     }).disposed(by: disposeBag)
                 l.mvvm.onNext("조회 중...")
             }

@@ -46,14 +46,16 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         
         let dSource = RxTableViewSectionedReloadDataSource<LectureSection>(configureCell: { dSource, majorTableView, indexPath, item in
             let cell = majorTableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath) as! LectureCell
+            
             cell.titleLabel.text = item.title
             cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
             cell.lecCellView.layer.cornerRadius = cell.lecCellView.frame.height / 3
+            cell.leftLabel.text = item.left
             item.mvvm
                 .map{ $0 }
                 .subscribe(onNext: {
                     cell.leftLabel.text = $0
-                })
+                }).disposed(by: cell.disposeBag) //셀이 화면에서 보이지 않을 때는 bind를 풀어줘야 함
             return cell
         })
         dSource.titleForHeaderInSection = {ds, index in
@@ -83,9 +85,6 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         if myDept != ud.string(forKey: "department") || gradeValue != ud.string(forKey: "grade") {
             loadUserInfo()
             self.viewModel.changeMajor(dept: myDept!)
-            //let numberOfSections = self.tableView.numberOfSections
-            //let numberOfRows = self.tableView.numberOfRows(inSection: numberOfSections-1)
-
             let indexPath = IndexPath(row: 0 , section: 0)
             self.majorTableView.scrollToRow(at: indexPath, at: .top, animated: false)
         }
@@ -120,7 +119,7 @@ extension MajorViewController: BonsaiControllerDelegate {
     
     func frameOfPresentedView(in containerViewFrame: CGRect) -> CGRect {
         
-        return CGRect(origin: CGPoint(x: 0, y: view.frame.size.height - backgroundView.frame.size.height), size: CGSize(width: containerViewFrame.width, height: backgroundView.frame.size.height))
+        return CGRect(origin: CGPoint(x: 0, y: view.frame.size.height - backgroundView.frame.size.height+10), size: CGSize(width: containerViewFrame.width, height: backgroundView.frame.size.height))
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -155,6 +154,11 @@ extension MajorViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 35
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? LectureCell else { return }
+        cell.disposeBag = DisposeBag()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
