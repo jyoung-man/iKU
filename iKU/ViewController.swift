@@ -22,7 +22,6 @@ class ViewController: UIViewController {
     var doublemajor: [Department] = [Department(d_name: "다/부전공 1", d_code: "dabu1"), Department(d_name: "없음", d_code: "nothing"), Department(d_name: "교직", d_code: "B04047")]
     var submajor: [Department] = [Department(d_name: "다/부전공 2", d_code: "dabu1"), Department(d_name: "없음", d_code: "nothing"), Department(d_name: "교직", d_code: "B04047")]
     
-    let ad = UIApplication.shared.delegate as? AppDelegate
     @IBAction func inputGrade(_ sender: UITextField) {
         if sender.text == "1" || sender.text == "2" || sender.text == "3" || sender.text == "4" {
             self.button.isEnabled = true

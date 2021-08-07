@@ -78,9 +78,12 @@ class DBHelper {
         var query = "select * from lecture where d_code = '\(dept)' and type = '\(type)';"
         if dept.contains("&") {
             let dabu = dept.components(separatedBy: "&")
-            query = "select * from lecture where d_code = '\(dabu[0])' or d_code = '\(dabu[1])' and type = '\(type)';"
+            query = "select * from lecture where (d_code =  '\(dabu[0])' or d_code = '\(dabu[1])') and type = '\(type)';"
         }
-        if dept == "B0404P" { //교양과목 조회하는 경우
+        else if dept.contains("*") {
+            query = "select * from lecture where type = '\(type)';"
+        }
+        else if dept == "B0404P" { //교양과목 조회하는 경우
             if type.contains("&") {
                 let sec = type.components(separatedBy: "&")
 
@@ -185,7 +188,10 @@ class DBHelper {
     }
     
     func askTypeOrSection(dept: String, target: String) -> [String] {
-        let query = "select distinct \(target) from lecture where d_code = '\(dept)';"
+        var query = "select distinct \(target) from lecture where d_code = '\(dept)';"
+        if dept.contains("*") {
+            query = "select distinct \(target) from lecture;"
+        }
         print(dept)
         var statement : OpaquePointer? = nil
         var tos = [String]()

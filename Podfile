@@ -14,6 +14,8 @@ target 'iKU' do
   pod 'RxAlamofire'
   pod 'Charts'
   pod 'BonsaiController'
+  pod 'SwiftIcons', '~> 3.0'
+  pod 'DLRadioButton', '~> 1.4'
   # Pods for iKU
 
   target 'iKUTests' do

@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import SwiftSoup
-import Alamofire
 import RxSwift
 import RxCocoa
 import RxDataSources
@@ -32,15 +30,16 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     
     var myDept: String?
     var gradeValue: String?
+    var flag: Int = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
         ad?.modal_height = self.backgroundView.frame.height
         loadUserInfo()
-        lecSearchBar.delegate = self
         self.viewModel = LectureListViewModel(dept: myDept!, classes: "type")
 
         backgroundView.layer.cornerRadius = backgroundView.frame.height / 25
+        lecSearchBar.delegate = self
         lecSearchBar.barTintColor = majorTableView.backgroundColor
         lecSearchBar.searchTextField.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
         
@@ -162,7 +161,7 @@ extension MajorViewController: UITableViewDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.filterByKeyword(searchText: searchText, flag: false)
+        viewModel.filterByKeyword(searchText: searchText, flag: self.flag)
     }
     
     

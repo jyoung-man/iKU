@@ -34,7 +34,7 @@ class LectureInfoViewController: UIViewController, ChartViewDelegate {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        pieChart.bounds = CGRect(x: 0, y: -80, width: self.view.frame.size.width*2/3, height: self.view.frame.size.width*2/3)
+        pieChart.bounds = CGRect(x: 0, y: -120, width: self.view.frame.size.width*2/3, height: self.view.frame.size.width*4/3)
         pieChart.center = backgroundView.center
         backgroundView.addSubview(pieChart)
         

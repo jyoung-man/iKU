@@ -21,6 +21,12 @@ class LectureListViewModel {
     //lazy var findSeatsForAll =
     //lazy var findSeatsForSenior =
     
+    init(classes: String) {
+        lectureSections = APIService().findSection(dept: "*", classes: classes)
+        allLecs = APIService().mutableLectures(depts: [])
+        filteredLec = lectureSections
+    }
+    
     init(dept: String, classes: String) {
         lectureSections = APIService().findSection(dept: dept, classes: classes)
         allLecs = APIService().mutableLectures(depts: lectureSections)
@@ -56,11 +62,11 @@ class LectureListViewModel {
         }
     }
     
-    func filterByKeyword(searchText: String, flag: Bool) {
+    func filterByKeyword(searchText: String, flag: Int) {
         var searched = [Lecture]()
         searchedLec = []
         
-        if searchText == "" {
+        if searchText == "" && flag < 3{
             searchedLec = lectureSections
         }
         else {
@@ -81,7 +87,7 @@ class LectureListViewModel {
             }
         }
         
-        if flag {
+        if flag == 2 {
             //filterByLeft(lecs: searchedLec)
         }
         else {

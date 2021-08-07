@@ -29,7 +29,7 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
     var searchedLec: [Lecture]!
     var myDept: String?
     var grade: String?
-
+    var flag: Int = 1
     override func viewDidLoad() {
         super.viewDidLoad()
         grade = ud.string(forKey: "grade") ?? "1"
@@ -180,6 +180,6 @@ extension CulturalViewController: UITableViewDelegate {
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.filterByKeyword(searchText: searchText, flag: false)
+        viewModel.filterByKeyword(searchText: searchText, flag: self.flag)
     }
 }
