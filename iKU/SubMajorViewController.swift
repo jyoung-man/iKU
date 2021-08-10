@@ -26,6 +26,7 @@ class SubMajorViewController: UIViewController, UISearchBarDelegate {
     var dobl: String?
     var sub: String?
     var grade: String?
+    var stack: [String]?
     
     override var prefersStatusBarHidden: Bool {
             return true
@@ -74,6 +75,8 @@ class SubMajorViewController: UIViewController, UISearchBarDelegate {
             lecSearchBar.text = ""
             subMajorTableView.reloadData()
         }
+        stack = ud.stringArray(forKey: "stack")
+
     }
     
     @IBAction func segmentChanged(_ sender: UISegmentedControl) {
@@ -292,7 +295,14 @@ extension SubMajorViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //여기서 선택된 과목의 번호를 전달.
-        ad?.selected_lec = filteredLec[indexPath.row].number        
+        let selected_lec = filteredLec[indexPath.row].number
+        ad?.selected_lec = selected_lec
+        if stack!.count >= 5 {
+            stack?.removeFirst()
+        }
+        stack?.append(selected_lec)
+        ud.set(stack, forKey: "stack")
+        
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

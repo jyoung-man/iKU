@@ -45,6 +45,10 @@ class LectureListViewModel {
         APIService().findSeatsByRx(lecs: filteredLec, flag: flag, grade: myGrade)
     }
     
+    func countSeatsForOneLec(flag: Int, myGrade: String, section: Int, index: Int) {
+        APIService().findSeatsForOneLecByRx(lec: self.filteredLec[section].items[index], flag: flag, grade: myGrade)
+    }
+    
     func filterByLeft(lecs: [Lecture]) {
         vacantLec = []
         var temp: [String]

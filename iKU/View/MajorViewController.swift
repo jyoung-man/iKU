@@ -31,6 +31,7 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     var myDept: String?
     var gradeValue: String?
     var flag: Int = 1
+    var stack: [String]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,16 +46,27 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         
         let dSource = RxTableViewSectionedReloadDataSource<LectureSection>(configureCell: { dSource, majorTableView, indexPath, item in
             let cell = majorTableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath) as! LectureCell
-            
-            cell.titleLabel.text = item.title
-            cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
-            cell.lecCellView.layer.cornerRadius = cell.lecCellView.frame.height / 3
-            cell.leftLabel.text = item.left
             item.mvvm
                 .map{ $0 }
                 .subscribe(onNext: {
                     cell.leftLabel.text = $0
                 }).disposed(by: cell.disposeBag) //셀이 화면에서 보이지 않을 때는 bind를 풀어줘야 함
+            cell.titleLabel.text = item.title
+            cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
+            cell.leftLabel.text = item.left
+            cell.lecCellView.layer.borderWidth = 1
+            cell.lecCellView.layer.borderColor = CGColor(red: 237/255, green: 237/255, blue: 237/255, alpha: 1)
+            cell.lecCellView.layer.cornerRadius = cell.lecCellView.frame.height / 3
+            cell.lecCellView.layer.masksToBounds = true
+            cell.shadowLayer.layer.cornerRadius = cell.lecCellView.frame.height / 3
+            cell.shadowLayer.layer.masksToBounds = false
+            cell.shadowLayer.layer.shadowOffset = CGSize(width: 0, height: 10)
+            cell.shadowLayer.layer.shadowColor = UIColor.black.cgColor
+            cell.shadowLayer.layer.shadowOpacity = 0.03
+            cell.shadowLayer.layer.shadowRadius = cell.lecCellView.frame.height / 3
+            cell.shadowLayer.layer.shadowPath = UIBezierPath(roundedRect: cell.shadowLayer.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 2, height: 1)).cgPath
+            cell.shadowLayer.layer.shouldRasterize = true
+            cell.shadowLayer.layer.rasterizationScale = UIScreen.main.scale
             return cell
         })
         dSource.titleForHeaderInSection = {ds, index in
@@ -86,6 +98,7 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
             self.viewModel.changeMajor(dept: myDept!)
             let indexPath = IndexPath(row: 0 , section: 0)
             self.majorTableView.scrollToRow(at: indexPath, at: .top, animated: false)
+            stack = ud.stringArray(forKey: "stack")!
         }
     }
     
@@ -148,7 +161,13 @@ extension MajorViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //여기서 선택된 과목의 번호를 전달.
-        ad?.selected_lecture = viewModel.returnLecture(section: indexPath.section, index: indexPath.row)
+        let selected_lec = viewModel.returnNumCode(section: indexPath.section, index: indexPath.row)
+        ad?.selected_lec = selected_lec
+        if stack?.count ?? 0 >= 5 {
+            stack?.removeFirst()
+        }
+        stack?.append(selected_lec)
+        ud.set(stack, forKey: "stack")
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

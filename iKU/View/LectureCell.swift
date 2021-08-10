@@ -11,6 +11,7 @@ import RxSwift
 class LectureCell: UITableViewCell {
     
     @IBOutlet weak var lecCellView: UIView!
+    @IBOutlet weak var shadowLayer: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var leftLabel: UILabel!
     @IBOutlet weak var profAndNumberLabel: UILabel!

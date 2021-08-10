@@ -38,6 +38,6 @@ class MyTabBarCtrl: UITabBarController, UITabBarControllerDelegate {
         super.viewDidLoad()
         self.delegate = self
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-
+            
    }
 }

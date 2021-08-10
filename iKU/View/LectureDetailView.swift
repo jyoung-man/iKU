@@ -24,7 +24,8 @@ class LectureDetailView: UIViewController {
         lecDetailTable.dataSource = self
     }
     override func viewWillAppear(_ animated: Bool) {
-        lec_code = ad?.selected_lec!
+
+        //lec_code = ad?.stack?.peak()
         lecture = DBHelper().askLecInfo(l_number: lec_code!)
         prof_contact = DBHelper().askProf(l_number: lec_code!)
         lecDetailTable.rowHeight = UITableView.automaticDimension

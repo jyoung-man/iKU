@@ -68,6 +68,26 @@ class APIService {
         }
     }
     
+    func findSeatsForOneLecByRx(lec: Lecture, flag: Int, grade: String) {
+        var myUrl: String = ""
+
+        if flag == 0 { //전체
+            myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01011&sbjtId=\(lec.number)"
+        }
+        else if flag == 1 { //학년별
+            myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01011&promShyr=\(grade)&fg=B&sbjtId=\(lec.number)"
+        }
+        
+        RxAlamofire.requestString(.get, URL(string: myUrl)!)
+            .subscribe(onNext: { (response, str) in
+                let ret = self.reformatString(article: str)
+                lec.mvvm.onNext(ret)
+                lec.left = ret
+                }).disposed(by: disposeBag)
+        lec.mvvm.onNext("조회 중...")
+    }
+
+    
     func reformatString(article: String) -> String {
         var ret: String = ""
         var html = article

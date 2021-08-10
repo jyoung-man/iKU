@@ -20,6 +20,7 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
     var datasource: RxTableViewSectionedReloadDataSource<LectureSection>!
     var disposeBag = DisposeBag()
 
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var culturalTableView: UITableView!
     @IBOutlet weak var lecSearchBar: UISearchBar!
@@ -29,11 +30,14 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
     var searchedLec: [Lecture]!
     var myDept: String?
     var grade: String?
+    var stack: [String]?
     var flag: Int = 1
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         grade = ud.string(forKey: "grade") ?? "1"
         lecSearchBar.delegate = self
+        scrollView.layer.cornerRadius = 12
         self.viewModel = LectureListViewModel(dept: "B0404P", classes: "section")
         backgroundView.layer.cornerRadius = backgroundView.frame.height / 25
         lecSearchBar.barTintColor = culturalTableView.backgroundColor
@@ -48,8 +52,19 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
                     })
                 cell.titleLabel.text = item.title
                 cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
+                cell.lecCellView.layer.borderWidth = 1
+                cell.lecCellView.layer.borderColor = CGColor(red: 237/255, green: 237/255, blue: 237/255, alpha: 1)
                 cell.lecCellView.layer.cornerRadius = cell.lecCellView.frame.height / 3
-                
+                cell.lecCellView.layer.masksToBounds = true
+                cell.shadowLayer.layer.cornerRadius = cell.lecCellView.frame.height / 3
+                cell.shadowLayer.layer.masksToBounds = false
+                cell.shadowLayer.layer.shadowOffset = CGSize(width: 0, height: 10)
+                cell.shadowLayer.layer.shadowColor = UIColor.black.cgColor
+                cell.shadowLayer.layer.shadowOpacity = 0.03
+                cell.shadowLayer.layer.shadowRadius = cell.lecCellView.frame.height / 3
+                cell.shadowLayer.layer.shadowPath = UIBezierPath(roundedRect: cell.shadowLayer.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 2, height: 1)).cgPath
+                cell.shadowLayer.layer.shouldRasterize = true
+                cell.shadowLayer.layer.rasterizationScale = UIScreen.main.scale
                 return cell
             })
         dSource.titleForHeaderInSection = { ds, index in
@@ -82,6 +97,7 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
             grade = ud.string(forKey: "grade") ?? "1"
             lecSearchBar.text = ""
         }
+        stack = ud.stringArray(forKey: "stack")
     }
     
     func removeInfo(lecs: [Lecture]) {
@@ -171,8 +187,13 @@ extension CulturalViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //여기서 선택된 과목의 번호를 전달.
         print(indexPath)
-        ad?.selected_lec = viewModel.returnNumCode(section: indexPath.section, index: indexPath.row)
-        
+        let selected_lec = viewModel.returnNumCode(section: indexPath.section, index: indexPath.row)
+        ad?.selected_lec = selected_lec
+        if stack?.count ?? 0 >= 5 {
+            stack?.removeFirst()
+        }
+        stack?.append(selected_lec)
+        ud.set(stack, forKey: "stack")
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
