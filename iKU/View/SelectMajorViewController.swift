@@ -13,6 +13,9 @@ class SelectMajorViewController: UIViewController {
     @IBOutlet weak var myMajor: UIButton!
     @IBOutlet weak var firstSubmajor: UIButton!
     @IBOutlet weak var secondSubmajor: UIButton!
+    @IBOutlet weak var confirm: UIButton!
+    @IBOutlet weak var kuImg: UIImageView!
+    @IBOutlet weak var backgroundView: UIView!
     
     let ud = UserDefaults.standard
     let ad = UIApplication.shared.delegate as? AppDelegate
@@ -23,21 +26,14 @@ class SelectMajorViewController: UIViewController {
     
     var depts = [Department]()
     var majorOnly = [String]()
-    
-//    let menu: DropDown = {
-//        var depts = DBHelper().askDept()
-//        var mymajor = [Department(d_name: "교직", d_code: "B04047")]
-//        mymajor += depts
-//        let menu = DropDown()
-//        for m in mymajor {
-//            menu.dataSource.append(m.d_name)
-//        }
-//        return menu
-//    }()
-//
+    var gradeValue: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        gradeValue = ud.string(forKey: "grade") ?? "1"
+        gradeValue = gradeValue! + "학년"
+        kuImg.image = UIImage(named: gradeValue!)
         depts = DBHelper().askDept()
         //교직 넣어야됨
         for d in depts {
@@ -46,6 +42,8 @@ class SelectMajorViewController: UIViewController {
         setDropDown(dropdown: majorDropDown, button: myMajor)
         setDropDown(dropdown: firstSubmajorDropDown, button: firstSubmajor)
         setDropDown(dropdown: secondSubmajorDropDown, button: secondSubmajor)
+        self.confirm.layer.cornerRadius = 20
+        self.backgroundView.layer.cornerRadius = 20
     }
     
     func setDropDown(dropdown: DropDown, button: UIButton) {
@@ -82,11 +80,11 @@ class SelectMajorViewController: UIViewController {
         ud.set(depts[majorDropDown.indexForSelectedRow ?? 0].getCode(), forKey: "department")
         ud.set(majorOnly[majorDropDown.indexForSelectedRow ?? 0], forKey: "mj_info")
         
-        ud.set(depts[firstSubmajorDropDown.indexForSelectedRow ?? 0].getCode(), forKey: "double_major")
-        ud.set(majorOnly[firstSubmajorDropDown.indexForSelectedRow ?? 0], forKey: "dm_info")
+        ud.set(depts[firstSubmajorDropDown.indexForSelectedRow ?? depts.count-1].getCode(), forKey: "double_major")
+        ud.set(majorOnly[firstSubmajorDropDown.indexForSelectedRow ?? depts.count-1], forKey: "dm_info")
         
-        ud.set(depts[secondSubmajorDropDown.indexForSelectedRow ?? 0].getCode(), forKey: "sub_major")
-        ud.set(majorOnly[secondSubmajorDropDown.indexForSelectedRow ?? 0], forKey: "sm_info")
+        ud.set(depts[secondSubmajorDropDown.indexForSelectedRow ?? depts.count-1].getCode(), forKey: "sub_major")
+        ud.set(majorOnly[secondSubmajorDropDown.indexForSelectedRow ?? depts.count-1], forKey: "sm_info")
         
     }
     

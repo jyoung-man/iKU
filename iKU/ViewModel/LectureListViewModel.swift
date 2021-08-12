@@ -16,6 +16,7 @@ class LectureListViewModel {
     var disposeBag = DisposeBag()
 
     var filteredLec: [LectureSection]!
+    var culturalLec: [LectureSection]!
     var vacantLec: [LectureSection]!
     var searchedLec: [LectureSection]!
     //lazy var findSeatsForAll =
@@ -31,6 +32,7 @@ class LectureListViewModel {
         lectureSections = APIService().findSection(dept: dept, classes: classes)
         allLecs = APIService().mutableLectures(depts: lectureSections)
         filteredLec = lectureSections
+        culturalLec = lectureSections
     }
         
     func setLectures(lectures: [Lecture]) {
@@ -49,21 +51,28 @@ class LectureListViewModel {
         APIService().findSeatsForOneLecByRx(lec: self.filteredLec[section].items[index], flag: flag, grade: myGrade)
     }
     
-    func filterByLeft(lecs: [Lecture]) {
+    func filterByLeft() {
+        var vacant = [Lecture]()
         vacantLec = []
+        
         var temp: [String]
         var m: Int
         var v: Int
-        for l in lecs {
-            temp = l.left.components(separatedBy: " / ")
-            if temp.count > 1 {
-                v = Int(temp[0])!
-                m = Int(temp[1])!
-                if v < m {
-                    //vacantLec.append(l)
+        for lecs in filteredLec {
+            for l in lecs.items {
+                temp = l.left.components(separatedBy: " / ")
+                if temp.count > 1 {
+                    v = Int(temp[0])!
+                    m = Int(temp[1])!
+                    if v < m {
+                        vacant.append(l)
+                    }
                 }
             }
+            vacantLec.append(LectureSection(lecType: lecs.lecType, items: vacant
+            ))
         }
+        allLecs.accept(vacantLec)
     }
     
     func filterByKeyword(searchText: String, flag: Int) {
@@ -101,28 +110,47 @@ class LectureListViewModel {
         allLecs.accept(filteredLec)
     }
     
-    func changeCulturalSection(index: Int){
+    func changeCulturalSection(index: Int, grade: String, flag: Int){
+        lectureSections = culturalLec
         if index == 0 {
-            allLecs.accept([lectureSections[0]])
+            lectureSections = [lectureSections[0]]
         }
         else if index == 1 {
-            allLecs.accept([lectureSections[1]])
+            lectureSections = [lectureSections[1]]
         }
         else if index == 2 {
-            allLecs.accept([lectureSections[2]])
+            lectureSections = [lectureSections[2]]
         }
         else if index == 3 {
-            allLecs.accept([lectureSections[3]])
+            lectureSections = [lectureSections[3]]
         }
         else if index == 4 {
-            allLecs.accept([lectureSections[4]])
+            lectureSections = [lectureSections[4]]
         }
         else if index == 5 {
-            allLecs.accept([lectureSections[5]])
+            lectureSections = [lectureSections[5], lectureSections[6], lectureSections[7]]
+        }
+        else if index == 6 {
+            lectureSections = [lectureSections[6]]
+        }
+        else if index == 7 {
+            lectureSections = [lectureSections[7]]
+        }
+        else if index == 8 {
+            lectureSections = [lectureSections[8]]
+        }
+        else if index == 9 {
+            lectureSections = [lectureSections[9]]
+        }
+        else if index == 10 {
+            lectureSections = [lectureSections[10]]
         }
         else {
             print("Out of index")
         }
+        filteredLec = lectureSections
+        countSeats(flag: flag, myGrade: grade)
+        allLecs.accept(filteredLec)
     }
     
     func changeMajor(dept: String) {

@@ -78,10 +78,10 @@ class DBHelper {
         var query = "select * from lecture where d_code = '\(dept)' and type = '\(type)';"
         if dept.contains("&") {
             let dabu = dept.components(separatedBy: "&")
-            query = "select * from lecture where (d_code =  '\(dabu[0])' or d_code = '\(dabu[1])') and type = '\(type)';"
+            query = "select distinct * from lecture where (d_code =  '\(dabu[0])' or d_code = '\(dabu[1])') and type = '\(type)';"
         }
         else if dept.contains("*") {
-            query = "select * from lecture where type = '\(type)';"
+            query = "select distinct * from lecture where type = '\(type)';"
         }
         else if dept == "B0404P" { //교양과목 조회하는 경우
             if type.contains("&") {
@@ -134,6 +134,8 @@ class DBHelper {
                 let type = String(cString: sqlite3_column_text(statement, 0))
                 let l_number = String(cString: sqlite3_column_text(statement, 1))
                 let l_name = String(cString: sqlite3_column_text(statement, 2))
+                let third = String(cString: sqlite3_column_text(statement, 3))
+                let fourth = String(cString: sqlite3_column_text(statement, 4))
                 let section = String(cString: sqlite3_column_text(statement, 5))
                 let credit = sqlite3_column_int(statement, 6)
                 let time = String(cString: sqlite3_column_text(statement, 7))
@@ -145,12 +147,15 @@ class DBHelper {
                 
                 lecInfo.append(l_name)
                 lecInfo.append(l_number)
-                lecInfo.append("\(type) \(section)")
+                lecInfo.append(type)
                 lecInfo.append(String(credit)+"학점")
                 lecInfo.append(time)
                 lecInfo.append(classroom)
                 lecInfo.append(isuntact)
                 lecInfo.append(note)
+                lecInfo.append(third)
+                lecInfo.append(fourth)
+
                 break
             }
         }

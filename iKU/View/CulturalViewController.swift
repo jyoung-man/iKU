@@ -6,11 +6,10 @@
 //
 
 import UIKit
-import SwiftSoup
-import Alamofire
 import RxSwift
 import RxCocoa
 import RxDataSources
+import BonsaiController
 
 class CulturalViewController: UIViewController, UISearchBarDelegate {
     let ad = UIApplication.shared.delegate as? AppDelegate
@@ -20,6 +19,7 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
     var datasource: RxTableViewSectionedReloadDataSource<LectureSection>!
     var disposeBag = DisposeBag()
 
+    @IBOutlet weak var allGrade: UIButton!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var culturalTableView: UITableView!
@@ -31,7 +31,7 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
     var myDept: String?
     var grade: String?
     var stack: [String]?
-    var flag: Int = 1
+    var flag: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +49,8 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
                     .map{ $0 }
                     .subscribe(onNext: {
                         cell.leftLabel.text = $0
-                    })
+                    }).disposed(by: cell.disposeBag) 
+                cell.leftLabel.text = item.left
                 cell.titleLabel.text = item.title
                 cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
                 cell.lecCellView.layer.borderWidth = 1
@@ -81,8 +82,8 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
 
         print("init_finish")
         
-        //viewModel.changeCulturalSection(index: 0)
-        
+        viewModel.changeCulturalSection(index: 3, grade: grade!, flag: flag)
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
@@ -92,82 +93,86 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
         view.endEditing(true)
         print("Tap is working")
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         if grade != ud.string(forKey: "grade") {
             grade = ud.string(forKey: "grade") ?? "1"
             lecSearchBar.text = ""
         }
-        stack = ud.stringArray(forKey: "stack")
+        stack = ud.stringArray(forKey: "stack") ?? []
+    }
+    @IBAction func startup(_ sender: Any) {
+        viewModel.changeCulturalSection(index: 0, grade: grade!, flag: flag)
     }
     
-    func removeInfo(lecs: [Lecture]) {
-        for lec in lecs {
-            lec.left = ""
-            lec.isAvailable = true
-        }
+    @IBAction func volunteer(_ sender: Any) {
+        viewModel.changeCulturalSection(index: 1, grade: grade!, flag: flag)
     }
     
-    
-    func seatsForSenior(lecs: [Lecture]) {
-        var left: String = " "
-        let suguniURL = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01011&promShyr=\(grade ?? "1")&fg=B&sbjtId="
-        for lec in lecs {
-            guard let url = URL(string: suguniURL+lec.number) else { return }
-            AF.request(url).responseString { (response) in
-                switch response.result {
-                case .success:
-                    do {
-                        let html = response.value!
-                        let doc: Document = try SwiftSoup.parse(html)
-                        let values = try doc.select("[align=center]").array()
-                        left = try values[0].text()
-                        lec.setLeft(refreshed: left)
-                    }
-                    catch Exception.Error(_, let message) {
-                        print(message)
-                    } catch {
-                        print("error")
-                    }
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        }
+    @IBAction func language(_ sender: Any) {
+        viewModel.changeCulturalSection(index: 2, grade: grade!, flag: flag)
     }
     
-    func seatsForAll(lecs: [Lecture]) {
-        var left: String = " "
-        let suguniURL = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01011&sbjtId="
-        for lec in lecs {
-            guard let url = URL(string: suguniURL+lec.number) else { return }
-            AF.request(url).responseString { (response) in
-                switch response.result {
-                case .success:
-                    do {
-                        let html = response.value!
-                        let doc: Document = try SwiftSoup.parse(html)
-                        let srcs = try doc.select("[align=center]").array()
-                        let vacant = try srcs[0].text()
-                        let max = try srcs[1].text()
-                        left = "\(vacant) / \(max)"
-                        lec.setLeft(refreshed: left)
-                        if vacant < max {
-                            lec.setAvailable(flag: true)
-                        }
-                    }
-                    catch Exception.Error(_, let message) {
-                        print(message)
-                    } catch {
-                        print("error")
-                    }
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        }
+    @IBAction func writing(_ sender: Any) {
+        viewModel.changeCulturalSection(index: 3, grade: grade!, flag: flag)
     }
-    //왼쪽 목록 만드는 법: 각 구성요소를 버튼으로 만들어 배치한다. > 색이 다른 버튼도 하나의 뷰로 만들어 배치한다 > 버튼을 파라미터로 받아 색이 다른 버튼을 버튼의 시작 위치에 배치하고 내부 텍스트도 변경하는 함수를 작성한다 > 작성된 함수를 뷰 컨트롤러에 배치된 버튼들의 IBAction으로 설정한다.
+    @IBAction func omg(_ sender: Any) {
+        viewModel.changeCulturalSection(index: 8, grade: grade!, flag: flag)
+    }
+    @IBAction func sw(_ sender: Any) {
+        viewModel.changeCulturalSection(index: 4, grade: grade!, flag: flag)
+    }
+    
+    @IBAction func international(_ sender: Any) {
+        viewModel.changeCulturalSection(index: 5, grade: grade!, flag: flag)
+    }
+    @IBAction func thinking(_ sender: Any) {
+        viewModel.changeCulturalSection(index: 9, grade: grade!, flag: flag)
+    }
+    @IBAction func global(_ sender: Any) {
+        viewModel.changeCulturalSection(index: 10, grade: grade!, flag: flag)
+    }
+    
+    @IBAction func inAllGrade(_ sender: Any) {
+        self.lecSearchBar.searchTextField.text = ""
+        viewModel.filterByKeyword(searchText: "", flag: 0)
+        viewModel.countSeats(flag: 0, myGrade: grade!)
+        self.flag = 0
+    }
+    @IBAction func inMyGrade(_ sender: Any) {
+        self.lecSearchBar.searchTextField.text = ""
+        viewModel.filterByKeyword(searchText: "", flag: 1)
+        viewModel.countSeats(flag: 1, myGrade: grade!)
+        self.flag = 1
+    }
+    
+    @IBAction func vacantOnly(_ sender: Any) {
+        viewModel.filterByLeft()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        //if segue.destination is HalfSizeViewController {
+            segue.destination.transitioningDelegate = self
+            segue.destination.modalPresentationStyle = .custom
+        //}
+    }
 }
+
+extension CulturalViewController: BonsaiControllerDelegate {
+    
+    func frameOfPresentedView(in containerViewFrame: CGRect) -> CGRect {
+        
+        return CGRect(origin: CGPoint(x: 0, y: allGrade.frame.origin.y), size: CGSize(width: containerViewFrame.width, height: view.frame.size.height - allGrade.frame.origin.y))
+    }
+    
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+    
+        return BonsaiController(fromDirection: .bottom, backgroundColor: UIColor(white: 0, alpha: 0.0), presentedViewController: presented, delegate: self)
+    }
+}
+
+
 extension CulturalViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -200,7 +205,16 @@ extension CulturalViewController: UITableViewDelegate {
         return 35
     }
     
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? LectureCell else { return }
+        cell.disposeBag = DisposeBag()
+    }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         viewModel.filterByKeyword(searchText: searchText, flag: self.flag)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
     }
 }

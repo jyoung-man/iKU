@@ -20,11 +20,12 @@ class AllViewController: UIViewController, UISearchBarDelegate {
     private var viewModel: LectureListViewModel!
     var datasource: RxTableViewSectionedReloadDataSource<LectureSection>!
     var disposeBag = DisposeBag()
-    var flag: String = "0"
+    var flag: Int = 0
     
     @IBOutlet weak var lecSearchBar: UISearchBar!
     @IBOutlet weak var allTableView: UITableView!
     @IBOutlet weak var customBackButton: UIButton!
+    @IBOutlet weak var viewNextButton: UIView!
     
     var myDept: String?
     var gradeValue: String?
@@ -34,6 +35,9 @@ class AllViewController: UIViewController, UISearchBarDelegate {
         super.viewDidLoad()
         gradeValue = ud.string(forKey: "grade") ?? "1"
         self.viewModel = LectureListViewModel(classes: "type")
+        viewNextButton.layer.cornerRadius = 20
+        viewNextButton.layer.borderWidth = 1
+        viewNextButton.layer.borderColor = CGColor(red: 237/255, green: 237/255, blue: 237/255, alpha: 1)
         lecSearchBar.delegate = self
         lecSearchBar.barTintColor = allTableView.backgroundColor
         lecSearchBar.searchTextField.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
@@ -89,7 +93,7 @@ class AllViewController: UIViewController, UISearchBarDelegate {
         
     override func viewWillAppear(_ animated: Bool) {
         lecSearchBar.text = ""
-        stack = ud.stringArray(forKey: "stack")
+        stack = ud.stringArray(forKey: "stack") ?? []
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -100,6 +104,16 @@ class AllViewController: UIViewController, UISearchBarDelegate {
     
     @IBAction func customBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    @IBAction func allGrade(_ sender: Any) {
+        self.flag = 0
+        viewModel.countSeats(flag: self.flag, myGrade: self.gradeValue ?? "1")
+    }
+    
+    @IBAction func myGrade(_ sender: Any) {
+        self.flag = 1
+        viewModel.countSeats(flag: self.flag, myGrade: self.gradeValue ?? "1")
     }
     
 }
@@ -150,9 +164,11 @@ extension AllViewController: UITableViewDelegate {
     
     
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if lecSearchBar.endEditing(true) {
-            viewModel.countSeatsForOneLec(flag: 0, myGrade: gradeValue!, section: indexPath.section, index: indexPath.row)
-        }
+        guard let cell = cell as? LectureCell else { return }
+        cell.disposeBag = DisposeBag()
+//        if lecSearchBar.endEditing(true) {
+//            viewModel.countSeatsForOneLec(flag: 0, myGrade: gradeValue!, section: indexPath.section, index: indexPath.row)
+//        }
         
     }
     
@@ -161,7 +177,11 @@ extension AllViewController: UITableViewDelegate {
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        print("searchbar")
+        viewModel.countSeats(flag: self.flag, myGrade: self.gradeValue ?? "1")
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
     }
 }
 

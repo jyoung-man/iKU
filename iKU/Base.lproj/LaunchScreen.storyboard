@@ -16,31 +16,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="우리들의 수강신청 도우미" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vj3-s4-Bbz">
-                                <rect key="frame" x="29" y="491.66666666666669" width="370" height="24.000000000000057"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="iKU" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5uP-vj-5bp">
-                                <rect key="frame" x="104" y="420.66666666666669" width="220" height="45"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="wnJ-ow-ZCc"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="40"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iPhone X, XS, 11 Pro – 116" translatesAutoresizingMaskIntoConstraints="NO" id="eaz-LV-r7M">
+                                <rect key="frame" x="0.0" y="44" width="428" height="848"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.01838202588" green="0.46392530199999998" blue="0.28592067960000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.019607843140000001" green="0.42352941179999998" blue="0.25098039220000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="vj3-s4-Bbz" firstAttribute="top" secondItem="5uP-vj-5bp" secondAttribute="bottom" constant="26" id="8DO-mI-aJI"/>
-                            <constraint firstItem="5uP-vj-5bp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="104" id="8ij-TX-OeS"/>
-                            <constraint firstItem="vj3-s4-Bbz" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="AWW-8X-g0v"/>
-                            <constraint firstItem="vj3-s4-Bbz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="29" id="LHC-j2-lfg"/>
-                            <constraint firstItem="vj3-s4-Bbz" firstAttribute="centerX" secondItem="5uP-vj-5bp" secondAttribute="centerX" id="OBY-go-Wz3"/>
-                            <constraint firstItem="5uP-vj-5bp" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-20" id="zOd-ac-LfK"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="eaz-LV-r7M" secondAttribute="trailing" id="0xP-as-olU"/>
+                            <constraint firstItem="eaz-LV-r7M" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="g1x-4h-jEp"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="eaz-LV-r7M" secondAttribute="bottom" id="h0I-kp-1DL"/>
+                            <constraint firstItem="eaz-LV-r7M" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="pc9-XL-2iy"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -49,4 +35,7 @@
             <point key="canvasLocation" x="50.625" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="iPhone X, XS, 11 Pro – 116" width="375" height="812"/>
+    </resources>
 </document>

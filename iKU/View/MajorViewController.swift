@@ -82,9 +82,15 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         
         print("init_finish")
 
+        viewModel.countSeats(flag: 0, myGrade: gradeValue!)
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
+    }
+    
+    @IBAction func vacantOnly(_ sender: Any) {
+        viewModel.filterByLeft()
     }
     
     @objc func hideKeyboard() {
@@ -98,7 +104,7 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
             self.viewModel.changeMajor(dept: myDept!)
             let indexPath = IndexPath(row: 0 , section: 0)
             self.majorTableView.scrollToRow(at: indexPath, at: .top, animated: false)
-            stack = ud.stringArray(forKey: "stack")!
+            stack = ud.stringArray(forKey: "stack") ?? []
         }
     }
     
@@ -119,9 +125,13 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         //}
     }
     @IBAction func inAllGrade(_ sender: Any) {
+        self.lecSearchBar.text = ""
+        viewModel.filterByKeyword(searchText: "", flag: 0)
         viewModel.countSeats(flag: 0, myGrade: gradeValue!)
     }
     @IBAction func inMyGrade(_ sender: Any) {
+        self.lecSearchBar.text = ""
+        viewModel.filterByKeyword(searchText: "", flag: 1)
         viewModel.countSeats(flag: 1, myGrade: gradeValue!)
     }
     
@@ -131,7 +141,7 @@ extension MajorViewController: BonsaiControllerDelegate {
     
     func frameOfPresentedView(in containerViewFrame: CGRect) -> CGRect {
         
-        return CGRect(origin: CGPoint(x: 0, y: view.frame.size.height - backgroundView.frame.size.height+10), size: CGSize(width: containerViewFrame.width, height: backgroundView.frame.size.height))
+        return CGRect(origin: CGPoint(x: 0, y: allGrade.frame.origin.y), size: CGSize(width: containerViewFrame.width, height: view.frame.size.height - allGrade.frame.origin.y + 49))
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -183,6 +193,8 @@ extension MajorViewController: UITableViewDelegate {
         viewModel.filterByKeyword(searchText: searchText, flag: self.flag)
     }
     
-    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
+    }
     
 }

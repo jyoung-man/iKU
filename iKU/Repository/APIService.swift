@@ -103,7 +103,7 @@ class APIService {
             let vac = temp[1].components(separatedBy: "<")
             temp = lefts[1].components(separatedBy: ">")
             let max = temp[1].components(separatedBy: "<")
-            ret = "\(vac[0])/\(max[0])"
+            ret = "\(vac[0]) / \(max[0])"
         }
         else if lefts.count > 0 {
             let temp = lefts[0].components(separatedBy: ">")
