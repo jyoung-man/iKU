@@ -35,6 +35,7 @@ class SelectMajorViewController: UIViewController {
         gradeValue = gradeValue! + "학년"
         kuImg.image = UIImage(named: gradeValue!)
         depts = DBHelper().askDept()
+        depts.append(Department(d_name: "선택 .", d_code: "999999"))
         //교직 넣어야됨
         for d in depts {
             majorOnly.append(d.d_name)
@@ -44,6 +45,7 @@ class SelectMajorViewController: UIViewController {
         setDropDown(dropdown: secondSubmajorDropDown, button: secondSubmajor)
         self.confirm.layer.cornerRadius = 20
         self.backgroundView.layer.cornerRadius = 20
+    
     }
     
     func setDropDown(dropdown: DropDown, button: UIButton) {
@@ -78,7 +80,7 @@ class SelectMajorViewController: UIViewController {
     
     @IBAction func confirm(_ sender: UIButton) {
         ud.set(depts[majorDropDown.indexForSelectedRow ?? 0].getCode(), forKey: "department")
-        ud.set(majorOnly[majorDropDown.indexForSelectedRow ?? 0], forKey: "mj_info")
+        ud.set(majorOnly[majorDropDown.indexForSelectedRow ?? 19], forKey: "mj_info")
         
         ud.set(depts[firstSubmajorDropDown.indexForSelectedRow ?? depts.count-1].getCode(), forKey: "double_major")
         ud.set(majorOnly[firstSubmajorDropDown.indexForSelectedRow ?? depts.count-1], forKey: "dm_info")

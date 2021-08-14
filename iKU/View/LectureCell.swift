@@ -25,7 +25,7 @@ class LectureCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         if self.isSelected {
-            lecCellView.backgroundColor = UIColor(red: 0.772, green: 0.847, blue: 0.709, alpha: 1)
+            lecCellView.backgroundColor = UIColor(red: 6/255, green: 107/255, blue: 64/255, alpha: 0.05)
         }
         else {
             lecCellView.backgroundColor = .white

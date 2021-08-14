@@ -4,8 +4,6 @@
 target 'iKU' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-  pod 'SwiftSoup'
-  pod 'Alamofire', '~> 5.2'
   pod 'DropDown'
   pod 'Siren'
   pod 'RxSwift'
@@ -14,7 +12,6 @@ target 'iKU' do
   pod 'RxAlamofire'
   pod 'Charts'
   pod 'BonsaiController'
-  pod 'SwiftIcons', '~> 3.0'
   pod 'DLRadioButton', '~> 1.4'
   # Pods for iKU
 

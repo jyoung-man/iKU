@@ -8,14 +8,10 @@
 import UIKit
 
 class TabTabController: UITabBarController {
-    let ud = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-
-        let customTabBar = CustomTabBar()
-               self.setValue(customTabBar, forKeyPath: "tabBar")
-
+        self.selectedIndex = 2
     }
 }

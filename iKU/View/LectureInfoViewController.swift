@@ -49,9 +49,7 @@ class LectureInfoViewController: UIViewController, ChartViewDelegate {
     var lec_name: String?
     var lec_code: String?
     var lecture = [String]()
-    var lectures = [String]()
     var profContact = [String]()
-    var f_left: String?
     var entry: [Double] = [1,1,1,1]
     var disposeBag = DisposeBag()
     @IBOutlet weak var backgroundView: UIView!
@@ -78,42 +76,22 @@ class LectureInfoViewController: UIViewController, ChartViewDelegate {
         //pieChart.center = ratio.center
         ratio.addSubview(pieChart)
         
-        var entries = [PieChartDataEntry]()
-        entries.append(PieChartDataEntry(value: entry[0], label: "1학년"))
-        entries.append(PieChartDataEntry(value: entry[1], label: "2학년"))
-        entries.append(PieChartDataEntry(value: entry[2], label: "3학년"))
-        entries.append(PieChartDataEntry(value: entry[3], label: "4학년"))
-        let set = PieChartDataSet(entries: entries, label: "")
-        set.colors = ChartColorTemplates.colorful()
-        
-        let legend = pieChart.legend
-        legend.horizontalAlignment = .right
-        legend.verticalAlignment = .center
-        legend.orientation = .vertical
-        
-        let data = PieChartData(dataSet: set)
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        data.setValueFormatter(DefaultValueFormatter(formatter: formatter))
-        pieChart.data = data
+        pieChart.data = viewModel.setPieChart(pieChart: pieChart)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         lec_code = ad?.selected_lec
-        //lec_code = ad?.stack?.peak()
-        //lectures = (ad?.stack?.getElements())!
-        print(lec_code)
-        //print(lectures)
         lecture = DBHelper().askLecInfo(l_number: lec_code!)
         profContact = DBHelper().askProf(l_number: lec_code!)
         nameLabel.text = lecture[0]
         let type = lecture[2]
-        type_number.text = "\(APIService().returnTypeName(type: type))/\(lecture[9])\(lecture[1])"
+        type_number.text = "\(APIService().returnTypeName(type: type))/\(lecture[9])/\(lecture[1])"
         time.text = lecture[4]
         credit.text = lecture[3]
         let location = lecture[5].replacingOccurrences(of: "/", with: "\n")
         classroom.text = location
         note.text = lecture[7]
+        note.lineBreakMode = .byWordWrapping
         professor.text = lecture[9]
 
         if !profContact.isEmpty{

@@ -11,7 +11,7 @@ import SQLite3
 class DBHelper {
     
     var db : OpaquePointer?
-    var path : String = "ikuV1.sqlite"
+    var path : String = "iku222.sqlite"
     init() {
         self.db = copyDatabaseIfNeeded()
     }
@@ -78,10 +78,10 @@ class DBHelper {
         var query = "select * from lecture where d_code = '\(dept)' and type = '\(type)';"
         if dept.contains("&") {
             let dabu = dept.components(separatedBy: "&")
-            query = "select distinct * from lecture where (d_code =  '\(dabu[0])' or d_code = '\(dabu[1])') and type = '\(type)';"
+            query = "select distinct * from lecture where d_code =  '\(dabu[0])' or d_code = '\(dabu[1])' and type = '\(type)';"
         }
         else if dept.contains("*") {
-            query = "select distinct * from lecture where type = '\(type)';"
+            query = "select distinct type, l_number, l_name, l_number, prof, section from lecture where type = '\(type)';"
         }
         else if dept == "B0404P" { //교양과목 조회하는 경우
             if type.contains("&") {
@@ -110,10 +110,10 @@ class DBHelper {
                 let type = String(cString: sqlite3_column_text(statement, 0))
                 let l_number = String(cString: sqlite3_column_text(statement, 1))
                 let l_name = String(cString: sqlite3_column_text(statement, 2))
-                let d_code = String(cString: sqlite3_column_text(statement, 3))
+                //let d_code = String(cString: sqlite3_column_text(statement, 3))
                 let prof = String(cString: sqlite3_column_text(statement, 4))
                 let section = String(cString: sqlite3_column_text(statement, 5))
-                lectures.append(Lecture(type: type, number: l_number, title: l_name, dept: d_code, prof: prof, section: section))
+                lectures.append(Lecture(type: type, number: l_number, title: l_name, prof: prof, section: section))
                 //print("readData result : \(name) \(code)")//
             }
         }
@@ -196,6 +196,10 @@ class DBHelper {
         var query = "select distinct \(target) from lecture where d_code = '\(dept)';"
         if dept.contains("*") {
             query = "select distinct \(target) from lecture;"
+        }
+        if dept.contains("&") {
+            let one = dept.components(separatedBy: "&")
+            query = "select distinct \(target) from lecture where d_code = '\(one[0])';"
         }
         print(dept)
         var statement : OpaquePointer? = nil

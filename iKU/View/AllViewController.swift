@@ -6,8 +6,6 @@
 //
 import DropDown
 import UIKit
-import SwiftSoup
-import Alamofire
 import RxSwift
 import RxCocoa
 import RxDataSources
@@ -29,8 +27,7 @@ class AllViewController: UIViewController, UISearchBarDelegate {
     
     var myDept: String?
     var gradeValue: String?
-    var stack: [String]?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         gradeValue = ud.string(forKey: "grade") ?? "1"
@@ -93,7 +90,6 @@ class AllViewController: UIViewController, UISearchBarDelegate {
         
     override func viewWillAppear(_ animated: Bool) {
         lecSearchBar.text = ""
-        stack = ud.stringArray(forKey: "stack") ?? []
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -149,13 +145,7 @@ extension AllViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //여기서 선택된 과목의 번호를 전달.
-        let selected_lec = viewModel.returnNumCode(section: indexPath.section, index: indexPath.row)
-        ad?.selected_lec = selected_lec
-        if stack?.count ?? 0 >= 5 {
-            stack?.removeFirst()
-        }
-        stack?.append(selected_lec)
-        ud.set(stack, forKey: "stack")
+    viewModel.returnNumCode(section: indexPath.section, index: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

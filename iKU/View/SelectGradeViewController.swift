@@ -90,5 +90,7 @@ class SelectGradeViewController: UIViewController {
         backgroundView1.backgroundColor = .systemBackground
         first.textColor = UIColor(white: 0, alpha: 1)
         confirmButton.layer.cornerRadius = 20
+        
+
     }
 }

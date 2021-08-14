@@ -13,21 +13,18 @@
 		4E0FCA4A25DC1D800047B4FC /* CulturalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0FCA4925DC1D800047B4FC /* CulturalViewController.swift */; };
 		4E11A23325CBC8C200E7363F /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E11A23225CBC8C200E7363F /* DBHelper.swift */; };
 		4E244D8126BC1E9E0025A99C /* SelectMajorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E244D8026BC1E9E0025A99C /* SelectMajorViewController.swift */; };
+		4E26D27426C6E27C00580825 /* DeveloperDesignerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26D27326C6E27C00580825 /* DeveloperDesignerViewController.swift */; };
+		4E26D29526C6F26600580825 /* iku222.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 4E26D29426C6F26600580825 /* iku222.sqlite */; };
 		4E2B596F25CA35FE003BC87A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B596E25CA35FE003BC87A /* AppDelegate.swift */; };
 		4E2B597125CA35FE003BC87A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B597025CA35FE003BC87A /* SceneDelegate.swift */; };
-		4E2B597325CA35FE003BC87A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B597225CA35FE003BC87A /* ViewController.swift */; };
 		4E2B597625CA35FE003BC87A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E2B597425CA35FE003BC87A /* Main.storyboard */; };
 		4E2B597B25CA35FF003BC87A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4E2B597925CA35FF003BC87A /* LaunchScreen.storyboard */; };
 		4E2B598625CA35FF003BC87A /* iKUTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B598525CA35FF003BC87A /* iKUTests.swift */; };
 		4E2B599125CA35FF003BC87A /* iKUUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B599025CA35FF003BC87A /* iKUUITests.swift */; };
-		4E2B59AA25CA3AEC003BC87A /* LectureTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B59A925CA3AEC003BC87A /* LectureTableViewCell.swift */; };
 		4E2B59B425CA3BEA003BC87A /* TabTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B59B325CA3BEA003BC87A /* TabTabController.swift */; };
 		4E2B59B925CA4467003BC87A /* Lecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B59B825CA4467003BC87A /* Lecture.swift */; };
 		4E2B59C125CA4C58003BC87A /* MajorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B59C025CA4C58003BC87A /* MajorViewController.swift */; };
 		4E34E8EE26BFABF900BE179C /* SelectGradeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E34E8ED26BFABF900BE179C /* SelectGradeViewController.swift */; };
-		4E360D5D26BE6EAC00D5ADD9 /* RoundShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E360D5C26BE6EAC00D5ADD9 /* RoundShadowView.swift */; };
-		4E360D6226BE6F4700D5ADD9 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E360D6126BE6F4700D5ADD9 /* CustomTabBar.swift */; };
-		4E360D6826BE770A00D5ADD9 /* MyTabBarCtrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E360D6626BE770A00D5ADD9 /* MyTabBarCtrl.swift */; };
 		4E360D8526BE7E2100D5ADD9 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E360D8426BE7E2100D5ADD9 /* MainViewController.swift */; };
 		4E554B3A26876105005A40BA /* LectureInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E554B3926876105005A40BA /* LectureInfoViewController.swift */; };
 		4E5A9E0B25E77C3C00BA9FEF /* AllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E5A9E0A25E77C3C00BA9FEF /* AllViewController.swift */; };
@@ -37,12 +34,8 @@
 		4E6413582613469000A47FEC /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6413572613469000A47FEC /* LectureListViewModel.swift */; };
 		4E6E31E1268D8D3C009A8159 /* LectureInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6E31E0268D8D3C009A8159 /* LectureInfoViewModel.swift */; };
 		4E7C3F2E2600496500DED511 /* LectureCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E7C3F2D2600496500DED511 /* LectureCell.swift */; };
-		4E89BDE9268176880018A113 /* LectureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E89BDE8268176880018A113 /* LectureViewController.swift */; };
 		4EAD9EC125D15B72002966E9 /* Department.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAD9EC025D15B72002966E9 /* Department.swift */; };
-		4EB78B0825D79D8D007B1F2C /* LectureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB78B0725D79D8D007B1F2C /* LectureDetailView.swift */; };
-		4EB78B0D25D79F27007B1F2C /* LectureDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EB78B0C25D79F27007B1F2C /* LectureDetailCell.swift */; };
 		4EBB2E0126C171F10026B71B /* LectureStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBB2E0026C171F10026B71B /* LectureStack.swift */; };
-		4EEEA56225D5028700E98C9B /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EEEA56125D5028700E98C9B /* SettingViewController.swift */; };
 		4EFF55E925DA6F2A00C34E3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4EFF55E825DA6F2A00C34E3B /* Assets.xcassets */; };
 		AF22B86B0DB587CEB2CECFA9 /* Pods_iKUTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE290E07A02D95E038241D2 /* Pods_iKUTests.framework */; };
 		D83561DE4A15849EECE8B40F /* Pods_iKU_iKUUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E165252EB50C4EBAB5C671BF /* Pods_iKU_iKUUITests.framework */; };
@@ -74,10 +67,11 @@
 		4E0FCA4925DC1D800047B4FC /* CulturalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CulturalViewController.swift; sourceTree = "<group>"; };
 		4E11A23225CBC8C200E7363F /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
 		4E244D8026BC1E9E0025A99C /* SelectMajorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectMajorViewController.swift; sourceTree = "<group>"; };
+		4E26D27326C6E27C00580825 /* DeveloperDesignerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperDesignerViewController.swift; sourceTree = "<group>"; };
+		4E26D29426C6F26600580825 /* iku222.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = iku222.sqlite; sourceTree = "<group>"; };
 		4E2B596B25CA35FE003BC87A /* iKU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iKU.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E2B596E25CA35FE003BC87A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4E2B597025CA35FE003BC87A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		4E2B597225CA35FE003BC87A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4E2B597525CA35FE003BC87A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4E2B597A25CA35FF003BC87A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4E2B597C25CA35FF003BC87A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -87,14 +81,10 @@
 		4E2B598C25CA35FF003BC87A /* iKUUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iKUUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E2B599025CA35FF003BC87A /* iKUUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iKUUITests.swift; sourceTree = "<group>"; };
 		4E2B599225CA35FF003BC87A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4E2B59A925CA3AEC003BC87A /* LectureTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureTableViewCell.swift; sourceTree = "<group>"; };
 		4E2B59B325CA3BEA003BC87A /* TabTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabTabController.swift; sourceTree = "<group>"; };
 		4E2B59B825CA4467003BC87A /* Lecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Lecture.swift; sourceTree = "<group>"; };
 		4E2B59C025CA4C58003BC87A /* MajorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MajorViewController.swift; sourceTree = "<group>"; };
 		4E34E8ED26BFABF900BE179C /* SelectGradeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectGradeViewController.swift; sourceTree = "<group>"; };
-		4E360D5C26BE6EAC00D5ADD9 /* RoundShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundShadowView.swift; sourceTree = "<group>"; };
-		4E360D6126BE6F4700D5ADD9 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
-		4E360D6626BE770A00D5ADD9 /* MyTabBarCtrl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyTabBarCtrl.swift; sourceTree = "<group>"; };
 		4E360D8426BE7E2100D5ADD9 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		4E554B3926876105005A40BA /* LectureInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureInfoViewController.swift; sourceTree = "<group>"; };
 		4E5A9E0A25E77C3C00BA9FEF /* AllViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllViewController.swift; sourceTree = "<group>"; };
@@ -104,12 +94,8 @@
 		4E6413572613469000A47FEC /* LectureListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListViewModel.swift; sourceTree = "<group>"; };
 		4E6E31E0268D8D3C009A8159 /* LectureInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureInfoViewModel.swift; sourceTree = "<group>"; };
 		4E7C3F2D2600496500DED511 /* LectureCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureCell.swift; sourceTree = "<group>"; };
-		4E89BDE8268176880018A113 /* LectureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureViewController.swift; sourceTree = "<group>"; };
 		4EAD9EC025D15B72002966E9 /* Department.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Department.swift; sourceTree = "<group>"; };
-		4EB78B0725D79D8D007B1F2C /* LectureDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureDetailView.swift; sourceTree = "<group>"; };
-		4EB78B0C25D79F27007B1F2C /* LectureDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureDetailCell.swift; sourceTree = "<group>"; };
 		4EBB2E0026C171F10026B71B /* LectureStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureStack.swift; sourceTree = "<group>"; };
-		4EEEA56125D5028700E98C9B /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		4EFF55E825DA6F2A00C34E3B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5CE290E07A02D95E038241D2 /* Pods_iKUTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iKUTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BD53C9B21105318303D4C38 /* Pods-iKU.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iKU.debug.xcconfig"; path = "Target Support Files/Pods-iKU/Pods-iKU.debug.xcconfig"; sourceTree = "<group>"; };
@@ -164,19 +150,16 @@
 			children = (
 				4E2B59C025CA4C58003BC87A /* MajorViewController.swift */,
 				4E0FCA4925DC1D800047B4FC /* CulturalViewController.swift */,
-				4E360D6626BE770A00D5ADD9 /* MyTabBarCtrl.swift */,
+				4E0FCA4425DC14190047B4FC /* SubMajorViewController.swift */,
 				4E7C3F2D2600496500DED511 /* LectureCell.swift */,
-				4E89BDE8268176880018A113 /* LectureViewController.swift */,
-				4EB78B0725D79D8D007B1F2C /* LectureDetailView.swift */,
 				4E554B3926876105005A40BA /* LectureInfoViewController.swift */,
 				4E244D8026BC1E9E0025A99C /* SelectMajorViewController.swift */,
 				4E5A9E0A25E77C3C00BA9FEF /* AllViewController.swift */,
 				4E2B59B325CA3BEA003BC87A /* TabTabController.swift */,
-				4E360D5C26BE6EAC00D5ADD9 /* RoundShadowView.swift */,
-				4E360D6126BE6F4700D5ADD9 /* CustomTabBar.swift */,
 				4E360D8426BE7E2100D5ADD9 /* MainViewController.swift */,
 				4E5EA97226BF5E6E0070D484 /* ShadowView.swift */,
 				4E34E8ED26BFABF900BE179C /* SelectGradeViewController.swift */,
+				4E26D27326C6E27C00580825 /* DeveloperDesignerViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -229,15 +212,11 @@
 				4E0F385925F9A88C00A3E579 /* ViewModel */,
 				4E5EA4632612F5E7004CF693 /* Model */,
 				4E0BEA3525E95C5500B16043 /* ikuV1.sqlite */,
+				4E26D29426C6F26600580825 /* iku222.sqlite */,
 				4E2B596E25CA35FE003BC87A /* AppDelegate.swift */,
 				4E2B597025CA35FE003BC87A /* SceneDelegate.swift */,
-				4E2B597225CA35FE003BC87A /* ViewController.swift */,
 				4E2B597425CA35FE003BC87A /* Main.storyboard */,
-				4E2B59A925CA3AEC003BC87A /* LectureTableViewCell.swift */,
-				4EEEA56125D5028700E98C9B /* SettingViewController.swift */,
 				4E2B597925CA35FF003BC87A /* LaunchScreen.storyboard */,
-				4EB78B0C25D79F27007B1F2C /* LectureDetailCell.swift */,
-				4E0FCA4425DC14190047B4FC /* SubMajorViewController.swift */,
 				4E2B597C25CA35FF003BC87A /* Info.plist */,
 				4EFF55E825DA6F2A00C34E3B /* Assets.xcassets */,
 			);
@@ -399,6 +378,7 @@
 				4E2B597B25CA35FF003BC87A /* LaunchScreen.storyboard in Resources */,
 				4E2B597625CA35FE003BC87A /* Main.storyboard in Resources */,
 				4EFF55E925DA6F2A00C34E3B /* Assets.xcassets in Resources */,
+				4E26D29526C6F26600580825 /* iku222.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,30 +513,22 @@
 				4E5EA97326BF5E6E0070D484 /* ShadowView.swift in Sources */,
 				4E2B59C125CA4C58003BC87A /* MajorViewController.swift in Sources */,
 				4EBB2E0126C171F10026B71B /* LectureStack.swift in Sources */,
-				4EB78B0D25D79F27007B1F2C /* LectureDetailCell.swift in Sources */,
-				4E89BDE9268176880018A113 /* LectureViewController.swift in Sources */,
 				4E360D8526BE7E2100D5ADD9 /* MainViewController.swift in Sources */,
-				4E2B59AA25CA3AEC003BC87A /* LectureTableViewCell.swift in Sources */,
 				4E554B3A26876105005A40BA /* LectureInfoViewController.swift in Sources */,
 				4EAD9EC125D15B72002966E9 /* Department.swift in Sources */,
-				4E2B597325CA35FE003BC87A /* ViewController.swift in Sources */,
 				4E0F385C25F9AB4000A3E579 /* APIService.swift in Sources */,
 				4E5A9E0B25E77C3C00BA9FEF /* AllViewController.swift in Sources */,
+				4E26D27426C6E27C00580825 /* DeveloperDesignerViewController.swift in Sources */,
 				4E2B596F25CA35FE003BC87A /* AppDelegate.swift in Sources */,
 				4E6413582613469000A47FEC /* LectureListViewModel.swift in Sources */,
-				4E360D5D26BE6EAC00D5ADD9 /* RoundShadowView.swift in Sources */,
 				4E34E8EE26BFABF900BE179C /* SelectGradeViewController.swift in Sources */,
-				4E360D6226BE6F4700D5ADD9 /* CustomTabBar.swift in Sources */,
-				4EEEA56225D5028700E98C9B /* SettingViewController.swift in Sources */,
 				4E2B59B925CA4467003BC87A /* Lecture.swift in Sources */,
 				4E2B597125CA35FE003BC87A /* SceneDelegate.swift in Sources */,
-				4EB78B0825D79D8D007B1F2C /* LectureDetailView.swift in Sources */,
 				4E5EA4652612F613004CF693 /* LectureSection.swift in Sources */,
 				4E0FCA4525DC14190047B4FC /* SubMajorViewController.swift in Sources */,
 				4E2B59B425CA3BEA003BC87A /* TabTabController.swift in Sources */,
 				4E6E31E1268D8D3C009A8159 /* LectureInfoViewModel.swift in Sources */,
 				4E11A23325CBC8C200E7363F /* DBHelper.swift in Sources */,
-				4E360D6826BE770A00D5ADD9 /* MyTabBarCtrl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

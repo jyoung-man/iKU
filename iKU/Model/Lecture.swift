@@ -13,7 +13,7 @@ class Lecture: Decodable, IdentifiableType, Equatable {
     var type: String
     var number: String
     var title: String
-    var dept: String
+    //var dept: String
     var prof: String
     var section: String
     var lecInfo: String
@@ -25,11 +25,11 @@ class Lecture: Decodable, IdentifiableType, Equatable {
         return number
     }
     
-    init(type:String, number:String, title:String, dept: String, prof:String, section: String) {
+    init(type:String, number:String, title:String, prof:String, section: String) {
         self.type = type
         self.number = number
         self.title = title
-        self.dept = dept
+        //self.dept = dept
         self.prof = prof
         self.section = section
         self.left = ""
@@ -38,11 +38,11 @@ class Lecture: Decodable, IdentifiableType, Equatable {
         self.lecInfo = "\(type) \(number) \(title) \(prof) \(section)"
     }
     
-    init(type:String, number:String, title:String, dept: String, prof:String, section: String, left: String) {
+    init(type:String, number:String, title:String, prof:String, section: String, left: String) {
         self.type = type
         self.number = number
         self.title = title
-        self.dept = dept
+        //self.dept = dept
         self.prof = prof
         self.section = section
         self.left = left

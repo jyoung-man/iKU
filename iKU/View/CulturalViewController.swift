@@ -24,13 +24,14 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var culturalTableView: UITableView!
     @IBOutlet weak var lecSearchBar: UISearchBar!
+    @IBOutlet weak var sectionLabel: UILabel!
+    @IBOutlet weak var sectionDetail: UILabel!
     
     var lectures: [Lecture]!
     var vacantLec: [Lecture]!
     var searchedLec: [Lecture]!
     var myDept: String?
     var grade: String?
-    var stack: [String]?
     var flag: Int = 0
     
     override func viewDidLoad() {
@@ -39,7 +40,7 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
         lecSearchBar.delegate = self
         scrollView.layer.cornerRadius = 12
         self.viewModel = LectureListViewModel(dept: "B0404P", classes: "section")
-        backgroundView.layer.cornerRadius = backgroundView.frame.height / 25
+        backgroundView.layer.cornerRadius = backgroundView.frame.height / 15
         lecSearchBar.barTintColor = culturalTableView.backgroundColor
         lecSearchBar.searchTextField.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
         let dSource = RxTableViewSectionedReloadDataSource<LectureSection>(
@@ -53,19 +54,7 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
                 cell.leftLabel.text = item.left
                 cell.titleLabel.text = item.title
                 cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
-                cell.lecCellView.layer.borderWidth = 1
-                cell.lecCellView.layer.borderColor = CGColor(red: 237/255, green: 237/255, blue: 237/255, alpha: 1)
-                cell.lecCellView.layer.cornerRadius = cell.lecCellView.frame.height / 3
-                cell.lecCellView.layer.masksToBounds = true
-                cell.shadowLayer.layer.cornerRadius = cell.lecCellView.frame.height / 3
-                cell.shadowLayer.layer.masksToBounds = false
-                cell.shadowLayer.layer.shadowOffset = CGSize(width: 0, height: 10)
-                cell.shadowLayer.layer.shadowColor = UIColor.black.cgColor
-                cell.shadowLayer.layer.shadowOpacity = 0.03
-                cell.shadowLayer.layer.shadowRadius = cell.lecCellView.frame.height / 3
-                cell.shadowLayer.layer.shadowPath = UIBezierPath(roundedRect: cell.shadowLayer.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 2, height: 1)).cgPath
-                cell.shadowLayer.layer.shouldRasterize = true
-                cell.shadowLayer.layer.rasterizationScale = UIScreen.main.scale
+                self.viewModel.setCellLooks(cell: cell)
                 return cell
             })
         dSource.titleForHeaderInSection = { ds, index in
@@ -83,10 +72,32 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
         print("init_finish")
         
         viewModel.changeCulturalSection(index: 3, grade: grade!, flag: flag)
-
+        setLable()
+        
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tap.cancelsTouchesInView = false
         self.view.addGestureRecognizer(tap)
+    }
+    
+    func changeSectionInHere(index: Int, grade: String, flag: Int) {
+        viewModel.changeCulturalSection(index: index, grade: grade, flag: flag)
+        let indexPath = IndexPath(row: 0 , section: 0)
+        self.culturalTableView.scrollToRow(at: indexPath, at: .top, animated: false)
+        lecSearchBar.text = ""
+        setLable()
+    }
+    
+    func setLable() {
+        let info = viewModel.getCultureSectionInfo()
+        sectionLabel.text = info[0]
+        sectionDetail.text = info[1]
+    }
+    
+    func changeTarget(flag: Int) {
+        self.lecSearchBar.searchTextField.text = ""
+        viewModel.filterByKeyword(searchText: "", flag: flag)
+        viewModel.countSeats(flag: flag, myGrade: grade!)
+        self.flag = flag
     }
     
     @objc func hideKeyboard() {
@@ -99,51 +110,44 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
             grade = ud.string(forKey: "grade") ?? "1"
             lecSearchBar.text = ""
         }
-        stack = ud.stringArray(forKey: "stack") ?? []
     }
     @IBAction func startup(_ sender: Any) {
-        viewModel.changeCulturalSection(index: 0, grade: grade!, flag: flag)
+        changeSectionInHere(index: 0, grade: grade!, flag: flag)
     }
     
     @IBAction func volunteer(_ sender: Any) {
-        viewModel.changeCulturalSection(index: 1, grade: grade!, flag: flag)
+        changeSectionInHere(index: 1, grade: grade!, flag: flag)
     }
     
     @IBAction func language(_ sender: Any) {
-        viewModel.changeCulturalSection(index: 2, grade: grade!, flag: flag)
+        changeSectionInHere(index: 2, grade: grade!, flag: flag)
     }
     
     @IBAction func writing(_ sender: Any) {
-        viewModel.changeCulturalSection(index: 3, grade: grade!, flag: flag)
+        changeSectionInHere(index: 3, grade: grade!, flag: flag)
     }
     @IBAction func omg(_ sender: Any) {
-        viewModel.changeCulturalSection(index: 8, grade: grade!, flag: flag)
+        changeSectionInHere(index: 8, grade: grade!, flag: flag)
     }
     @IBAction func sw(_ sender: Any) {
-        viewModel.changeCulturalSection(index: 4, grade: grade!, flag: flag)
+        changeSectionInHere(index: 4, grade: grade!, flag: flag)
     }
     
     @IBAction func international(_ sender: Any) {
-        viewModel.changeCulturalSection(index: 5, grade: grade!, flag: flag)
+        changeSectionInHere(index: 5, grade: grade!, flag: flag)
     }
     @IBAction func thinking(_ sender: Any) {
-        viewModel.changeCulturalSection(index: 9, grade: grade!, flag: flag)
+        changeSectionInHere(index: 9, grade: grade!, flag: flag)
     }
     @IBAction func global(_ sender: Any) {
-        viewModel.changeCulturalSection(index: 10, grade: grade!, flag: flag)
+        changeSectionInHere(index: 10, grade: grade!, flag: flag)
     }
     
     @IBAction func inAllGrade(_ sender: Any) {
-        self.lecSearchBar.searchTextField.text = ""
-        viewModel.filterByKeyword(searchText: "", flag: 0)
-        viewModel.countSeats(flag: 0, myGrade: grade!)
-        self.flag = 0
+        changeTarget(flag: 0)
     }
     @IBAction func inMyGrade(_ sender: Any) {
-        self.lecSearchBar.searchTextField.text = ""
-        viewModel.filterByKeyword(searchText: "", flag: 1)
-        viewModel.countSeats(flag: 1, myGrade: grade!)
-        self.flag = 1
+        changeTarget(flag: 1)
     }
     
     @IBAction func vacantOnly(_ sender: Any) {
@@ -152,10 +156,8 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
-        //if segue.destination is HalfSizeViewController {
-            segue.destination.transitioningDelegate = self
-            segue.destination.modalPresentationStyle = .custom
-        //}
+        segue.destination.transitioningDelegate = self
+        segue.destination.modalPresentationStyle = .custom
     }
 }
 
@@ -191,14 +193,7 @@ extension CulturalViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //여기서 선택된 과목의 번호를 전달.
-        print(indexPath)
-        let selected_lec = viewModel.returnNumCode(section: indexPath.section, index: indexPath.row)
-        ad?.selected_lec = selected_lec
-        if stack?.count ?? 0 >= 5 {
-            stack?.removeFirst()
-        }
-        stack?.append(selected_lec)
-        ud.set(stack, forKey: "stack")
+        viewModel.returnNumCode(section: indexPath.section, index: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

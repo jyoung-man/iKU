@@ -31,7 +31,6 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     var myDept: String?
     var gradeValue: String?
     var flag: Int = 1
-    var stack: [String]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +38,7 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         loadUserInfo()
         self.viewModel = LectureListViewModel(dept: myDept!, classes: "type")
 
-        backgroundView.layer.cornerRadius = backgroundView.frame.height / 25
+        backgroundView.layer.cornerRadius = backgroundView.frame.height / 15
         lecSearchBar.delegate = self
         lecSearchBar.barTintColor = majorTableView.backgroundColor
         lecSearchBar.searchTextField.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
@@ -54,19 +53,8 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
             cell.titleLabel.text = item.title
             cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
             cell.leftLabel.text = item.left
-            cell.lecCellView.layer.borderWidth = 1
-            cell.lecCellView.layer.borderColor = CGColor(red: 237/255, green: 237/255, blue: 237/255, alpha: 1)
-            cell.lecCellView.layer.cornerRadius = cell.lecCellView.frame.height / 3
-            cell.lecCellView.layer.masksToBounds = true
-            cell.shadowLayer.layer.cornerRadius = cell.lecCellView.frame.height / 3
-            cell.shadowLayer.layer.masksToBounds = false
-            cell.shadowLayer.layer.shadowOffset = CGSize(width: 0, height: 10)
-            cell.shadowLayer.layer.shadowColor = UIColor.black.cgColor
-            cell.shadowLayer.layer.shadowOpacity = 0.03
-            cell.shadowLayer.layer.shadowRadius = cell.lecCellView.frame.height / 3
-            cell.shadowLayer.layer.shadowPath = UIBezierPath(roundedRect: cell.shadowLayer.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 2, height: 1)).cgPath
-            cell.shadowLayer.layer.shouldRasterize = true
-            cell.shadowLayer.layer.rasterizationScale = UIScreen.main.scale
+            self.viewModel.setCellLooks(cell: cell)
+            
             return cell
         })
         dSource.titleForHeaderInSection = {ds, index in
@@ -102,9 +90,8 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         if myDept != ud.string(forKey: "department") || gradeValue != ud.string(forKey: "grade") {
             loadUserInfo()
             self.viewModel.changeMajor(dept: myDept!)
-            let indexPath = IndexPath(row: 0 , section: 0)
+            let indexPath = IndexPath(row: 0, section: 0)
             self.majorTableView.scrollToRow(at: indexPath, at: .top, animated: false)
-            stack = ud.stringArray(forKey: "stack") ?? []
         }
     }
     
@@ -114,7 +101,14 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         
         let mj_info = ud.string(forKey: "mj_info")?.split(separator: " ")
         collegeLabel.text = String((mj_info?[0])!)
-        departureLabel.text = String((mj_info?[1])!)
+        departureLabel.text = String((mj_info?.last)!)
+    }
+    
+    func changeTarget(flag: Int) {
+        self.lecSearchBar.searchTextField.text = ""
+        viewModel.filterByKeyword(searchText: "", flag: flag)
+        viewModel.countSeats(flag: flag, myGrade: gradeValue!)
+        self.flag = flag
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -125,14 +119,10 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         //}
     }
     @IBAction func inAllGrade(_ sender: Any) {
-        self.lecSearchBar.text = ""
-        viewModel.filterByKeyword(searchText: "", flag: 0)
-        viewModel.countSeats(flag: 0, myGrade: gradeValue!)
+        changeTarget(flag: 0)
     }
     @IBAction func inMyGrade(_ sender: Any) {
-        self.lecSearchBar.text = ""
-        viewModel.filterByKeyword(searchText: "", flag: 1)
-        viewModel.countSeats(flag: 1, myGrade: gradeValue!)
+        changeTarget(flag: 1)
     }
     
 }
@@ -171,13 +161,7 @@ extension MajorViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //여기서 선택된 과목의 번호를 전달.
-        let selected_lec = viewModel.returnNumCode(section: indexPath.section, index: indexPath.row)
-        ad?.selected_lec = selected_lec
-        if stack?.count ?? 0 >= 5 {
-            stack?.removeFirst()
-        }
-        stack?.append(selected_lec)
-        ud.set(stack, forKey: "stack")
+    viewModel.returnNumCode(section: indexPath.section, index: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

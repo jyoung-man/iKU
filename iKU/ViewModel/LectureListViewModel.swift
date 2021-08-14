@@ -10,6 +10,8 @@ import RxSwift
 import RxCocoa
 
 class LectureListViewModel {
+    let ud = UserDefaults.standard
+    let ad = UIApplication.shared.delegate as? AppDelegate
     var allLecs: BehaviorRelay<[LectureSection]>
     var lectureSections: [LectureSection]
     var lectures: [Lecture]!
@@ -152,14 +154,48 @@ class LectureListViewModel {
         countSeats(flag: flag, myGrade: grade)
         allLecs.accept(filteredLec)
     }
+    func getCultureSectionInfo() -> [String] {
+        var info: [String] = []
+        var type = filteredLec[0].items[0].type
+        type = APIService().returnTypeName(type: type)
+ 
+        info.append(type)
+        info.append(filteredLec[0].items[0].section)
+        
+        return info
+    }
     
     func changeMajor(dept: String) {
         lectureSections = APIService().findSection(dept: dept, classes: "type")
         allLecs.accept(lectureSections)
         filteredLec = lectureSections
     }
-    func returnNumCode(section: Int, index: Int) -> String {
-        return self.filteredLec[section].items[index].number
+    
+    func setCellLooks(cell: LectureCell) {
+        cell.lecCellView.layer.borderWidth = 1
+        cell.lecCellView.layer.borderColor = CGColor(red: 237/255, green: 237/255, blue: 237/255, alpha: 1)
+        cell.lecCellView.layer.cornerRadius = cell.lecCellView.frame.height / 3
+        cell.lecCellView.layer.masksToBounds = true
+        cell.shadowLayer.layer.cornerRadius = cell.lecCellView.frame.height / 3
+        cell.shadowLayer.layer.masksToBounds = false
+        cell.shadowLayer.layer.shadowOffset = CGSize(width: 0, height: 10)
+        cell.shadowLayer.layer.shadowColor = UIColor.black.cgColor
+        cell.shadowLayer.layer.shadowOpacity = 0.03
+        cell.shadowLayer.layer.shadowRadius = cell.lecCellView.frame.height / 3
+        cell.shadowLayer.layer.shadowPath = UIBezierPath(roundedRect: cell.shadowLayer.bounds, byRoundingCorners: .allCorners, cornerRadii: CGSize(width: 2, height: 1)).cgPath
+        cell.shadowLayer.layer.shouldRasterize = true
+        cell.shadowLayer.layer.rasterizationScale = UIScreen.main.scale
+    }
+    
+    func returnNumCode(section: Int, index: Int) {
+        let selected_lec =  self.filteredLec[section].items[index].number
+        ad?.selected_lec = selected_lec
+        var stack = ud.stringArray(forKey: "stack") ?? []
+        if stack.count >= 5 {
+            stack.removeFirst()
+        }
+        stack.append(selected_lec)
+        ud.set(stack, forKey: "stack")
     }
     
     func returnLecture(section: Int, index: Int) -> Lecture {

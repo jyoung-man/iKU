@@ -6,44 +6,12 @@
 //
 
 import Foundation
-import SwiftSoup
-import Alamofire
 import RxSwift
 import RxCocoa
 import RxAlamofire
 
 class APIService {
     let disposeBag = DisposeBag()
-
-    func findForOneLecture(lec: Lecture) {
-        var applicants: String?
-        for i in 1...4 {
-            let link = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01011&promShyr=\(i)&fg=B&sbjtId=\(lec.number)"
-            guard let url = URL(string: link) else { return }
-            AF.request(url).responseString { (response) in
-                switch response.result {
-                case .success:
-                    do {
-                        let html = response.value!
-                        let doc: Document = try SwiftSoup.parse(html)
-                        let srcs = try doc.select("[align=center]").array()
-                        applicants = try srcs[0].text()
-                        print("index: \(i)")
-                        print("지원자: \(applicants!)")
-                        lec.addGrade(app: applicants ?? "?")
-                        print("들어온 값: \(lec.applicants)")
-                    }
-                    catch Exception.Error(_, let message) {
-                        print(message)
-                    } catch {
-                        print("error")
-                    }
-                case .failure(let error):
-                    print(error)
-                }
-            }
-        }
-    }
     
     func findSeatsByRx(lecs: [LectureSection], flag: Int, grade: String) {
         var myUrl: String = ""
@@ -51,10 +19,10 @@ class APIService {
         for s in lecs {
             for l in s.items {
                 if flag == 0 { //전체
-                    myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01011&sbjtId=\(l.number)"
+                    myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01012&sbjtId=\(l.number)"
                 }
                 else if flag == 1 { //학년별
-                    myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01011&promShyr=\(grade)&fg=B&sbjtId=\(l.number)"
+                    myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01012&promShyr=\(grade)&fg=B&sbjtId=\(l.number)"
                 }
                 
                 RxAlamofire.requestString(.get, URL(string: myUrl)!)
@@ -72,10 +40,10 @@ class APIService {
         var myUrl: String = ""
 
         if flag == 0 { //전체
-            myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01011&sbjtId=\(lec.number)"
+            myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01012&sbjtId=\(lec.number)"
         }
         else if flag == 1 { //학년별
-            myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01011&promShyr=\(grade)&fg=B&sbjtId=\(lec.number)"
+            myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01012&promShyr=\(grade)&fg=B&sbjtId=\(lec.number)"
         }
         
         RxAlamofire.requestString(.get, URL(string: myUrl)!)
@@ -116,6 +84,10 @@ class APIService {
     
     func returnTypeName(type: String) -> String {
         switch type {
+        case "기교":
+            return "기초교양"
+        case "심교":
+            return "심화교양"
         case "지교":
             return "지정교양"
         case "지필":
