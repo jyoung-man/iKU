@@ -164,8 +164,8 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
 extension CulturalViewController: BonsaiControllerDelegate {
     
     func frameOfPresentedView(in containerViewFrame: CGRect) -> CGRect {
-        
-        return CGRect(origin: CGPoint(x: 0, y: allGrade.frame.origin.y), size: CGSize(width: containerViewFrame.width, height: view.frame.size.height - allGrade.frame.origin.y))
+
+        return CGRect(origin: CGPoint(x: 0, y: allGrade.frame.origin.y), size: CGSize(width: containerViewFrame.width, height: view.frame.size.height - allGrade.frame.origin.y + 49))
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -188,7 +188,6 @@ extension CulturalViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
                 let headerView = view as! UITableViewHeaderFooterView
         headerView.contentView.backgroundColor = tableView.backgroundColor
-        print(headerView.textLabel)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -199,7 +198,7 @@ extension CulturalViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 35
     }
-    
+
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let cell = cell as? LectureCell else { return }
         cell.disposeBag = DisposeBag()

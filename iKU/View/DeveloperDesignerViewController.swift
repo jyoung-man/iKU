@@ -21,7 +21,6 @@ class DeveloperDesignerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         backgroundView.layer.cornerRadius = backgroundView.frame.height / 15
-        backgroundView.layer.borderWidth = 1
         
         contactDeveloper.layer.cornerRadius = 10
         contactDeveloper.layer.borderWidth = 0.5

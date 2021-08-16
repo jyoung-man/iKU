@@ -50,7 +50,6 @@ class LectureInfoViewController: UIViewController, ChartViewDelegate {
     var lec_code: String?
     var lecture = [String]()
     var profContact = [String]()
-    var entry: [Double] = [1,1,1,1]
     var disposeBag = DisposeBag()
     @IBOutlet weak var backgroundView: UIView!
     
@@ -76,7 +75,7 @@ class LectureInfoViewController: UIViewController, ChartViewDelegate {
         //pieChart.center = ratio.center
         ratio.addSubview(pieChart)
         
-        pieChart.data = viewModel.setPieChart(pieChart: pieChart)
+        pieChart.data = viewModel.setPieChart(pieChart: pieChart, lec_code: lec_code!)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -99,12 +98,8 @@ class LectureInfoViewController: UIViewController, ChartViewDelegate {
             email.text = profContact[1]
         }
         
-        
-        
         pieChart.animate(xAxisDuration: 1.0, easingOption: .easeOutBack)
         pieChart.drawHoleEnabled = false
-        let sc = ud.stringArray(forKey: "stack")
-        let encoding = String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(0x0422))
 
         let myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/plan/CourLecturePlanInq.jsp?ltYy=2021&ltShtm=B01012&sbjtId=\(lec_code!)"
         RxAlamofire.requestData(.get, URL(string: myUrl)!)

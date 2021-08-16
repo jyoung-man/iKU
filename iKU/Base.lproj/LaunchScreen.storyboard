@@ -21,7 +21,7 @@
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.019607843140000001" green="0.42352941179999998" blue="0.25098039220000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.023529411764705882" green="0.41960784313725491" blue="0.25098039215686274" alpha="0.98999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="eaz-LV-r7M" secondAttribute="trailing" id="0xP-as-olU"/>
                             <constraint firstItem="eaz-LV-r7M" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="g1x-4h-jEp"/>
@@ -32,7 +32,33 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="50.625" y="375"/>
+            <point key="canvasLocation" x="-293" y="326"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="KLC-9g-HLr">
+            <objects>
+                <viewController id="57A-Za-7YW" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Wja-cd-lGZ">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iPhone X, XS, 11 Pro – 116" translatesAutoresizingMaskIntoConstraints="NO" id="YVg-K7-XEb">
+                                <rect key="frame" x="0.0" y="44" width="428" height="848"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="s8V-Ex-2Rr"/>
+                        <color key="backgroundColor" red="0.019607843140000001" green="0.42352941179999998" blue="0.25098039220000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="YVg-K7-XEb" firstAttribute="leading" secondItem="s8V-Ex-2Rr" secondAttribute="leading" id="0Ix-q1-rSS"/>
+                            <constraint firstItem="s8V-Ex-2Rr" firstAttribute="bottom" secondItem="YVg-K7-XEb" secondAttribute="bottom" id="MK5-Oy-Nn1"/>
+                            <constraint firstItem="YVg-K7-XEb" firstAttribute="top" secondItem="s8V-Ex-2Rr" secondAttribute="top" id="RDn-1C-oY5"/>
+                            <constraint firstItem="s8V-Ex-2Rr" firstAttribute="trailing" secondItem="YVg-K7-XEb" secondAttribute="trailing" id="SnG-OA-QHd"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DPd-cf-6kO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="453" y="319"/>
         </scene>
     </scenes>
     <resources>

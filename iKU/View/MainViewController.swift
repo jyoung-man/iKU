@@ -47,9 +47,21 @@ class MainViewController: UIViewController {
         let mj_info = ud.string(forKey: "mj_info")?.split(separator: " ")
         let dm_info = ud.string(forKey: "dm_info")?.split(separator: " ")
         let sm_info = ud.string(forKey: "sm_info")?.split(separator: " ")
-        myMajorLabel.text = String((mj_info?[1])!)
-        first_dabuLabel.text = String((dm_info?[1]) ?? "선택")
-        second_dabuLabel.text = String((sm_info?[1]) ?? "선택")
+        myMajorLabel.text = String((mj_info?.last)!)
+        first_dabuLabel.text = String((dm_info?.last) ?? "오류가 발생했습니다. 클릭하여 복구")
+        second_dabuLabel.text = String((sm_info?.last) ?? "오류가 발생했습니다. 클릭하여 복구")
+        
+        if (dm_info?.last == "\t") {
+            first_dabuLabel.text = "(전공이 설정되지 않았어요)"
+            first_dabuLabel.textColor = UIColor(red: 51/255, green: 51/255, blue: 51/255, alpha: 0.5)
+            first_dabuLabel.font = .systemFont(ofSize: 15, weight: .light)
+        }
+        if (sm_info?.last == "\t") {
+            second_dabuLabel.text = "(전공이 설정되지 않았어요)"
+            second_dabuLabel.textColor = UIColor(red: 51/255, green: 51/255, blue: 51/255, alpha: 0.5)
+            second_dabuLabel.font = .systemFont(ofSize: 15, weight: .light)
+        }
+        
         myGradeLabel.text = grade_info! + "학년"
         kuImg.setBackgroundImage(UIImage(named: self.myGradeLabel.text ?? "3학년"), for: .normal)
         setStack()
@@ -59,6 +71,10 @@ class MainViewController: UIViewController {
             self.recentTableView.scrollToRow(at: indexPath as IndexPath, at: .top, animated: false)
         }
         recentTableView.reloadData()
+    }
+    
+    func setDeptLabel() {
+        
     }
     
     func setStack() {
@@ -94,21 +110,23 @@ class MainViewController: UIViewController {
     
     func findSeatsForHereByRx(code: [String], flag: Int, grade: String) {
         var myUrl: String = ""
-        for i in 0...(code.count-1) {
-            if flag == 0 { //전체
-                myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01012&sbjtId=\(code[i])"
-            }
-            else if flag == 1 { //학년별
-                myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01012&promShyr=\(grade)&fg=B&sbjtId=\(code[i])"
-            }
+        if code.count > 1 {
+            for i in 0...(code.count-1) {
+                if flag == 0 { //전체
+                    myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01012&sbjtId=\(code[i])"
+                }
+                else if flag == 1 { //학년별
+                    myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01012&promShyr=\(grade)&fg=B&sbjtId=\(code[i])"
+                }
 
-            RxAlamofire.requestString(.get, URL(string: myUrl)!)
-                .subscribe(onNext: { (response, str) in
-                    let ret = APIService().reformatString(article: str)
-                    self.mvvm[i].onNext(ret)
-                    self.left[i] = ret
-                }).disposed(by: self.disposeBag)
-            self.mvvm[i].onNext("조회 중...")
+                RxAlamofire.requestString(.get, URL(string: myUrl)!)
+                    .subscribe(onNext: { (response, str) in
+                        let ret = APIService().reformatString(article: str)
+                        self.mvvm[i].onNext(ret)
+                        self.left[i] = ret
+                    }).disposed(by: self.disposeBag)
+                self.mvvm[i].onNext("조회 중...")
+            }
         }
     }
     

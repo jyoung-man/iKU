@@ -11,7 +11,7 @@ import SQLite3
 class DBHelper {
     
     var db : OpaquePointer?
-    var path : String = "iku222.sqlite"
+    var path : String = "ikuV2.sqlite"
     init() {
         self.db = copyDatabaseIfNeeded()
     }
@@ -72,13 +72,37 @@ class DBHelper {
         return depts
     }
     
+    func checkDept(dept: String) -> Bool{
+        let query = "select d_name from dept where d_code = '\(dept)';"
+        var statement : OpaquePointer? = nil
+        var name: String = "***"
+        
+        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
+            while sqlite3_step(statement) == SQLITE_ROW {
+                name = String(cString: sqlite3_column_text(statement, 0))
+                break
+            }
+        }
+        else {
+            let errorMessage = String(cString: sqlite3_errmsg(db))
+            print("\n read Data prepare fail! : \(errorMessage)")
+        }
+        sqlite3_finalize(statement)
+        
+        if name != "***" {
+            return true
+        }
+        return false
+    }
+    
+    
     func askLecture(dept: String, type: String) -> [Lecture] {
         //강의 조회하는 함수
         var lectures = [Lecture]()
         var query = "select * from lecture where d_code = '\(dept)' and type = '\(type)';"
         if dept.contains("&") {
             let dabu = dept.components(separatedBy: "&")
-            query = "select distinct * from lecture where d_code =  '\(dabu[0])' or d_code = '\(dabu[1])' and type = '\(type)';"
+            query = "select distinct * from lecture where type = '\(type)' and (d_code = '\(dabu[0])' or d_code = '\(dabu[1])');"
         }
         else if dept.contains("*") {
             query = "select distinct type, l_number, l_name, l_number, prof, section from lecture where type = '\(type)';"
@@ -135,8 +159,7 @@ class DBHelper {
                 let l_number = String(cString: sqlite3_column_text(statement, 1))
                 let l_name = String(cString: sqlite3_column_text(statement, 2))
                 let third = String(cString: sqlite3_column_text(statement, 3))
-                let fourth = String(cString: sqlite3_column_text(statement, 4))
-                let section = String(cString: sqlite3_column_text(statement, 5))
+                let prof = String(cString: sqlite3_column_text(statement, 4))
                 let credit = sqlite3_column_int(statement, 6)
                 let time = String(cString: sqlite3_column_text(statement, 7))
                 let classroom = String(cString: sqlite3_column_text(statement, 8))
@@ -154,7 +177,7 @@ class DBHelper {
                 lecInfo.append(isuntact)
                 lecInfo.append(note)
                 lecInfo.append(third)
-                lecInfo.append(fourth)
+                lecInfo.append(prof)
 
                 break
             }
@@ -199,7 +222,7 @@ class DBHelper {
         }
         if dept.contains("&") {
             let one = dept.components(separatedBy: "&")
-            query = "select distinct \(target) from lecture where d_code = '\(one[0])';"
+            query = "select distinct \(target) from lecture where d_code = '\(one[0])' or d_code = '\(one[1])';"
         }
         print(dept)
         var statement : OpaquePointer? = nil
@@ -246,5 +269,32 @@ class DBHelper {
         else {
             return untact
         }
+    }
+    
+    func askRatio(code: String) -> [Double] {
+        let query = "select first, second, third, fourth from lec_info where l_number = '\(code)';"
+        var statement : OpaquePointer? = nil
+        var ratio = [Double]()
+        
+        if sqlite3_prepare_v2(self.db, query, -1, &statement, nil) == SQLITE_OK {
+            while sqlite3_step(statement) == SQLITE_ROW {
+                let first = sqlite3_column_double(statement, 0)
+                let second = Double(sqlite3_column_double(statement, 1))
+                let third = Double(sqlite3_column_double(statement, 2))
+                let fourth = Double(sqlite3_column_double(statement, 3))
+                ratio.append(first)
+                ratio.append(second)
+                ratio.append(third)
+                ratio.append(fourth)
+                break
+            }
+        }
+        else {
+            let errorMessage = String(cString: sqlite3_errmsg(db))
+            print("\n read Data prepare fail! : \(errorMessage)")
+        }
+        sqlite3_finalize(statement)
+        
+        return ratio
     }
 }

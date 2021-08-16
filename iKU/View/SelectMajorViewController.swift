@@ -35,7 +35,7 @@ class SelectMajorViewController: UIViewController {
         gradeValue = gradeValue! + "학년"
         kuImg.image = UIImage(named: gradeValue!)
         depts = DBHelper().askDept()
-        depts.append(Department(d_name: "선택 .", d_code: "999999"))
+        depts.append(Department(d_name: "없음 \t", d_code: "999999"))
         //교직 넣어야됨
         for d in depts {
             majorOnly.append(d.d_name)
@@ -45,8 +45,47 @@ class SelectMajorViewController: UIViewController {
         setDropDown(dropdown: secondSubmajorDropDown, button: secondSubmajor)
         self.confirm.layer.cornerRadius = 20
         self.backgroundView.layer.cornerRadius = 20
-    
+        checkYourMajor()
+        if (ud.string(forKey: "department") != nil) {
+            self.performSegue(withIdentifier: "mainView", sender: self)
+        }
     }
+    
+    @IBAction func confirmAction(_ sender: Any) {
+        ud.set(depts[majorDropDown.indexForSelectedRow ?? 0].getCode(), forKey: "department")
+        ud.set(majorOnly[majorDropDown.indexForSelectedRow ?? 0], forKey: "mj_info")
+
+        init_data()
+    }
+    
+    func init_data() {
+        ud.set(depts[firstSubmajorDropDown.indexForSelectedRow ?? depts.count-1].getCode(), forKey: "double_major")
+        ud.set(majorOnly[firstSubmajorDropDown.indexForSelectedRow ?? depts.count-1], forKey: "dm_info")
+        
+        ud.set(depts[secondSubmajorDropDown.indexForSelectedRow ?? depts.count-1].getCode(), forKey: "sub_major")
+        ud.set(majorOnly[secondSubmajorDropDown.indexForSelectedRow ?? depts.count-1], forKey: "sm_info")
+    }
+    
+    func checkYourMajor() {
+        let d1 = ud.string(forKey: "department") ?? "**"
+        let d2 = ud.string(forKey: "double_major") ?? "**"
+        let d3 = ud.string(forKey: "sub_major") ?? "**"
+        
+        if !DBHelper().checkDept(dept: d1) {
+            ud.removeObject(forKey: "department")
+            ud.removeObject(forKey: "mj_info")
+        }
+        if !DBHelper().checkDept(dept: d2) {
+            ud.set(depts[firstSubmajorDropDown.indexForSelectedRow ?? depts.count-1].getCode(), forKey: "double_major")
+            ud.set(majorOnly[firstSubmajorDropDown.indexForSelectedRow ?? depts.count-1], forKey: "dm_info")
+        }
+        
+        if !DBHelper().checkDept(dept: d3) {
+            ud.set(depts[secondSubmajorDropDown.indexForSelectedRow ?? depts.count-1].getCode(), forKey: "sub_major")
+            ud.set(majorOnly[secondSubmajorDropDown.indexForSelectedRow ?? depts.count-1], forKey: "sm_info")
+        }
+    }
+    
     
     func setDropDown(dropdown: DropDown, button: UIButton) {
         dropdown.dataSource = self.majorOnly
@@ -77,17 +116,4 @@ class SelectMajorViewController: UIViewController {
             secondSubmajor.setTitle(item, for: .normal)
         }
     }
-    
-    @IBAction func confirm(_ sender: UIButton) {
-        ud.set(depts[majorDropDown.indexForSelectedRow ?? 0].getCode(), forKey: "department")
-        ud.set(majorOnly[majorDropDown.indexForSelectedRow ?? 19], forKey: "mj_info")
-        
-        ud.set(depts[firstSubmajorDropDown.indexForSelectedRow ?? depts.count-1].getCode(), forKey: "double_major")
-        ud.set(majorOnly[firstSubmajorDropDown.indexForSelectedRow ?? depts.count-1], forKey: "dm_info")
-        
-        ud.set(depts[secondSubmajorDropDown.indexForSelectedRow ?? depts.count-1].getCode(), forKey: "sub_major")
-        ud.set(majorOnly[secondSubmajorDropDown.indexForSelectedRow ?? depts.count-1], forKey: "sm_info")
-        
-    }
-    
 }

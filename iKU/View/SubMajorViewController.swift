@@ -1,8 +1,8 @@
 //
-//  MajorViewController.swift
+//  SubMajorViewController.swift
 //  iKU
 //
-//  Created by 박재영 on 2021/02/03.
+//  Created by 박재영 on 2021/02/16.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import RxCocoa
 import RxDataSources
 import BonsaiController
 
-class MajorViewController: UIViewController, UISearchBarDelegate {
+class SubMajorViewController: UIViewController, UISearchBarDelegate {
     let ad = UIApplication.shared.delegate as? AppDelegate
     let ud = UserDefaults.standard
     let cellID = "lCell"
@@ -19,16 +19,19 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     var datasource: RxTableViewSectionedReloadDataSource<LectureSection>!
     var disposeBag = DisposeBag()
     
-    @IBOutlet weak var majorTableView: UITableView!
+    @IBOutlet weak var submajorTableView: UITableView!
     @IBOutlet weak var lecSearchBar: UISearchBar!
     @IBOutlet weak var backgroundView: UIView!
     
-    @IBOutlet weak var collegeLabel: UILabel!
-    @IBOutlet weak var departureLabel: UILabel!
+    @IBOutlet weak var secondMajorLabel: UILabel!
+    @IBOutlet weak var thirdMajorLabel: UILabel!
+    
     @IBOutlet weak var allGrade: UIButton!
     @IBOutlet weak var myGrade: UIButton!
     
-    var myDept: String?
+    var secondDept: String?
+    var thirdDept: String?
+    var mymajors: String = ""
     var gradeValue: String?
     var flag: Int = 1
     
@@ -36,14 +39,15 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         super.viewDidLoad()
         ad?.modal_height = self.backgroundView.frame.height
         loadUserInfo()
-        self.viewModel = LectureListViewModel(dept: myDept!, classes: "type")
+        self.viewModel = LectureListViewModel(dept: mymajors, classes: "type")
 
         backgroundView.layer.cornerRadius = backgroundView.frame.height / 15
         lecSearchBar.delegate = self
-        lecSearchBar.barTintColor = majorTableView.backgroundColor
+        lecSearchBar.barTintColor = submajorTableView.backgroundColor
         lecSearchBar.searchTextField.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
-        let dSource = RxTableViewSectionedReloadDataSource<LectureSection>(configureCell: { dSource, majorTableView, indexPath, item in
-            let cell = majorTableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath) as! LectureCell
+        
+        let dSource = RxTableViewSectionedReloadDataSource<LectureSection>(configureCell: { dSource, submajorTableView, indexPath, item in
+            let cell = submajorTableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath) as! LectureCell
             item.mvvm
                 .map{ $0 }
                 .subscribe(onNext: {
@@ -60,11 +64,11 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
             return ds.sectionModels[index].lecType}
         self.datasource = dSource
         
-        majorTableView.rx.setDelegate(self)
+        submajorTableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         
         viewModel.mutableLectureList()
-            .bind(to: majorTableView.rx.items(dataSource: datasource))
+            .bind(to: submajorTableView.rx.items(dataSource: datasource))
             .disposed(by: disposeBag)
         
         print("init_finish")
@@ -86,21 +90,12 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if myDept != ud.string(forKey: "department") || gradeValue != ud.string(forKey: "grade") {
+        if secondDept != ud.string(forKey: "double_major") || thirdDept != ud.string(forKey: "sub_major") || gradeValue != ud.string(forKey: "grade") {
             loadUserInfo()
-            self.viewModel.changeMajor(dept: myDept!)
-            let indexPath = IndexPath(row: 0, section: 0)
-            self.majorTableView.scrollToRow(at: indexPath, at: .top, animated: false)
+            self.viewModel.changeMajor(dept: mymajors)
+            let indexPath = IndexPath(row: 0 , section: 0)
+            self.submajorTableView.scrollToRow(at: indexPath, at: .top, animated: false)
         }
-    }
-    
-    func loadUserInfo() {
-        myDept = ud.string(forKey: "department") ?? "126914"
-        gradeValue = ud.string(forKey: "grade") ?? "1"
-        
-        let mj_info = ud.string(forKey: "mj_info")?.split(separator: " ")
-        collegeLabel.text = String((mj_info?[0])!)
-        departureLabel.text = String((mj_info?.last)!)
     }
     
     func changeTarget(flag: Int) {
@@ -109,13 +104,35 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         viewModel.countSeats(flag: flag, myGrade: gradeValue!)
         self.flag = flag
     }
-
+    
+    func loadUserInfo() {
+        secondDept = ud.string(forKey: "double_major") ?? "999999"
+        thirdDept = ud.string(forKey: "sub_major") ?? "999999"
+        mymajors = secondDept! + "&" + thirdDept!
+        gradeValue = ud.string(forKey: "grade") ?? "1"
+        
+        let dm_info = ud.string(forKey: "dm_info")?.split(separator: " ")
+        let sm_info = ud.string(forKey: "sm_info")?.split(separator: " ")
+        
+        if (dm_info![0] == "없음" && sm_info![0] == "없음") {//둘 다 없는 경우
+            thirdMajorLabel.text = "다/부전공이 없습니다."
+            secondMajorLabel.text = " "
+        }
+        else { //둘 중 하나라도 있는 경우
+            if (sm_info![0] == "없음") {   //둘 중 하나는 있는데 그게 2번인 경우
+                thirdMajorLabel.text = String((dm_info?.last) ?? "")
+                secondMajorLabel.text = " "
+            }
+            else {  //어쨌든 3번에는 있는 경우
+                secondMajorLabel.text = String((dm_info?.last) ?? "")
+                thirdMajorLabel.text = String((sm_info?.last) ?? "")
+            }
+        }
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-        //if segue.destination is HalfSizeViewController {
-            segue.destination.transitioningDelegate = self
-            segue.destination.modalPresentationStyle = .custom
-        //}
+        segue.destination.transitioningDelegate = self
+        segue.destination.modalPresentationStyle = .custom
     }
     @IBAction func inAllGrade(_ sender: Any) {
         changeTarget(flag: 0)
@@ -123,10 +140,9 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     @IBAction func inMyGrade(_ sender: Any) {
         changeTarget(flag: 1)
     }
-    
 }
 
-extension MajorViewController: BonsaiControllerDelegate {
+extension SubMajorViewController: BonsaiControllerDelegate {
     
     func frameOfPresentedView(in containerViewFrame: CGRect) -> CGRect {
         
@@ -141,7 +157,7 @@ extension MajorViewController: BonsaiControllerDelegate {
 
 
 
-extension MajorViewController: UITableViewDelegate {
+extension SubMajorViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
@@ -154,10 +170,11 @@ extension MajorViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
                 let headerView = view as! UITableViewHeaderFooterView
         headerView.contentView.backgroundColor = tableView.backgroundColor
+        print(headerView.textLabel)
+
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //여기서 선택된 과목의 번호를 전달.
         viewModel.returnNumCode(section: indexPath.section, index: indexPath.row)
     }
     

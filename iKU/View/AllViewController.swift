@@ -20,6 +20,8 @@ class AllViewController: UIViewController, UISearchBarDelegate {
     var disposeBag = DisposeBag()
     var flag: Int = 0
     
+    @IBOutlet weak var allGrade: UIButton!
+    @IBOutlet weak var myGrade: UIButton!
     @IBOutlet weak var lecSearchBar: UISearchBar!
     @IBOutlet weak var allTableView: UITableView!
     @IBOutlet weak var customBackButton: UIButton!
@@ -93,7 +95,6 @@ class AllViewController: UIViewController, UISearchBarDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
             segue.destination.transitioningDelegate = self
             segue.destination.modalPresentationStyle = .custom
     }
@@ -117,7 +118,7 @@ class AllViewController: UIViewController, UISearchBarDelegate {
 extension AllViewController: BonsaiControllerDelegate {
     
     func frameOfPresentedView(in containerViewFrame: CGRect) -> CGRect {
-        return CGRect(origin: CGPoint(x: 0, y: view.frame.size.height), size: CGSize(width: containerViewFrame.width, height: containerViewFrame.height))
+        return CGRect(origin: CGPoint(x: 0, y: allGrade.frame.origin.y), size: CGSize(width: containerViewFrame.width, height: view.frame.size.height - allGrade.frame.origin.y + 49))
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
@@ -152,14 +153,9 @@ extension AllViewController: UITableViewDelegate {
         return 35
     }
     
-    
     func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard let cell = cell as? LectureCell else { return }
         cell.disposeBag = DisposeBag()
-//        if lecSearchBar.endEditing(true) {
-//            viewModel.countSeatsForOneLec(flag: 0, myGrade: gradeValue!, section: indexPath.section, index: indexPath.row)
-//        }
-        
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

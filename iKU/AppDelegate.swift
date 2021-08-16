@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        Thread.sleep(forTimeInterval: 1.5)
         window?.makeKeyAndVisible()
         defaultExampleUsingCompletionHandler()
         return true
@@ -37,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func defaultExampleUsingCompletionHandler() {
         let siren = Siren.shared
-        siren.rulesManager = RulesManager(majorUpdateRules: Rules(promptFrequency: .immediately, forAlertType: .force), minorUpdateRules: Rules(promptFrequency: .immediately, forAlertType: .option), patchUpdateRules: .critical, revisionUpdateRules: Rules(promptFrequency: .daily, forAlertType: .force))
+        siren.rulesManager = RulesManager(majorUpdateRules: Rules(promptFrequency: .immediately, forAlertType: .force), minorUpdateRules: Rules(promptFrequency: .immediately, forAlertType: .force), patchUpdateRules: .critical, revisionUpdateRules: Rules(promptFrequency: .daily, forAlertType: .option))
         
         siren.apiManager = APIManager(country: .korea)
         siren.presentationManager = PresentationManager(forceLanguageLocalization: .korean)

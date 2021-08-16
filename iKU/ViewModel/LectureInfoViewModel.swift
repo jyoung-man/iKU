@@ -19,7 +19,6 @@ class LectureInfoViewModel {
     var att: PublishSubject<String> = PublishSubject()
     var lecture = [String]()
     var profContact = [String]()
-    var entry: [Double] = [1,1,1,1]
     var disposeBag = DisposeBag()
 //   var lec_code: String =
 //    init() {
@@ -28,8 +27,9 @@ class LectureInfoViewModel {
 //        profContact = DBHelper().askProf(l_number: lec_code)
 //    }
     
-    func setPieChart(pieChart: PieChartView) -> PieChartData {
+    func setPieChart(pieChart: PieChartView, lec_code: String) -> PieChartData {
         var entries = [PieChartDataEntry]()
+        let entry = DBHelper().askRatio(code: lec_code)
         entries.append(PieChartDataEntry(value: entry[0], label: "1학년"))
         entries.append(PieChartDataEntry(value: entry[1], label: "2학년"))
         entries.append(PieChartDataEntry(value: entry[2], label: "3학년"))
@@ -51,9 +51,6 @@ class LectureInfoViewModel {
     }
     
     func dataRequest(lec_code: String) -> PublishSubject<String> {
-        let sc = ud.stringArray(forKey: "stack")
-        let encoding = String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(0x0422))
-
         let myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/plan/CourLecturePlanInq.jsp?ltYy=2021&ltShtm=B01012&sbjtId=\(lec_code)"
         RxAlamofire.requestData(.get, URL(string: myUrl)!)
             .subscribe(onNext: { (response, data) in

@@ -198,6 +198,24 @@ class LectureListViewModel {
         ud.set(stack, forKey: "stack")
     }
     
+    func makeItRed(left: String) -> Bool {
+        let vacant: Int?
+        let temp = left.components(separatedBy: " / ")
+        if temp.count < 2 {
+            return false
+        }
+        else {
+            let v = temp.map({ (value : String) -> Int in return Int(value)! })
+            vacant = v[1] - v[0]
+        }
+        if vacant! <= 0 {
+            return true
+        }
+        else {
+            return false
+        }
+    }
+    
     func returnLecture(section: Int, index: Int) -> Lecture {
         return self.filteredLec[section].items[index]
     }

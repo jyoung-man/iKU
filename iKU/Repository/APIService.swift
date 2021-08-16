@@ -20,18 +20,26 @@ class APIService {
             for l in s.items {
                 if flag == 0 { //전체
                     myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourInwonInqTime.jsp?ltYy=2021&ltShtm=B01012&sbjtId=\(l.number)"
+                    
+                    RxAlamofire.requestString(.get, URL(string: myUrl)!)
+                        .subscribe(onNext: { (response, str) in
+                            let ret = self.reformatString(article: str)
+                            l.mvvm.onNext(ret)
+                            l.left = ret
+                        }).disposed(by: disposeBag)
+                    l.mvvm.onNext("조회 중...")
                 }
                 else if flag == 1 { //학년별
                     myUrl = "https://kupis.konkuk.ac.kr/sugang/acd/cour/aply/CourBasketInwonInq.jsp?ltYy=2021&ltShtm=B01012&promShyr=\(grade)&fg=B&sbjtId=\(l.number)"
+                    
+                    RxAlamofire.requestString(.get, URL(string: myUrl)!)
+                        .subscribe(onNext: { (response, str) in
+                            let ret = self.reformatString(article: str)
+                            l.mvvm.onNext(ret)
+                            l.left = ret
+                        }).disposed(by: disposeBag)
+                    l.mvvm.onNext("조회 중...")
                 }
-                
-                RxAlamofire.requestString(.get, URL(string: myUrl)!)
-                    .subscribe(onNext: { (response, str) in
-                        let ret = self.reformatString(article: str)
-                        l.mvvm.onNext(ret)
-                        l.left = ret
-                    }).disposed(by: disposeBag)
-                l.mvvm.onNext("조회 중...")
             }
         }
     }

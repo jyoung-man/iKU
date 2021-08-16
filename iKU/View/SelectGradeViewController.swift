@@ -78,7 +78,6 @@ class SelectGradeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ud.set("1", forKey: "grade")
         backgroundView1.layer.cornerRadius = 20
         backgroundView2.layer.cornerRadius = 20
         backgroundView3.layer.cornerRadius = 20
@@ -91,6 +90,11 @@ class SelectGradeViewController: UIViewController {
         first.textColor = UIColor(white: 0, alpha: 1)
         confirmButton.layer.cornerRadius = 20
         
-
+        if ud.string(forKey: "grade") != nil {
+            self.performSegue(withIdentifier: "majorSelector", sender: self)
+        }
+        else {
+            ud.set("1", forKey: "grade")
+        }
     }
 }
