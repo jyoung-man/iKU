@@ -1,5 +1,5 @@
 # IKU
-https://user-images.githubusercontent.com/53083691/129650802-7c11a376-ba40-4bc7-8830-c58fe331ad21.jpg
+![11형 이미지](https://user-images.githubusercontent.com/53083691/129650802-7c11a376-ba40-4bc7-8830-c58fe331ad21.jpg)
 
 [앱스토어 링크](https://apps.apple.com/kr/app/id1555107801)
 
