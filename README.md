@@ -1,9 +1,7 @@
-# IKU
+# IKU - 우리들의 수강신청 도우미
 ![11형 이미지](https://user-images.githubusercontent.com/53083691/129650802-7c11a376-ba40-4bc7-8830-c58fe331ad21.jpg)
 
 [앱스토어 링크](https://apps.apple.com/kr/app/id1555107801)
-
-우리들의 수강신청 도우미 IKU 
 
 ### 주요기능  
 ##### 학과별 분류 기능  
