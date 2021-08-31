@@ -27,12 +27,15 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var sectionLabel: UILabel!
     @IBOutlet weak var sectionDetail: UILabel!
     
+    @IBOutlet weak var vacantButton: UIButton!
+    
     var lectures: [Lecture]!
     var vacantLec: [Lecture]!
     var searchedLec: [Lecture]!
     var myDept: String?
     var grade: String?
     var flag: Int = 0
+    var buttonActivated = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +46,8 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
         backgroundView.layer.cornerRadius = backgroundView.frame.height / 15
         lecSearchBar.barTintColor = culturalTableView.backgroundColor
         lecSearchBar.searchTextField.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
+        vacantButton.setBackgroundImage(UIImage(named: "vacantOnly_selected"), for: .selected)
+        vacantButton.setBackgroundImage(UIImage(named: "vacantOnly"), for: .normal)
         let dSource = RxTableViewSectionedReloadDataSource<LectureSection>(
             configureCell: { dataSource, culturalTableView, indexPath, item in
                 let cell = culturalTableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath) as! LectureCell
@@ -50,11 +55,13 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
                     .map{ $0 }
                     .subscribe(onNext: {
                         cell.leftLabel.text = $0
+                        self.viewModel.makeItRed(cell: cell, left: $0)
                     }).disposed(by: cell.disposeBag) 
                 cell.leftLabel.text = item.left
                 cell.titleLabel.text = item.title
                 cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
                 self.viewModel.setCellLooks(cell: cell)
+                self.viewModel.makeItRed(cell: cell, left: cell.leftLabel.text ?? "0/2")
                 return cell
             })
         dSource.titleForHeaderInSection = { ds, index in
@@ -85,6 +92,8 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
         self.culturalTableView.scrollToRow(at: indexPath, at: .top, animated: false)
         lecSearchBar.text = ""
         setLable()
+        self.buttonActivated = false
+        self.vacantButton.isSelected = false
     }
     
     func setLable() {
@@ -98,6 +107,8 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
         viewModel.filterByKeyword(searchText: "", flag: flag)
         viewModel.countSeats(flag: flag, myGrade: grade!)
         self.flag = flag
+        self.buttonActivated = false
+        self.vacantButton.isSelected = false
     }
     
     @objc func hideKeyboard() {
@@ -151,7 +162,14 @@ class CulturalViewController: UIViewController, UISearchBarDelegate {
     }
     
     @IBAction func vacantOnly(_ sender: Any) {
-        viewModel.filterByLeft()
+        self.buttonActivated = !buttonActivated
+        viewModel.filterByLeft(isActivated: self.buttonActivated, flag: self.flag)
+        if self.buttonActivated {
+            self.vacantButton.isSelected = true
+        }
+        else {
+            self.vacantButton.isSelected = false
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

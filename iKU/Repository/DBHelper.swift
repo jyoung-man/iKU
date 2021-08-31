@@ -11,12 +11,14 @@ import SQLite3
 class DBHelper {
     
     var db : OpaquePointer?
-    var path : String = "ikuV2.sqlite"
+    var path : String = "iku202.sqlite"
     init() {
         self.db = copyDatabaseIfNeeded()
     }
     
     func copyDatabaseIfNeeded() -> OpaquePointer?{ //도큐먼트 폴더에 있는 DB를 찾고, 없으면 번들에서 도큐먼트 폴더로 DB를 옮겨주는 함수
+        
+        let ud = UserDefaults.standard
         let fileManager = FileManager.default
         let documentsUrl = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
     
@@ -30,7 +32,7 @@ class DBHelper {
             print("DB does not exist in documents folder")
             
             let documentsURL = Bundle.main.resourceURL?.appendingPathComponent(path)
-            
+
             do {
                 try fileManager.copyItem(atPath: (documentsURL?.path)!, toPath: finalDatabaseURL.path)
             }catch let error as NSError {
@@ -41,6 +43,7 @@ class DBHelper {
                 print("Succesfully create Database path : \(finalDatabaseURL.path)")
                 return db
             }
+            ud.removeObject(forKey: "stack")
                 
         } else {
             print("Database file found at path: \(finalDatabaseURL.path)")

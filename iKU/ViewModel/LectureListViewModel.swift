@@ -28,6 +28,7 @@ class LectureListViewModel {
         lectureSections = APIService().findSection(dept: "*", classes: classes)
         allLecs = APIService().mutableLectures(depts: [])
         filteredLec = lectureSections
+        searchedLec = lectureSections
     }
     
     init(dept: String, classes: String) {
@@ -35,6 +36,7 @@ class LectureListViewModel {
         allLecs = APIService().mutableLectures(depts: lectureSections)
         filteredLec = lectureSections
         culturalLec = lectureSections
+        searchedLec = lectureSections
     }
         
     func setLectures(lectures: [Lecture]) {
@@ -53,28 +55,25 @@ class LectureListViewModel {
         APIService().findSeatsForOneLecByRx(lec: self.filteredLec[section].items[index], flag: flag, grade: myGrade)
     }
     
-    func filterByLeft() {
-        var vacant = [Lecture]()
-        vacantLec = []
-        
-        var temp: [String]
-        var m: Int
-        var v: Int
-        for lecs in filteredLec {
-            for l in lecs.items {
-                temp = l.left.components(separatedBy: " / ")
-                if temp.count > 1 {
-                    v = Int(temp[0])!
-                    m = Int(temp[1])!
-                    if v < m {
+    func filterByLeft(isActivated: Bool, flag: Int) {
+        if isActivated {
+            var vacant = [Lecture]()
+            vacantLec = []
+
+            for lecs in filteredLec {
+                for l in lecs.items {
+                    if isAvailable(left: l.left) {
                         vacant.append(l)
                     }
                 }
+                vacantLec.append(LectureSection(lecType: lecs.lecType, items: vacant))
             }
-            vacantLec.append(LectureSection(lecType: lecs.lecType, items: vacant
-            ))
+            filteredLec = vacantLec
         }
-        allLecs.accept(vacantLec)
+        else {
+            filteredLec = searchedLec
+        }
+        allLecs.accept(filteredLec)
     }
     
     func filterByKeyword(searchText: String, flag: Int) {
@@ -101,14 +100,7 @@ class LectureListViewModel {
                 }
             }
         }
-        
-        if flag == 2 {
-            //filterByLeft(lecs: searchedLec)
-        }
-        else {
-            filteredLec = searchedLec
-        }
-        
+        filteredLec = searchedLec
         allLecs.accept(filteredLec)
     }
     
@@ -151,6 +143,7 @@ class LectureListViewModel {
             print("Out of index")
         }
         filteredLec = lectureSections
+        searchedLec = lectureSections
         countSeats(flag: flag, myGrade: grade)
         allLecs.accept(filteredLec)
     }
@@ -198,21 +191,35 @@ class LectureListViewModel {
         ud.set(stack, forKey: "stack")
     }
     
-    func makeItRed(left: String) -> Bool {
+    func isAvailable(left: String) -> Bool {
         let vacant: Int?
         let temp = left.components(separatedBy: " / ")
         if temp.count < 2 {
-            return false
+            return true
         }
         else {
             let v = temp.map({ (value : String) -> Int in return Int(value)! })
             vacant = v[1] - v[0]
         }
         if vacant! <= 0 {
-            return true
+            return false
         }
         else {
-            return false
+            return true
+        }
+    }
+    
+    func makeItRed(cell: LectureCell, left: String) {
+        let flag = isAvailable(left: left)
+        if flag {
+            cell.titleLabel.textColor = .black
+            cell.leftLabel.textColor = .black
+            cell.profAndNumberLabel.textColor = UIColor(red: 51/255, green: 51/255, blue: 51/255, alpha: 0.5)
+        }
+        else {
+            cell.titleLabel.textColor = UIColor(red: 201/255, green: 28/255, blue: 28/255, alpha: 1)
+            cell.leftLabel.textColor = UIColor(red: 201/255, green: 28/255, blue: 28/255, alpha: 1)
+            cell.profAndNumberLabel.textColor = UIColor(red: 201/255, green: 28/255, blue: 28/255, alpha: 1)
         }
     }
     

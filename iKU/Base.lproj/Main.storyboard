@@ -1078,6 +1078,7 @@
                         <outlet property="scrollView" destination="zJO-Ap-L41" id="XgS-So-atp"/>
                         <outlet property="sectionDetail" destination="ApT-Sj-dsh" id="pv2-Z3-n5m"/>
                         <outlet property="sectionLabel" destination="Wdq-gE-zCp" id="H0e-rF-uce"/>
+                        <outlet property="vacantButton" destination="Uie-BC-kGa" id="aV7-QV-D2y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KAc-Ad-KnZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2198,7 +2199,7 @@
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                                                     <nil key="textColor"/>
-                                                                    <color key="highlightedColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" text="담당교수 / 과목번호" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KfZ-mP-QZU">
                                                                     <rect key="frame" x="24" y="35.666666666666664" width="109" height="17"/>
@@ -2210,7 +2211,7 @@
                                                                     <rect key="frame" x="229" y="27" width="128" height="17"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                     <nil key="textColor"/>
-                                                                    <color key="highlightedColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
                                                                 </label>
                                                             </subviews>
                                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -2335,6 +2336,7 @@
                         <outlet property="lecSearchBar" destination="veE-02-7W5" id="EWi-xo-q0z"/>
                         <outlet property="majorTableView" destination="Sk3-zU-rco" id="lYi-xE-nyd"/>
                         <outlet property="myGrade" destination="HWw-ad-epM" id="lWb-IX-dJU"/>
+                        <outlet property="vacantButton" destination="spB-3u-3SJ" id="bVI-it-XUy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jpt-Fk-IYu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2390,20 +2392,20 @@
                                                 <rect key="frame" x="15" y="115.5" width="345" height="450"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="arh-v3-osk">
-                                                        <rect key="frame" x="26" y="13" width="306" height="370"/>
+                                                        <rect key="frame" x="26" y="13.000000000000028" width="306" height="370"/>
                                                         <color key="backgroundColor" red="0.95686274510000002" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="370" id="WDC-ex-0io"/>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0kW-Hz-rsy">
-                                                        <rect key="frame" x="5" y="44" width="12" height="14"/>
+                                                        <rect key="frame" x="5" y="44.000000000000028" width="12" height="14"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="11"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="11" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TcY-q2-Zph">
-                                                        <rect key="frame" x="5.6666666666666687" y="80" width="9.3333333333333357" height="14"/>
+                                                        <rect key="frame" x="5.6666666666666687" y="80.000000000000028" width="9.3333333333333357" height="14"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="11"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -2457,7 +2459,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWs-uN-vWl">
-                                                        <rect key="frame" x="8" y="8" width="7" height="14"/>
+                                                        <rect key="frame" x="8" y="8.0000000000000284" width="7" height="14"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="11"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -2847,6 +2849,7 @@
                         <outlet property="secondMajorLabel" destination="7Di-6G-EZs" id="3iu-PU-Jxz"/>
                         <outlet property="submajorTableView" destination="PEI-nP-OTF" id="SLB-37-fAQ"/>
                         <outlet property="thirdMajorLabel" destination="MsK-JN-0t2" id="J4a-qY-puj"/>
+                        <outlet property="vacantButton" destination="p0B-Ip-UFN" id="WJ5-c7-lan"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tz4-nj-kgG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

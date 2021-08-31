@@ -29,15 +29,17 @@ class SubMajorViewController: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var allGrade: UIButton!
     @IBOutlet weak var myGrade: UIButton!
     
+    @IBOutlet weak var vacantButton: UIButton!
+    
     var secondDept: String?
     var thirdDept: String?
     var mymajors: String = ""
     var gradeValue: String?
     var flag: Int = 1
+    var buttonActivated = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ad?.modal_height = self.backgroundView.frame.height
         loadUserInfo()
         self.viewModel = LectureListViewModel(dept: mymajors, classes: "type")
 
@@ -52,12 +54,14 @@ class SubMajorViewController: UIViewController, UISearchBarDelegate {
                 .map{ $0 }
                 .subscribe(onNext: {
                     cell.leftLabel.text = $0
+                    self.viewModel.makeItRed(cell: cell, left: $0)
                 }).disposed(by: cell.disposeBag) //셀이 화면에서 보이지 않을 때는 bind를 풀어줘야 함
             cell.titleLabel.text = item.title
             cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
             cell.leftLabel.text = item.left
             self.viewModel.setCellLooks(cell: cell)
-            
+            self.viewModel.makeItRed(cell: cell, left: cell.leftLabel.text ?? "0/2")
+
             return cell
         })
         dSource.titleForHeaderInSection = {ds, index in
@@ -81,7 +85,14 @@ class SubMajorViewController: UIViewController, UISearchBarDelegate {
     }
     
     @IBAction func vacantOnly(_ sender: Any) {
-        viewModel.filterByLeft()
+        self.buttonActivated = !buttonActivated
+        viewModel.filterByLeft(isActivated: self.buttonActivated, flag: self.flag)
+        if self.buttonActivated {
+            self.vacantButton.isSelected = true
+        }
+        else {
+            self.vacantButton.isSelected = false
+        }
     }
     
     @objc func hideKeyboard() {
@@ -103,6 +114,8 @@ class SubMajorViewController: UIViewController, UISearchBarDelegate {
         viewModel.filterByKeyword(searchText: "", flag: flag)
         viewModel.countSeats(flag: flag, myGrade: gradeValue!)
         self.flag = flag
+        self.buttonActivated = false
+        self.vacantButton.isSelected = false
     }
     
     func loadUserInfo() {
@@ -128,6 +141,8 @@ class SubMajorViewController: UIViewController, UISearchBarDelegate {
                 thirdMajorLabel.text = String((sm_info?.last) ?? "")
             }
         }
+        vacantButton.setBackgroundImage(UIImage(named: "vacantOnly_selected"), for: .selected)
+        vacantButton.setBackgroundImage(UIImage(named: "vacantOnly"), for: .normal)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

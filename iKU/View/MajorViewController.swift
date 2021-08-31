@@ -28,13 +28,15 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     @IBOutlet weak var allGrade: UIButton!
     @IBOutlet weak var myGrade: UIButton!
     
+    @IBOutlet weak var vacantButton: UIButton!
+    
     var myDept: String?
     var gradeValue: String?
     var flag: Int = 1
+    var buttonActivated = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ad?.modal_height = self.backgroundView.frame.height
         loadUserInfo()
         self.viewModel = LectureListViewModel(dept: myDept!, classes: "type")
 
@@ -48,17 +50,29 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
                 .map{ $0 }
                 .subscribe(onNext: {
                     cell.leftLabel.text = $0
+                    self.viewModel.makeItRed(cell: cell, left: $0)
                 }).disposed(by: cell.disposeBag) //셀이 화면에서 보이지 않을 때는 bind를 풀어줘야 함
             cell.titleLabel.text = item.title
             cell.profAndNumberLabel.text = "\(item.prof)/\(item.number)"
             cell.leftLabel.text = item.left
             self.viewModel.setCellLooks(cell: cell)
-            
+            self.viewModel.makeItRed(cell: cell, left: cell.leftLabel.text ?? "0/2")
             return cell
         })
         dSource.titleForHeaderInSection = {ds, index in
             return ds.sectionModels[index].lecType}
         self.datasource = dSource
+        
+//        majorTableView.rx.willDisplayCell.subscribe(onNext: { ccell, indexPath in
+//            let lecCell = self.majorTableView.dequeueReusableCell(withIdentifier: self.cellID, for: indexPath) as! LectureCell
+//            let left = lecCell.leftLabel.text
+//            if !self.isAvailable(left: left ?? "0/2") {
+//                lecCell.titleLabel.textColor = .systemRed
+//            }
+//            else {
+//                lecCell.titleLabel.textColor = .darkGray
+//            }
+//        })
         
         majorTableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
@@ -77,7 +91,14 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
     }
     
     @IBAction func vacantOnly(_ sender: Any) {
-        viewModel.filterByLeft()
+        self.buttonActivated = !buttonActivated
+        viewModel.filterByLeft(isActivated: self.buttonActivated, flag: self.flag)
+        if self.buttonActivated {
+            self.vacantButton.isSelected = true
+        }
+        else {
+            self.vacantButton.isSelected = false
+        }
     }
     
     @objc func hideKeyboard() {
@@ -101,6 +122,8 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         let mj_info = ud.string(forKey: "mj_info")?.split(separator: " ")
         collegeLabel.text = String((mj_info?[0])!)
         departureLabel.text = String((mj_info?.last)!)
+        vacantButton.setBackgroundImage(UIImage(named: "vacantOnly_selected"), for: .selected)
+        vacantButton.setBackgroundImage(UIImage(named: "vacantOnly"), for: .normal)
     }
     
     func changeTarget(flag: Int) {
@@ -108,14 +131,13 @@ class MajorViewController: UIViewController, UISearchBarDelegate {
         viewModel.filterByKeyword(searchText: "", flag: flag)
         viewModel.countSeats(flag: flag, myGrade: gradeValue!)
         self.flag = flag
+        self.buttonActivated = false
+        self.vacantButton.isSelected = false
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
-        //if segue.destination is HalfSizeViewController {
-            segue.destination.transitioningDelegate = self
-            segue.destination.modalPresentationStyle = .custom
-        //}
+        segue.destination.transitioningDelegate = self
+        segue.destination.modalPresentationStyle = .custom
     }
     @IBAction func inAllGrade(_ sender: Any) {
         changeTarget(flag: 0)

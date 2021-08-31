@@ -11,6 +11,7 @@
 		4E0FCA4525DC14190047B4FC /* SubMajorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0FCA4425DC14190047B4FC /* SubMajorViewController.swift */; };
 		4E0FCA4A25DC1D800047B4FC /* CulturalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E0FCA4925DC1D800047B4FC /* CulturalViewController.swift */; };
 		4E11A23325CBC8C200E7363F /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E11A23225CBC8C200E7363F /* DBHelper.swift */; };
+		4E21DAE626DDA11200DFD80B /* iku202.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 4E21DAE526DDA11200DFD80B /* iku202.sqlite */; };
 		4E244D8126BC1E9E0025A99C /* SelectMajorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E244D8026BC1E9E0025A99C /* SelectMajorViewController.swift */; };
 		4E26D27426C6E27C00580825 /* DeveloperDesignerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26D27326C6E27C00580825 /* DeveloperDesignerViewController.swift */; };
 		4E2B596F25CA35FE003BC87A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E2B596E25CA35FE003BC87A /* AppDelegate.swift */; };
@@ -62,6 +63,7 @@
 		4E0FCA4425DC14190047B4FC /* SubMajorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubMajorViewController.swift; sourceTree = "<group>"; };
 		4E0FCA4925DC1D800047B4FC /* CulturalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CulturalViewController.swift; sourceTree = "<group>"; };
 		4E11A23225CBC8C200E7363F /* DBHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
+		4E21DAE526DDA11200DFD80B /* iku202.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = iku202.sqlite; sourceTree = "<group>"; };
 		4E244D8026BC1E9E0025A99C /* SelectMajorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectMajorViewController.swift; sourceTree = "<group>"; };
 		4E26D27326C6E27C00580825 /* DeveloperDesignerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperDesignerViewController.swift; sourceTree = "<group>"; };
 		4E2B596B25CA35FE003BC87A /* iKU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iKU.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -206,6 +208,7 @@
 				4E0F385925F9A88C00A3E579 /* ViewModel */,
 				4E5EA4632612F5E7004CF693 /* Model */,
 				4E2B596E25CA35FE003BC87A /* AppDelegate.swift */,
+				4E21DAE526DDA11200DFD80B /* iku202.sqlite */,
 				4E93B6ED26C7756300AFB30B /* ikuV2.sqlite */,
 				4E2B597025CA35FE003BC87A /* SceneDelegate.swift */,
 				4E2B597425CA35FE003BC87A /* Main.storyboard */,
@@ -365,6 +368,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4E21DAE626DDA11200DFD80B /* iku202.sqlite in Resources */,
 				4E2B597B25CA35FF003BC87A /* LaunchScreen.storyboard in Resources */,
 				4E93B6EE26C7756300AFB30B /* ikuV2.sqlite in Resources */,
 				4E2B597625CA35FE003BC87A /* Main.storyboard in Resources */,
@@ -703,7 +707,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jyman.iKU;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -728,7 +732,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.3;
+				MARKETING_VERSION = 2.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jyman.iKU;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
